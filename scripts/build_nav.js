@@ -280,6 +280,13 @@ function buildIndex() {
   }
   groups.push({ title: '附錄', items: appendices });
 
+  const hero = `    <div class="hero">
+      <span class="kicker-script">private &amp; verified access</span>
+      <div class="kicker">${esc(site.title)}</div>
+      <h1>${esc(site.subtitle)}</h1>
+      <p>${esc(site.description)}</p>
+    </div>`;
+
   const grids = groups
     .map(
       (g, i) => `<section class="chapter-index"${i ? ' style="margin-top:56px;"' : ''}>
@@ -292,6 +299,13 @@ ${g.items.map(card).join('\n')}
     .join('\n\n    ');
 
   html = replaceOne('index.html', html, /<head>[\s\S]*?<\/head>/, buildHead({ file: 'index.html' }, original), '<head>');
+  html = replaceOne(
+    'index.html',
+    html,
+    /[ \t]*<div class="hero">[\s\S]*?<\/div>\n\n    <section class="chapter-index">/,
+    `${hero}\n\n    <section class="chapter-index">`,
+    'hero'
+  );
   html = replaceOne(
     'index.html',
     html,
