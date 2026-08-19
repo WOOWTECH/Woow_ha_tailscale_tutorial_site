@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第 5 章 · 遠端開 HA · Home Assistant Tailscale 遠端連線指南</title>
+  <meta name="description" content="Tailscale 私有遠端存取 Home Assistant：手機、筆電、tailnet 裝置與安全測試流程。" />
+  <meta name="author" content="WoowTech" />
+  <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/ch5_remote_ha.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Home Assistant Tailscale 遠端連線指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="第 5 章 · 遠端開 HA · Home Assistant Tailscale 遠端連線指南" />
+  <meta property="og:description" content="Tailscale 私有遠端存取 Home Assistant：手機、筆電、tailnet 裝置與安全測試流程。" />
+  <meta property="og:url" content="https://ha-tailscale-guide.woowtech.io/ch5_remote_ha.html" />
+  <meta property="og:image" content="https://ha-tailscale-guide.woowtech.io/assets/screenshots/ch3/01_tailscale_web_ui.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="第 5 章 · 遠端開 HA · Home Assistant Tailscale 遠端連線指南" />
+  <meta name="twitter:description" content="Tailscale 私有遠端存取 Home Assistant：手機、筆電、tailnet 裝置與安全測試流程。" />
+  <meta name="twitter:image" content="https://ha-tailscale-guide.woowtech.io/assets/screenshots/ch3/01_tailscale_web_ui.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head><body><div class="layout"><aside class="sidebar">
+    <a class="brand" href="index.html">HA Tailscale 指南</a>
+    <div class="brand-sub">安全回家，不開埠</div>
+    <h2>章節</h2>
+    <ol>
+      <li class="part-label">基礎：認識安全遠端連線</li>
+      <li><a href="ch1_overview.html">開始前的盤點與安全邊界</a></li>
+      <li><a href="ch2_install.html">從 Apps 安裝 Tailscale</a></li>
+      <li><a href="ch3_join_tailnet.html">登入並加入你的 tailnet</a></li>
+      <li><a href="ch4_status_logs.html">看懂 App 狀態與日誌</a></li>
+      <li class="part-label">日常：私有遠端存取</li>
+      <li><a href="ch5_remote_ha.html" class="active">從 tailnet 安全開啟 Home Assistant</a></li>
+      <li><a href="ch6_machines.html">Machines、名稱與裝置生命週期</a></li>
+      <li><a href="ch7_access_controls.html">最小權限：誰可以連到誰</a></li>
+      <li><a href="ch8_serve.html">選擇 Serve：tailnet 內的 HTTPS 入口</a></li>
+      <li class="part-label">進階：Subnet router 基礎</li>
+      <li><a href="ch9_subnet_basics.html">Subnet router 基礎：讓 tailnet 看見家中 LAN</a></li>
+      <li><a href="ch10_approve_routes.html">核准 subnet route 並做端到端驗證</a></li>
+      <li class="part-label">維護：穩定使用與排錯</li>
+      <li><a href="ch11_daily_use.html">手機與筆電的日常使用守則</a></li>
+      <li><a href="ch12_troubleshooting.html">排錯、更新與交接清單</a></li>
+    </ol>
+    <div class="toc-in-chapter">
+      <h2>本章</h2>
+      <a href="#why">為什麼現在做</a>
+      <a href="#concept">先懂名詞</a>
+      <a href="#steps">動手做</a>
+      <a href="#private_url">私有 HTTPS</a>
+      <a href="#choices">選項判斷</a>
+      <a href="#security">安全檢查</a>
+      <a href="#test">驗收測試</a>
+      <a href="#record">留下記錄</a>
+      <a href="#troubleshoot">常見排錯</a>
+      <a href="#faq">FAQ</a>
+      <a href="#sources">官方來源</a>
+    </div>
+    <div class="toc-in-chapter">
+      <h2>附錄</h2>
+
+    </div>
+  </aside><main class="content">
+<div class="chapter-header"><div class="kicker">第 5 章</div><h1>遠端開 HA</h1><p class="lead">只讓已加入 tailnet 的手機和電腦打開 HA，先建立可驗證的私有遠端工作流程。 本章用可驗證、可回復的節奏帶你完成一件事；先保留私有存取，避免把 Home Assistant 直接曝露在網際網路。</p></div>
+<section id="why" data-nav="為什麼現在做"><h2 data-icon="why">為什麼現在要做這件事</h2><p>私有工作流程。在手機或筆電先開 Tailscale，確認它登入正確 tailnet，然後才開 Home Assistant。這樣失敗點清楚：先查 Tailscale，還是 HA 自己的帳號／網址。</p><div class="callout"><strong>本章界線：</strong>本章不教公開反向代理、不教路由器 port forwarding，也不設定 Funnel。私有連線的好處是每一台客戶端都要先成為 tailnet 裝置。</div></section>
+<section id="concept" data-nav="先懂名詞"><h2 data-icon="concept">先懂三個名詞</h2><p><strong>tailnet</strong> 是你的 Tailscale 私有網路；<strong>Machine</strong> 是加入其中的一台裝置；<strong>Home Assistant App</strong> 則是由 Supervisor 管理、可在 HA 的 Apps 頁面開啟與設定的 Tailscale 服務。先分清這三層，後面的按鈕才不會按錯地方。</p><table class="data-table"><thead><tr><th>層級</th><th>負責什麼</th><th>本章怎麼驗證</th></tr></thead><tbody><tr><td>Tailscale 管理主控台</td><td>帳號、Machines、路由與 policy</td><td>Machines 中找得到 HA</td></tr><tr><td>HA Tailscale App</td><td>在 HA 主機上運行 Tailscale</td><td>狀態正常、日誌無阻斷錯誤</td></tr><tr><td>Home Assistant</td><td>登入、儀表板與管理者權限</td><td>以個人帳號正常登入</td></tr></tbody></table></section>
+<section id="steps" data-nav="動手做"><h2 data-icon="steps">動手做：安全地完成本章</h2><ol class="steps"><li><h3>先記錄目前狀態</h3><p>在 Home Assistant 左側進入 <strong>設定 → Apps</strong>，找到 Tailscale；若畫面用舊名稱，可能顯示 Add-ons。記下它是否運行，先不要改未使用的進階選項。</p></li><li><h3>開啟需要的入口</h3><p>依本章目標查看 App 的 Info、Configuration、Log 或 Web UI。Web UI 的帳號授權只在信任的個人裝置完成。</p></li><li><h3>到管理主控台交叉核對</h3><p>開啟 Tailscale admin console 的 Machines 頁面，確認 Home Assistant 對應的 Machine、最後連線狀態與功能標記；不要用截圖中的名稱或 IP 當自己的值。</p></li><li><h3>從另一台裝置測試</h3><p>拿一台已登入同一 tailnet 的手機或筆電，完成一次本章目標的存取測試。成功後記下測試時間與裝置，方便日後排錯。</p></li></ol></section>
+<section id="private_url" data-nav="私有 HTTPS"><h2 data-icon="remote">實作：建立可驗證的私有 HA URL</h2><p>「加入 tailnet」本身不是瀏覽器入口。請用 App 官方文件的私有 Serve 流程：在 Tailscale App Configuration 將 <code>share_homeassistant</code> 設為 <code>serve</code>（不是 <code>funnel</code>），先讓 HA 維持 HTTP 本機服務，再依文件設定反向代理信任與 HTTPS 前置條件。</p><ol class="steps"><li><h3>在 HA 設定 proxy 信任</h3><p>依 App 文件在 <code>configuration.yaml</code> 的 <code>http:</code> 區段加入 <code>use_x_forwarded_for: true</code> 與 <code>trusted_proxies: - 127.0.0.1</code>；若已有 <code>http:</code> 區段，合併鍵值，不要重複建立第二段。</p></li><li><h3>啟用 tailnet HTTPS</h3><p>到 Tailscale admin console 的 DNS 設定，確認選好 tailnet 名稱、啟用 MagicDNS，並在 HTTPS Certificates 啟用 HTTPS。</p></li><li><h3>啟用私有 Serve 後重啟 App</h3><p>儲存 <code>share_homeassistant: serve</code>，重啟 App，從 App 的狀態或文件取得你的 <code>https://&lt;machine&gt;.&lt;tailnet&gt;.ts.net</code> URL；不要加舊的 HA 埠號。</p></li><li><h3>以另一台 tailnet 裝置開啟</h3><p>只在已登入同一 tailnet 的手機或筆電開啟該 HTTPS URL，再以個人的 HA 帳號登入。完整背景、風險界線與排錯見<a href="ch8_serve.html">第 8 章</a>。</p></li></ol><div class="callout warn"><strong>注意：</strong>不要把 <code>serve</code> 改為 <code>funnel</code>；Funnel 會改變服務可達範圍，屬於本教程排除的公開入口設定。</div></section>
+<section id="choices" data-nav="選項判斷"><h2 data-icon="compare">選項怎麼選才不會擴大風險</h2><p>先選最小可行做法，再逐步擴充。若你只是要回家看儀表板，私有 tailnet 存取通常比公開入口更容易控制；若你需要 LAN 子網，先列出一個網段與明確用途，不要一次宣告所有網路。</p><table class="data-table"><thead><tr><th>需求</th><th>建議起點</th><th>暫時不要做</th></tr></thead><tbody><tr><td>遠端看 HA</td><td>已登入 tailnet 的裝置私有存取</td><td>公開埠口與不必要的公開分享</td></tr><tr><td>管理設備</td><td>Machines 清單與個人帳號</td><td>共用管理員帳密</td></tr><tr><td>存取家中 LAN</td><td>單一已核准 subnet route</td><td>未盤點就宣告多段子網</td></tr></tbody></table></section>
+<section id="security" data-nav="安全檢查"><h2 data-icon="security">完成前的安全檢查</h2><p>檢查登入 Tailscale 的帳號是否正確、Home Assistant 是否仍以獨立個人帳號管理、以及 Machines 清單有沒有陌生或已淘汰的裝置。權限設計採最小權限：需要連 HA 的人才取得路徑，需要管理 tailnet 的人才有管理主控台權限。</p><div class="callout warn"><strong>注意：</strong>不要在 issue、群組或截圖公開授權網址、auth key、tailnet 網域、完整 IP、裝置序號或原始日誌。</div></section>
+<section id="test" data-nav="驗收測試"><h2 data-icon="test">用兩個網路情境驗收</h2><ol class="steps"><li><h3>家中網路</h3><p>在本地 LAN 開啟 HA，確認既有帳號與儀表板沒有因本章設定受到影響。</p></li><li><h3>不同網路</h3><p>讓測試手機改用行動網路或另一個安全網路，先確認 Tailscale 已連線，再完成一次 HA 存取。若本章是路由設定，僅測試你有權管理的目標。</p></li><li><h3>記錄結果</h3><p>記下成功／失敗、使用的裝置與時間。這比日後只記得「以前可以」更容易定位問題。</p></li><li><h3>停在安全邊界</h3><p>本教程不包含 exit node、DNS override 或公開 Funnel 設定；沒有需求就保持停用。</p></li></ol></section>
+<section id="record" data-nav="留下記錄"><h2 data-icon="records">把這次設定留下可交接的記錄</h2><p>網路設定最怕「當時能用，但沒人記得為什麼」。完成本章後，請在自己的密碼管理器或案場維護文件記下<strong>日期、操作者、目的、變更前後狀態與驗證裝置</strong>。記錄不是要保存密碼、auth key 或完整私有網段；這些機密應留在受控的祕密管理工具，文件只放能讓下一位維護者理解決策的描述。</p><p>例如可以寫：「2026-08-19，由管理者確認 Home Assistant Machine 仍在指定 tailnet；以受管理筆電在非家用網路測試私有存取成功。」若是 subnet router，再記下「僅宣告已核准的單一 LAN CIDR，且由管理主控台核准」，不要把住址、客戶姓名、完整 Tailscale 網域或裝置識別碼寫入公開 repo。這樣在手機遺失、換路由器、App 更新或管理權交接時，才能判斷要回復哪一層。</p><table class="data-table"><thead><tr><th>該記下</th><th>不應放進公開文件</th><th>下次誰會用到</th></tr></thead><tbody><tr><td>變更目的、日期、驗證結果</td><td>帳密、auth key、OAuth 授權連結</td><td>HA 維護者</td></tr><tr><td>Machine 的用途與擁有者角色</td><td>完整 tailnet 網域與私有 IP</td><td>Tailscale 管理員</td></tr><tr><td>核准哪一個「用途明確」的子網</td><td>未遮罩 CIDR、掃描結果、住址</td><td>網路維護者</td></tr></tbody></table><div class="callout tip"><strong>最小變更原則：</strong>一次只改一項，做完從另一個網路測試，再把結果記下。這比同時切換路由、policy、DNS 與公開分享更能保留可回復性。</div></section>
+<section id="troubleshoot" data-nav="常見排錯"><h2 data-icon="troubleshoot">常見問題先這樣排</h2><ul><li><strong>找不到 Apps：</strong>確認你的 HA 安裝方式是否由 Supervisor 管理；Container/Core 不能照本教程的 App 路徑操作。</li><li><strong>Machines 沒有 HA：</strong>回 App Web UI 完成授權，然後查看 App 日誌，而不是反覆重裝。</li><li><strong>可以看 Machines 但打不開 HA：</strong>先確認客戶端已登入同一 tailnet，再檢查 HA 的登入帳號與網址。</li><li><strong>路由看起來存在但 LAN 不通：</strong>確認該 route 已在 Machines 的 route settings 核准；再以正確 CIDR 與有權限的目標測試。</li><li><strong>設定後變得不確定：</strong>回到上一個已知可用狀態，保留日誌與變更記錄，再一次只改一項。</li></ul></section>
+<section id="faq" data-nav="FAQ"><h2 data-icon="faq">FAQ</h2><details class="faq"><summary>我需要公開路由器埠口嗎？</summary><div class="body">本教程的私有 tailnet 流程不要求你為 HA 建立公開 port forwarding；請依自己的網路與資安政策評估。</div></details><details class="faq"><summary>Tailscale 會取代 Home Assistant 登入嗎？</summary><div class="body">不會。Tailscale 管理網路路徑；Home Assistant 仍應使用個人帳號、強密碼與適當的管理權限。</div></details><details class="faq"><summary>看到舊名稱 Add-on 怎麼辦？</summary><div class="body">HA 介面與翻譯可能因版本而不同；認出 Tailscale App、Info、Configuration、Log 與 Web UI 等功能，再以目前畫面和官方文件為準。</div></details><details class="faq"><summary>可以順便設定 exit node 或 DNS override 嗎？</summary><div class="body">本教程刻意不含這些進階範圍。先把私有 HA 存取與單一 subnet route 驗證完成，再依官方文件另行規劃。</div></details></section>
+<section id="sources" data-nav="官方來源">
+<h2 data-icon="book">官方來源與版本提示</h2>
+<p>本文以 <a href="https://github.com/hassio-addons/app-tailscale/blob/main/tailscale/DOCS.md" rel="noopener">Home Assistant Community App: Tailscale 文件</a>與 <a href="https://tailscale.com/docs/" rel="noopener">Tailscale Docs</a>為準。介面文字會隨 App 與管理主控台版本調整；遇到名稱不同時，優先依畫面與官方文件操作。</p>
+<ul><li><a href="https://github.com/hassio-addons/app-tailscale/blob/main/tailscale/DOCS.md" rel="noopener">App 設定、Web UI、share_homeassistant、advertise_routes 與 userspace networking</a></li><li><a href="https://tailscale.com/docs/features/subnet-routers/how-to/setup" rel="noopener">Tailscale：設定 subnet router 與核准路由</a></li><li><a href="https://tailscale.com/docs/features/access-control" rel="noopener">Tailscale：Access controls、grants 與 ACL</a></li><li><a href="https://tailscale.com/docs/features/tailscale-serve" rel="noopener">Tailscale：Serve 與私有 tailnet 服務</a></li></ul>
+</section><div class="pager">
+      <a class="prev" href="ch4_status_logs.html">
+        <span class="label">← 上一章</span>
+        <span class="title">04 · 看懂 App 狀態與日誌</span>
+      </a>
+      <a class="next" href="ch6_machines.html">
+        <span class="label">下一章 →</span>
+        <span class="title">06 · Machines、名稱與裝置生命週期</span>
+      </a>
+    </div>
+
+    <footer class="site-footer">
+      <p>《Home Assistant Tailscale 遠端連線指南》由 <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">WoowTech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer></main></div><script src="assets/js/toc.js"></script></body></html>

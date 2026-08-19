@@ -74,9 +74,11 @@ async function ensureLogin(browser, env) {
   // Keep me logged in → long-lived refresh token persisted in storageState
   await page.locator('input[type="checkbox"]').first().check().catch(() => {});
   await page.locator('input[name="password"]').press('Enter');
-  // Wait for URL to change away from /auth/authorize
-  await page.waitForFunction(() => !location.pathname.startsWith('/auth/'), { timeout: 20000 }).catch(() => {});
-  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+  // A URL-only check can pass before HA has consumed the authorization callback.
+  // Wait until the login form itself disappears, then visit Home once to settle cookies.
+  await page.locator('input[name="username"]').waitFor({ state: 'hidden', timeout: 30000 }).catch(() => {});
+  await page.goto(env.HA_URL + '/home/overview', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.waitForTimeout(4000);
   await ctx.storageState({ path: STATE_PATH });
   console.log('· saved storage_state.json (post-login URL: ' + page.url() + ')');
   await page.close();
@@ -146,6 +148,27 @@ async function injectAnnotations(page, annotations) {
         line.setAttribute('stroke-width', '4');
         line.setAttribute('marker-end', 'url(#ha-tut-arrowhead)');
         svg.appendChild(line);
+      } else if (a.type === 'redact') {
+        const box = document.createElement('div');
+        Object.assign(box.style, {
+          position: 'absolute',
+          left: a.at.x + 'px',
+          top: a.at.y + 'px',
+          width: a.w + 'px',
+          height: a.h + 'px',
+          background: '#f4f4f4',
+          border: '2px solid #9e9e9e',
+          borderRadius: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#616161',
+          fontFamily: '-apple-system, "Noto Sans TC", sans-serif',
+          fontSize: '13px',
+          fontWeight: '600',
+        });
+        box.textContent = a.text || '已遮罩';
+        overlay.appendChild(box);
       } else if (a.type === 'callout') {
         const at = a.at;
         const wrap = document.createElement('div');
@@ -221,6 +244,16 @@ async function runActions(page, env, actions) {
       await page.keyboard.press(act.press);
     } else if (act.type) {
       await page.locator(act.type.selector).first().fill(act.type.text).catch(() => {});
+    } else if (act.frameClick) {
+      const { frameUrlIncludes, selector } = act.frameClick;
+      const frame = page.frames().find((f) => f.url().includes(frameUrlIncludes));
+      if (!frame) {
+        console.log(`    · frame not found (${frameUrlIncludes})`);
+      } else {
+        await frame.locator(selector).first().click({ timeout: 8000 }).catch((e) => {
+          console.log(`    · frame click failed (${selector}): ${e.message.split('\n')[0]}`);
+        });
+      }
     } else if (act.wait) {
       await page.waitForTimeout(act.wait);
     } else if (act.waitFor) {
@@ -235,9 +268,26 @@ async function runActions(page, env, actions) {
 async function captureOne(ctx, env, shot) {
   const page = await ctx.newPage();
   await page.setViewportSize(shot.viewport || { width: 1440, height: 900 });
-  const url = env.HA_URL + (shot.url || '/');
+  const url = /^https?:\/\//.test(shot.url || '') ? shot.url : env.HA_URL + (shot.url || '/');
   console.log(`  → ${shot.chapter}/${shot.filename}  ${url}`);
-  await gotoWithRetry(page, url);
+  // HA sidebar panels use a page-scoped OAuth callback. Navigate through the
+  // sidebar for these shots instead of deep-linking before the callback settles.
+  if (shot.haPanel) {
+    await gotoWithRetry(page, env.HA_URL + '/');
+    await page.waitForTimeout(3000);
+    const haLogin = page.locator('input[name="username"]');
+    if (await haLogin.isVisible().catch(() => false)) {
+      console.log('    · logging into HA for sidebar capture');
+      await haLogin.fill(env.HA_USER);
+      await page.locator('input[name="password"]').fill(env.HA_PASS);
+      await page.locator('input[name="password"]').press('Enter');
+      await page.waitForTimeout(6000);
+    }
+    await page.getByText(shot.haPanel, { exact: true }).click({ timeout: 15000 });
+    await page.waitForTimeout(7000);
+  } else {
+    await gotoWithRetry(page, url);
+  }
   if (shot.waitFor) {
     const sel = shot.waitFor.split(',').map((s) => s.trim()).join(', ');
     await page.waitForSelector(sel, { timeout: 15000 }).catch(() => {});
@@ -278,7 +328,10 @@ async function freshContext(browser, viewport) {
   }
   console.log(`Capturing ${shots.length} shot(s)...`);
   const browser = await chromium.launch({ headless: true });
-  const loggedInCtx = await ensureLogin(browser, env);
+  // HA's OAuth callback is page-scoped on this target. Sidebar captures perform
+  // the normal UI login in their own page below; this keeps the capture flow
+  // reproducible instead of reusing a callback URL from storage_state.
+  const loggedInCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const freshCtxCache = { ctx: null };
   for (const shot of shots) {
     let ctx = loggedInCtx;
