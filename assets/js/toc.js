@@ -13,7 +13,7 @@
     toggle.type = 'button';
     toggle.className = 'nav-toggle';
     toggle.setAttribute('aria-expanded', 'false');
-    toggle.innerHTML = '<span class="nav-toggle-label">目錄</span><span class="nav-toggle-caret" aria-hidden="true"></span>';
+    toggle.innerHTML = '<span class="nav-toggle-label">目錄</span><i class="mdi mdi-chevron-down nav-toggle-caret" aria-hidden="true"></i>';
 
     const firstHeading = sidebar.querySelector('h2');
     if (firstHeading) sidebar.insertBefore(toggle, firstHeading);

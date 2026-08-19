@@ -1,47 +1,62 @@
 /* HA Tutorial — WoowTech brand aligned */
 :root {
-  /* Brand palette — spot color = blue-500 */
+  /* Canonical woowtech brand tokens */
   --ww-blue: #6183FC;
-  --ww-blue-600: #4A6DE8;
-  --ww-blue-700: #3A57C4;
+  --ww-blue-600: #6183FC;
+  --ww-blue-700: #3F63E8;
   --ww-blue-050: #EEF2FF;
   --ww-blue-100: #DCE4FF;
-
-  --ink-900: #1B2033;
-  --ink-700: #3A4054;
-  --ink-500: #6B7186;
-  --ink-300: #A5AAB9;
-  --ink-100: #E7E9F0;
-
-  --paper: #F7F8FC;
-  --surface: #FFFFFF;
-  --surface-alt: #F1F3FA;
-  --hairline: #E2E5EF;
-
+  --ww-white: #FFFFFF;
+  --ww-gray: #EFF1F5;
+  --ww-deep-gray: #646262;
+  --ww-black: #212121;
+  --text-primary: var(--ww-black);
+  --text-secondary: var(--ww-deep-gray);
+  --surface-page: var(--ww-gray);
+  --surface-card: var(--ww-white);
+  --ink-900: var(--text-primary);
+  --ink-700: var(--text-secondary);
+  --ink-500: #777575;
+  --ink-300: #ABA9A9;
+  --ink-100: #E7E5E5;
+  --paper: var(--surface-page);
+  --surface: var(--surface-card);
+  --surface-alt: #F5F5F7;
+  --hairline: rgba(33, 33, 33, .08);
   --info: var(--ww-blue);
-  --tip:  #8CD37F;
-  --warn: #E66D3E;
-  --danger: #F45D6D;
+  --tip: var(--ww-blue);
+  --warn: var(--ww-blue);
+  --danger: var(--ww-blue);
 
-  /* Radius — 20px hard rule; 12px chips; pill buttons */
-  --radius: 20px;
+  /* Four-pixel rhythm */
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --section-y: 96px;
   --radius-sm: 12px;
-  --radius-xs: 8px;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --radius-xs: 12px;
   --radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(33, 33, 33, .06);
+  --shadow-md: 0 10px 28px rgba(33, 33, 33, .08);
+  --shadow-lg: 0 22px 52px rgba(33, 33, 33, .12);
+  --shadow-float: 0 26px 60px -18px rgba(97, 131, 252, .28);
+  --glass-bg: rgba(255, 255, 255, .7);
+  --glass-border: rgba(255, 255, 255, .9);
+  --glass-blur: 20px;
 
-  /* Soft diffuse shadows */
-  --shadow-sm: 0 2px 6px rgba(27, 32, 51, 0.05), 0 1px 2px rgba(27, 32, 51, 0.04);
-  --shadow-md: 0 8px 24px rgba(27, 32, 51, 0.08), 0 2px 6px rgba(27, 32, 51, 0.04);
-  --shadow-lg: 0 20px 48px rgba(27, 32, 51, 0.12), 0 4px 12px rgba(27, 32, 51, 0.06);
-
-  /* Type stacks */
-  --font-display: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-title: "Poppins", "Noto Sans TC", sans-serif;
+  --font-body: "Outfit", "Noto Sans TC", sans-serif;
+  --font-display: var(--font-title);
   --font-script: "Yellowtail", cursive;
+  --font-cjk: "Noto Sans TC", sans-serif;
   --font-mono: "SF Mono", Menlo, Consolas, "Fira Code", monospace;
-
   --sidebar-w: 268px;
   --max-content: 780px;
+  --motion: 220ms cubic-bezier(.4, 0, .2, 1);
 }
 
 * { box-sizing: border-box; }
@@ -693,12 +708,16 @@ details.faq .body {
   cursor: pointer;
 }
 .nav-toggle-caret {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid var(--ink-500);
-  transition: transform 0.15s ease;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--ww-blue-050);
+  color: var(--ww-blue);
+  font-size: 22px;
+  transition: transform var(--motion);
 }
 .sidebar.is-collapsed .nav-toggle-caret { transform: rotate(-90deg); }
 
@@ -806,3 +825,136 @@ section h2[data-icon="zigbee"]::before          { content: "\F0D41"; }  /* zigbe
    min-width:0 讓欄位可以縮，寬內容才會改由自己的 overflow-x 處理。 */
 .layout > * { min-width: 0; }
 .content pre, .content .data-table { max-width: 100%; }
+
+/* -------------------------------------------------------------------------
+   woowtech brand conformance — shared by the landing page and every chapter.
+   Keep instructional screenshots plain; glass belongs only to the cool-blue hero.
+--------------------------------------------------------------------------- */
+html, body {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--surface-page);
+}
+h1, h2, h3, h4,
+.chapter-header h1,
+.home .hero h1,
+.chapter-card h3,
+details.faq summary {
+  font-family: var(--font-title);
+  letter-spacing: -0.02em;
+}
+.chapter-header h1,
+.home .hero h1 { line-height: 1.1; }
+section { margin-bottom: var(--section-y); }
+section p, section li { font-size: 16px; color: var(--text-secondary); }
+section h2, section h3, .chapter-card h3, details.faq summary { line-height: 1.1; }
+.callout, details.faq .body { font-size: 16px; }
+
+/* Use quiet, consistent MDI tiles rather than mixing alert colours. */
+section h2[data-icon]::before {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  color: var(--ww-blue);
+  background: var(--ww-blue-050);
+}
+.callout {
+  min-height: 56px;
+  padding: 16px 20px 16px 68px;
+  border-radius: var(--radius);
+  background: var(--ww-blue-050);
+  border-color: rgba(97, 131, 252, .2);
+}
+.callout.tip, .callout.warn, .callout.danger {
+  background: var(--ww-blue-050);
+  border-color: rgba(97, 131, 252, .2);
+}
+.callout::before, .callout.tip::before, .callout.warn::before, .callout.danger::before {
+  left: 16px;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--ww-white);
+  color: var(--ww-blue);
+  font-size: 22px;
+}
+details.faq { border-radius: var(--radius); }
+details.faq summary { min-height: 56px; padding: 16px 68px 16px 20px; }
+details.faq summary::after {
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--ww-blue-050);
+  color: var(--ww-blue);
+  transition: transform var(--motion), background var(--motion);
+}
+figure.shot img { background: var(--surface-alt); }
+figure.shot { border-radius: var(--radius); }
+pre.code-block, code, kbd, .data-table { border-radius: var(--radius-sm); }
+
+/* The hero has a cool-blue field, so its inner surface may use glass. */
+.home .hero {
+  padding: var(--space-12) var(--space-8);
+  border-radius: var(--radius-lg);
+  background: var(--ww-blue-050);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-float);
+}
+.home .hero .kicker-script {
+  color: #E66D3E;
+  font-size: 30px;
+}
+.home .hero .kicker { color: var(--ww-blue); }
+.home .hero h1 { color: var(--text-primary); }
+.home .hero p { color: var(--text-secondary); font-weight: 300; }
+.chapter-index-spaced { margin-top: var(--section-y); }
+.chapter-card, .steps > li, .pager a { border-radius: var(--radius); }
+.steps > li { padding: 24px 24px 24px 72px; margin-bottom: 16px; }
+figure.shot { margin: 24px 0; }
+.chapter-grid { gap: 24px; }
+.chapter-card { padding: 24px; }
+.chapter-card .num { border-radius: var(--radius-sm); }
+
+/* All interactive feedback shares one gentle motion grammar. */
+a, button, .chapter-card, .pager a, .sidebar ol li a, .sidebar .toc-in-chapter a,
+.nav-toggle, details.faq summary::after {
+  transition: color var(--motion), background var(--motion), border-color var(--motion), box-shadow var(--motion), transform var(--motion);
+}
+a:active, button:active, .chapter-card:active, .pager a:active { transform: scale(.97); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid rgba(97, 131, 252, .45);
+  outline-offset: 3px;
+}
+.nav-toggle { min-height: 44px; border-radius: var(--radius-pill); }
+.pager { gap: var(--space-6); }
+.pager a .label i {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  border-radius: var(--radius-sm);
+  background: var(--ww-blue-050);
+  color: var(--ww-blue);
+  font-size: 22px;
+}
+
+@media (max-width: 960px) {
+  section { margin-bottom: var(--space-12); }
+  .home .hero { padding: var(--space-8) var(--space-6); margin-bottom: var(--space-12); }
+  .home .hero h1 { line-height: 1.12; }
+  .sidebar ol li a, .sidebar .toc-in-chapter a { min-height: 44px; display: flex; align-items: center; }
+  .pager { flex-direction: column; margin-top: var(--space-12); }
+  .pager a { min-height: 76px; }
+}

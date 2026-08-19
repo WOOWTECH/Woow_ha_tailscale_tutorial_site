@@ -85,7 +85,7 @@ function buildHead(page, html) {
   <link rel="license" href="${site.license.url}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;600&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Yellowtail&display=swap" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>`;
@@ -175,29 +175,29 @@ function buildPager(page) {
 
   const prevHtml = prev
     ? `      <a class="prev" href="${prev.file}">
-        <span class="label">${prev.kind === 'appendix' ? `← 附錄 ${prev.num}` : '← 上一章'}</span>
+        <span class="label"><i class="mdi mdi-arrow-left" aria-hidden="true"></i> ${prev.kind === 'appendix' ? `附錄 ${prev.num}` : '上一章'}</span>
         <span class="title">${esc(prev.pagerTitle)}</span>
       </a>`
     : `      <a class="prev disabled" href="index.html">
-        <span class="label">← 上一章</span>
+        <span class="label"><i class="mdi mdi-arrow-left" aria-hidden="true"></i> 上一章</span>
         <span class="title">回目錄</span>
       </a>`;
 
   const nextLabel = !next
-    ? '回目錄 →'
+    ? '回目錄'
     : next.kind === 'appendix'
       ? page.kind === 'appendix'
-        ? '下一附錄 →'
-        : `附錄 ${next.num} →`
-      : '下一章 →';
+        ? '下一附錄'
+        : `附錄 ${next.num}`
+      : '下一章';
 
   const nextHtml = next
     ? `      <a class="next" href="${next.file}">
-        <span class="label">${nextLabel}</span>
+        <span class="label">${nextLabel} <i class="mdi mdi-arrow-right" aria-hidden="true"></i></span>
         <span class="title">${esc(next.pagerTitle)}</span>
       </a>`
     : `      <a class="next" href="index.html">
-        <span class="label">回目錄 →</span>
+        <span class="label">回目錄 <i class="mdi mdi-arrow-right" aria-hidden="true"></i></span>
         <span class="title">全套完成！</span>
       </a>`;
 
@@ -281,7 +281,7 @@ function buildIndex() {
   groups.push({ title: '附錄', items: appendices });
 
   const hero = `    <div class="hero">
-      <span class="kicker-script">private &amp; verified access</span>
+      <span class="kicker-script">Human</span>
       <div class="kicker">${esc(site.title)}</div>
       <h1>${esc(site.subtitle)}</h1>
       <p>${esc(site.description)}</p>
@@ -289,7 +289,7 @@ function buildIndex() {
 
   const grids = groups
     .map(
-      (g, i) => `<section class="chapter-index"${i ? ' style="margin-top:56px;"' : ''}>
+      (g, i) => `<section class="chapter-index${i ? ' chapter-index-spaced' : ''}">
       <h2 class="index-title">${esc(g.title)}</h2>
       <div class="chapter-grid">
 ${g.items.map(card).join('\n')}
