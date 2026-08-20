@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tailscale AI Agent Skill 手冊 · 網路自動化 skill 型錄 · WoowTech</title>
+  <meta name="description" content="5-10 顆 Tailscale／Headscale／網路自動化相關 skills 精選＋4-6 大集合型錄：ACL policy 生成、home-lab 連線、SSH policy 管理、topology 查詢。含安裝速查、相容性、安全守則、SKILL.md 規格與 FAQ。2026-08-20 GitHub 快照。" />
+  <meta name="author" content="WoowTech" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/skills.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <style>
+/* HA Tailscale Skill 手冊 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+:root {
+  /* Brand palette — blue is the ONLY spot color */
+  --ww-blue: #6183FC;
+  --ww-blue-600: #4A6DE8;
+  --ww-blue-700: #3A57C4;
+  --ww-blue-050: #EEF2FF;
+  --ww-blue-100: #DCE4FF;
+
+  --ink-900: #1B2033;
+  --ink-700: #3A4054;
+  --ink-500: #6B7186;
+  --ink-300: #A5AAB9;
+  --ink-100: #E7E9F0;
+
+  --paper: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3FA;
+  --hairline: #E2E5EF;
+
+  --info: var(--ww-blue);
+  --tip:  #8CD37F;
+  --warn: #E66D3E;
+  --danger: #F45D6D;
+
+  /* Radius — 20px hard rule; 12px chips; pill buttons */
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --radius-pill: 999px;
+
+  /* Soft diffuse shadows */
+  --shadow-sm: 0 2px 6px rgba(27, 32, 51, 0.05), 0 1px 2px rgba(27, 32, 51, 0.04);
+  --shadow-md: 0 8px 24px rgba(27, 32, 51, 0.08), 0 2px 6px rgba(27, 32, 51, 0.04);
+  --shadow-lg: 0 20px 48px rgba(27, 32, 51, 0.12), 0 4px 12px rgba(27, 32, 51, 0.06);
+  --shadow-float: 0 26px 60px -18px rgba(97, 131, 252, 0.28);
+
+  --font-display: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-script: "Yellowtail", cursive;
+  --font-mono: "SF Mono", Menlo, Consolas, "Fira Code", monospace;
+
+  --sidebar-w: 268px;
+  --max-content: 780px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-body);
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html { scroll-behavior: smooth; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.005em; }
+
+a { color: var(--ww-blue-600); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--ww-blue-700); text-decoration: underline; }
+
+/* ---------- Layout ---------- */
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--hairline);
+  padding: 28px 22px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar h2 {
+  font-family: var(--font-body); font-size: 12px; color: var(--ink-500);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0 0 12px;
+}
+.sidebar .brand {
+  display: block; font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: var(--ink-900); margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.sidebar .brand-sub { font-size: 13px; color: var(--ink-500); margin-bottom: 6px; }
+.sidebar .hub-link { display: inline-block; font-size: 12.5px; color: var(--ink-500); margin-bottom: 22px; }
+.sidebar .hub-link:hover { color: var(--ww-blue-700); text-decoration: none; }
+.sidebar .toc-in-chapter { border-top: 1px solid var(--hairline); padding-top: 16px; margin-top: 8px; }
+.sidebar .toc-in-chapter:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.sidebar .toc-in-chapter a {
+  display: block; padding: 7px 12px; border-radius: var(--radius-xs);
+  color: var(--ink-700); font-size: 13.5px;
+}
+.sidebar .toc-in-chapter a:hover { background: var(--surface-alt); text-decoration: none; }
+.sidebar .toc-in-chapter a.active { background: var(--ww-blue-050); color: var(--ww-blue-700); font-weight: 600; }
+
+/* ---------- Content ---------- */
+.content { padding: 56px 64px 96px; max-width: calc(var(--max-content) + 128px); }
+
+.chapter-header { margin-bottom: 40px; }
+.chapter-header .kicker-script {
+  font-family: var(--font-script); font-size: 30px; color: var(--ww-blue);
+  line-height: 1; margin-bottom: 10px; display: block;
+}
+.chapter-header .kicker {
+  color: var(--ww-blue); font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+}
+.chapter-header h1 {
+  font-family: "Noto Sans TC", var(--font-display); font-size: 38px; font-weight: 700;
+  margin: 0 0 14px; letter-spacing: -0.02em; line-height: 1.25;
+}
+.chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
+
+/* KPI floating frame（品牌規範：floating frame 必帶 shadow-float） */
+.kpi-frame {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-float);
+  margin: 28px 0 8px; overflow: hidden;
+}
+.kpi { padding: 22px 20px; text-align: center; }
+.kpi + .kpi { border-left: 1px solid var(--hairline); }
+.kpi .num {
+  font-family: var(--font-display); font-size: 26px; font-weight: 700;
+  color: var(--ww-blue); line-height: 1.2;
+}
+.kpi .cap { font-size: 13px; color: var(--ink-500); margin-top: 4px; }
+
+/* Sections */
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+section h2 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  margin: 0 0 20px; padding: 0; border: 0;
+  display: flex; align-items: center; gap: 14px; color: var(--ink-900);
+}
+section h2[data-icon]::before {
+  content: ""; display: inline-flex; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  background-color: var(--ww-blue-050);
+  background-repeat: no-repeat; background-position: center; background-size: 22px 22px;
+}
+section h2[data-icon="why"]::before         { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="what"]::before        { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="ai"]::before          { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,1L9,9L1,12L9,15L12,23L15,15L23,12L15,9L12,1Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="security"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11,13H13V16H16V11H18L12,6L6,11H8V16H11V13M12,1L21,5V11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="brain"]::before       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21.33,12.91C21.42,14.46 20.71,15.95 19.44,16.86L20.21,18.35C20.44,18.8 20.47,19.33 20.27,19.8C20.08,20.27 19.69,20.64 19.21,20.8L18.42,21.05C18.25,21.11 18.06,21.14 17.88,21.14C17.37,21.14 16.89,20.91 16.56,20.5L14.44,18C13.55,17.85 12.71,17.47 12,16.9C11.5,17.05 11,17.13 10.5,17.13C9.62,17.13 8.74,16.86 8,16.34C7.47,16.5 6.93,16.57 6.38,16.56C5.59,16.57 4.81,16.41 4.08,16.11C2.65,15.47 1.7,14.07 1.65,12.5C1.57,11.78 1.69,11.05 2,10.39C1.71,9.64 1.68,8.82 1.93,8.06C2.3,7.11 3,6.32 3.87,5.82C4.45,4.13 6.08,3 7.87,3.12C9.47,1.62 11.92,1.46 13.7,2.75C14.12,2.64 14.56,2.58 15,2.58C16.36,2.55 17.65,3.15 18.5,4.22C20.54,4.75 22,6.57 22.08,8.69C22.13,9.8 21.83,10.89 21.22,11.82C21.29,12.18 21.33,12.54 21.33,12.91M16.33,11.5C16.9,11.57 17.35,12 17.35,12.57A1,1 0 0,1 16.35,13.57H15.72C15.4,14.47 14.84,15.26 14.1,15.86C14.35,15.95 14.61,16 14.87,16.07C20,16 19.4,12.87 19.4,12.82C19.34,11.39 18.14,10.27 16.71,10.33A1,1 0 0,1 15.71,9.33A1,1 0 0,1 16.71,8.33C17.94,8.36 19.12,8.82 20.04,9.63C20.09,9.34 20.12,9.04 20.12,8.74C20.06,7.5 19.5,6.42 17.25,6.21C16,3.25 12.85,4.89 12.85,5.81V5.81C12.82,6.04 13.06,6.53 13.1,6.56A1,1 0 0,1 14.1,7.56C14.1,8.11 13.65,8.56 13.1,8.56V8.56C12.57,8.54 12.07,8.34 11.67,8C11.19,8.31 10.64,8.5 10.07,8.56V8.56C9.5,8.61 9.03,8.21 9,7.66C8.92,7.1 9.33,6.61 9.88,6.56C10.04,6.54 10.82,6.42 10.82,5.79V5.79C10.82,5.13 11.07,4.5 11.5,4C10.58,3.75 9.59,4.08 8.59,5.29C6.75,5 6,5.25 5.45,7.2C4.5,7.67 4,8 3.78,9C4.86,8.78 5.97,8.87 7,9.25C7.5,9.44 7.78,10 7.59,10.54C7.4,11.06 6.82,11.32 6.3,11.13C5.57,10.81 4.75,10.79 4,11.07C3.68,11.34 3.68,11.9 3.68,12.34C3.68,13.08 4.05,13.77 4.68,14.17C5.21,14.44 5.8,14.58 6.39,14.57C6.24,14.31 6.11,14.04 6,13.76C5.81,13.22 6.1,12.63 6.64,12.44C7.18,12.25 7.77,12.54 7.96,13.08C8.36,14.22 9.38,15 10.58,15.13C11.95,15.06 13.17,14.25 13.77,13C14,11.62 15.11,11.5 16.33,11.5M18.33,18.97L17.71,17.67L17,17.83L18,19.08L18.33,18.97M13.68,10.36C13.7,9.83 13.3,9.38 12.77,9.33C12.06,9.29 11.37,9.53 10.84,10C10.27,10.58 9.97,11.38 10,12.19A1,1 0 0,0 11,13.19C11.57,13.19 12,12.74 12,12.19C12,11.92 12.07,11.65 12.23,11.43C12.35,11.33 12.5,11.28 12.66,11.28C13.21,11.31 13.68,10.9 13.68,10.36Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="integration"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="persons"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="clock"]::before       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="compare"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,3C10.73,3 9.6,3.8 9.18,5H3V7H4.95L2,14C1.53,16 3,17 5.5,17C8,17 9.56,16 9,14L6.05,7H9.17C9.5,7.85 10.15,8.5 11,8.83V20H2V22H22V20H13V8.82C13.85,8.5 14.5,7.85 14.82,7H17.95L15,14C14.53,16 16,17 18.5,17C21,17 22.56,16 22,14L19.05,7H21V5H14.83C14.4,3.8 13.27,3 12,3M12,5A1,1 0 0,1 13,6A1,1 0 0,1 12,7A1,1 0 0,1 11,6A1,1 0 0,1 12,5M5.5,10.25L7,14H4L5.5,10.25M18.5,10.25L20,14H17L18.5,10.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="faq"]::before         { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,2A2,2 0 0,0 2,4V16A2,2 0 0,0 4,18H8V21A1,1 0 0,0 9,22H9.5V22C9.75,22 10,21.9 10.2,21.71L13.9,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2H4M4,4H20V16H13.08L10,19.08V16H4V4M12.19,5.5C11.3,5.5 10.59,5.68 10.05,6.04C9.5,6.4 9.22,7 9.27,7.69C0.21,7.69 6.57,7.69 11.24,7.69C11.24,7.41 11.34,7.2 11.5,7.06C11.7,6.92 11.92,6.85 12.19,6.85C12.5,6.85 12.77,6.93 12.95,7.11C13.13,7.28 13.22,7.5 13.22,7.8C13.22,8.08 13.14,8.33 13,8.54C12.83,8.76 12.62,8.94 12.36,9.08C11.84,9.4 11.5,9.68 11.29,9.92C11.1,10.16 11,10.5 11,11H13C13,10.72 13.05,10.5 13.14,10.32C13.23,10.15 13.4,10 13.66,9.85C14.12,9.64 14.5,9.36 14.79,9C15.08,8.63 15.23,8.24 15.23,7.8C15.23,7.1 14.96,6.54 14.42,6.12C13.88,5.71 13.13,5.5 12.19,5.5M11,12V14H13V12H11Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="handshake"]::before   { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11 6H14L17.29 2.7A1 1 0 0 1 18.71 2.7L21.29 5.29A1 1 0 0 1 21.29 6.7L19 9H11V11A1 1 0 0 1 10 12A1 1 0 0 1 9 11V8A2 2 0 0 1 11 6M5 11V15L2.71 17.29A1 1 0 0 0 2.71 18.7L5.29 21.29A1 1 0 0 0 6.71 21.29L11 17H15A1 1 0 0 0 16 16V15H17A1 1 0 0 0 18 14V13H19A1 1 0 0 0 20 12V11H13V12A2 2 0 0 1 11 14H9A2 2 0 0 1 7 12V9Z'/%3E%3C/svg%3E"); }
+
+section h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  margin: 28px 0 12px; color: var(--ink-900);
+}
+section p, section li { color: var(--ink-700); max-width: var(--max-content); }
+
+/* 功能卡（沿用目錄頁 chapter-card 視覺） */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.feature-card {
+  padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow-sm);
+}
+.feature-card .tile {
+  display: inline-flex; width: 48px; height: 48px; border-radius: 16px;
+  background: var(--ww-blue-050); align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.feature-card .tile svg { display: block; }
+.feature-card h3 { margin: 0 0 8px; font-size: 18px; }
+.feature-card > p { margin: 0 0 14px; color: var(--ink-700); font-size: 14.5px; }
+
+/* 對話範例 chips（12px 圓角 = 品牌 chip 規則） */
+.chips { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; max-width: var(--max-content); }
+.chip {
+  background: var(--surface-alt); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  font-size: 14px; line-height: 1.6; color: var(--ink-700);
+}
+.chip.say { background: var(--ww-blue-050); border-color: rgba(97, 131, 252, 0.22); }
+.chip .who {
+  font-family: var(--font-display); font-weight: 600; font-size: 12.5px;
+  color: var(--ww-blue-700); margin-right: 6px;
+}
+.chip .who.ai { color: #4E9C42; }
+.chip .who::before {
+  content: ""; display: inline-block; width: 13px; height: 13px; margin-right: 4px;
+  vertical-align: -1.5px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z'/%3E%3C/svg%3E");
+}
+.chip .who.ai::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M10.5 15.5C10.5 15.87 10.4 16.2 10.22 16.5C9.88 15.91 9.24 15.5 8.5 15.5S7.12 15.91 6.78 16.5C6.61 16.2 6.5 15.87 6.5 15.5C6.5 14.4 7.4 13.5 8.5 13.5S10.5 14.4 10.5 15.5M23 15V18C23 18.55 22.55 19 22 19H21V20C21 21.11 20.11 22 19 22H5C3.9 22 3 21.11 3 20V19H2C1.45 19 1 18.55 1 18V15C1 14.45 1.45 14 2 14H3C3 10.13 6.13 7 10 7H11V5.73C10.4 5.39 10 4.74 10 4C10 2.9 10.9 2 12 2S14 2.9 14 4C14 4.74 13.6 5.39 13 5.73V7H14C17.87 7 21 10.13 21 14H22C22.55 14 23 14.45 23 15M21 16H19V14C19 11.24 16.76 9 14 9H10C7.24 9 5 11.24 5 14V16H3V17H5V20H19V17H21V16M15.5 13.5C14.4 13.5 13.5 14.4 13.5 15.5C13.5 15.87 13.61 16.2 13.78 16.5C14.12 15.91 14.76 15.5 15.5 15.5S16.88 15.91 17.22 16.5C17.4 16.2 17.5 15.87 17.5 15.5C17.5 14.4 16.61 13.5 15.5 13.5Z'/%3E%3C/svg%3E"); }
+.chip-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; max-width: var(--max-content); }
+.chip-legend .chip { flex: 0 0 auto; font-size: 13px; padding: 7px 12px; }
+
+/* Steps（一天的生活也用它） */
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps > li {
+  counter-increment: step; position: relative;
+  padding: 22px 22px 22px 72px; margin-bottom: 14px;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 20px; top: 20px; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ww-blue); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(97, 131, 252, 0.35);
+}
+.steps > li h3 { margin: 0 0 8px; font-size: 16px; }
+.steps > li p:last-child { margin-bottom: 0; }
+.steps > li .time {
+  font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--ww-blue); text-transform: uppercase;
+  display: block; margin-bottom: 4px;
+}
+.steps.timeline > li::before {
+  content: "";
+  background: var(--ww-blue-050) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z'/%3E%3C/svg%3E") no-repeat center / 20px 20px;
+  box-shadow: none;
+}
+
+/* Callout — info/tip/warn/danger */
+.callout {
+  padding: 14px 18px 14px 44px; border-radius: var(--radius-sm);
+  background: var(--ww-blue-050); margin: 16px 0; font-size: 14px; color: var(--ink-700);
+  position: relative; border: 1px solid rgba(97, 131, 252, 0.18);
+  max-width: var(--max-content);
+}
+.callout::before {
+  content: ""; position: absolute; left: 14px; top: 15px; width: 18px; height: 18px;
+  background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'/%3E%3C/svg%3E");
+}
+.callout.tip { background: rgba(140, 211, 127, 0.14); border-color: rgba(140, 211, 127, 0.32); }
+.callout.tip::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z'/%3E%3C/svg%3E"); }
+.callout.warn { background: rgba(230, 109, 62, 0.10); border-color: rgba(230, 109, 62, 0.28); }
+.callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
+.callout strong { color: var(--ink-900); }
+
+/* 資料表格 */
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-size: 14px; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.data-table thead th {
+  text-align: left; padding: 12px 14px; background: var(--surface-alt); color: var(--ink-900);
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--hairline); white-space: nowrap;
+}
+.data-table thead th.pi-col { color: var(--ww-blue-700); }
+.data-table tbody td, .data-table tbody th {
+  padding: 11px 14px; border-bottom: 1px solid var(--hairline);
+  color: var(--ink-700); vertical-align: top; text-align: left;
+}
+.data-table tbody th { font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.data-table tbody td.pi-col { background: var(--ww-blue-050); color: var(--ink-900); font-weight: 500; }
+.data-table tbody tr:last-child td, .data-table tbody tr:last-child th { border-bottom: 0; }
+
+/* FAQ */
+details.faq {
+  margin-bottom: 10px; border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow-sm);
+  max-width: var(--max-content);
+}
+details.faq summary {
+  cursor: pointer; padding: 16px 48px 16px 20px;
+  font-family: var(--font-display); font-weight: 600; color: var(--ink-900);
+  list-style: none; position: relative;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after {
+  content: ""; position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E");
+}
+details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H5V11H19V13Z'/%3E%3C/svg%3E"); }
+details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
+details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
+
+/* CTA band */
+.cta-band {
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-float);
+  padding: 40px 36px; text-align: center; max-width: var(--max-content);
+}
+.cta-band .script { font-family: var(--font-script); font-size: 26px; color: var(--ww-blue); display: block; margin-bottom: 6px; }
+.cta-band h3 { margin: 0 0 10px; font-size: 22px; }
+.cta-band p { color: var(--ink-700); margin: 0 auto 22px; max-width: 520px; font-size: 15px; }
+.btn-pill {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--ww-blue); color: #fff; padding: 13px 32px;
+  border-radius: var(--radius-pill); transition: background 0.15s, transform 0.15s;
+}
+.btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+
+/* Footer */
+.site-footer {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--hairline);
+  color: var(--ink-700); font-size: 13.5px; line-height: 1.75;
+}
+.site-footer p { margin: 0 0 6px; }
+.site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
+
+/* 手機版側欄收合 */
+.nav-toggle {
+  display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 4px 0 0; padding: 12px 16px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-900);
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.nav-toggle-caret {
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--ink-500); transition: transform 0.15s ease;
+}
+.sidebar.is-collapsed .nav-toggle-caret { transform: rotate(-90deg); }
+
+.layout > * { min-width: 0; }
+.content .data-table { max-width: 100%; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--hairline); }
+  .content { padding: 32px 20px 64px; }
+  .chapter-header h1 { font-size: 30px; }
+  .chapter-header .kicker-script { font-size: 26px; }
+  section h2 { font-size: 20px; }
+  section h2[data-icon]::before { width: 36px; height: 36px; background-size: 20px 20px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .kpi-frame { grid-template-columns: 1fr; }
+  .kpi + .kpi { border-left: 0; border-top: 1px solid var(--hairline); }
+  .data-table { display: block; overflow-x: auto; }
+  .data-table tbody td, .data-table thead th { min-width: 120px; }
+  .sidebar .nav-toggle { display: flex; }
+  .sidebar.is-collapsed .toc-in-chapter { display: none; }
+  .sidebar.is-collapsed > h2 { display: none; }
+}
+/* —— 本頁擴充圖示 —— */
+section h2[data-icon="steps"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M7,13V11H21V13H7M7,19V17H21V19H7M7,7V5H21V7H7M3,8V5H2V4H4V8H3M2,17V16H5V20H2V19H4V18.5H3V17.5H4V17H2M4.25,10A0.75,0.75 0 0,1 5,10.75C5,10.95 4.92,11.14 4.79,11.27L3.12,13H5V14H2V13.08L4,11H2V10H4.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="skill"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M22,13.5C22,15.26 20.7,16.72 19,16.96V20A2,2 0 0,1 17,22H13.2V21.7A2.7,2.7 0 0,0 10.5,19C9,19 7.8,20.21 7.8,21.7V22H4A2,2 0 0,1 2,20V16.2H2.3C3.79,16.2 5,15 5,13.5C5,12 3.79,10.8 2.3,10.8H2V7A2,2 0 0,1 4,5H7.04C7.28,3.3 8.74,2 10.5,2C12.26,2 13.72,3.3 13.96,5H17A2,2 0 0,1 19,7V10.04C20.7,10.28 22,11.74 22,13.5M17,15H18.5A1.5,1.5 0 0,0 20,13.5A1.5,1.5 0 0,0 18.5,12H17V7H12V5.5A1.5,1.5 0 0,0 10.5,4A1.5,1.5 0 0,0 9,5.5V7H4V9.12C5.76,9.8 7,11.5 7,13.5C7,15.5 5.75,17.2 4,17.88V20H6.12C6.8,18.25 8.5,17 10.5,17C12.5,17 14.2,18.25 14.88,20H17V15Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="collections"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L10.11,5.22L16,8.61L17.96,7.5L12,4.15M6.04,7.5L12,10.85L13.96,9.75L8.08,6.35L6.04,7.5M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="safety"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11M12,21C15.75,20 19,15.54 19,11.22V6.3L12,3.18L5,6.3V11.22C5,15.54 8.25,20 12,21M11,7H13V13H11V7M11,15H13V17H11V15Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="download"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z'/%3E%3C/svg%3E"); }
+
+/* —— 程式碼區塊 —— */
+pre.code-block {
+  background: var(--surface-alt); color: var(--ink-900);
+  padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hairline);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+  overflow-x: auto; margin: 12px 0; max-width: var(--max-content);
+}
+code {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--surface-alt); padding: 2px 8px; border-radius: var(--radius-xs);
+  color: var(--ww-blue-700);
+}
+pre.code-block code { background: none; padding: 0; color: inherit; }
+
+/* —— ghost 按鈕 —— */
+.btn-ghost {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--surface); color: var(--ink-900);
+  border: 1.5px solid var(--hairline); padding: 12px 30px; border-radius: 999px;
+  text-decoration: none; transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--ww-blue); color: var(--ww-blue-700); text-decoration: none; }
+
+.pnote { margin: 8px 0 0; font-size: 13px; color: var(--ink-500); }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#top">Tailscale Skill 手冊</a>
+    <div class="brand-sub">WoowTech · 網路自動化型錄與速查</div>
+    <a class="hub-link" href="index.html">◂ HA Tailscale 資源總覽</a>
+    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <div class="toc-in-chapter">
+      <h2>本冊內容</h2>
+      <a href="#why">Skill 是什麼</a>
+      <a href="#install">怎麼裝</a>
+      <a href="#picks">精選 skills</a>
+      <a href="#collections">熱門集合</a>
+      <a href="#compat">相容性須知</a>
+      <a href="#safety">安全守則</a>
+      <a href="#spec">SKILL.md 速查</a>
+      <a href="#faq">常見問題</a>
+      <a href="#download">下載</a>
+    </div>
+  </aside>
+
+  <main class="content" id="top">
+    <div class="chapter-header">
+      <span class="kicker-script">teach it your network</span>
+      <div class="kicker">WoowTech Skill 手冊</div>
+      <h1>裝一顆 Skill，讓 AI 幫你把 Tailscale 玩到位</h1>
+      <p class="lead">你在<a href="prompts.html">提示詞庫</a>裡看到的每一句「幫我改 policy／找 subnet router／查誰在線」，其實都是把 skill 包起來的具體用法。這本挑出 5-10 顆與 Tailscale／網路自動化最相關的 skill，加上 4-6 大熱門集合、安裝速查、安全守則與 SKILL.md 規格。</p>
+      <div class="callout"><strong>調查基準：</strong>本冊的集合規模、星數與維護狀態為 <strong>2026-08-20</strong> 當日的 GitHub 公開數據，會隨時間變動；正式使用前建議點進原始 repo 再確認一次授權與維護狀態。</div>
+    </div>
+
+    <section id="why" data-nav="Skill 是什麼">
+      <h2 data-icon="why">Skill 是什麼、跟 Tailscale 有什麼關係</h2>
+      <p>Skill 是給 AI agent 讀的「工作手冊」——一個資料夾，一份 <code>SKILL.md</code>，agent 遇到對應情況就會翻出來照做。原本問「幫我改 tailnet policy」，agent 只會查你貼給它的文件；<strong>裝一顆對應 skill，agent 就有專屬 SOP、專屬工具白名單、專屬安全守則</strong>。</p>
+      <ul>
+        <li><strong>網路自動化 skills</strong>：包裝 Tailscale／Headscale REST API 呼叫、把「先讀後改」流程寫死、把 ACL policy validate 排進步驟裡。</li>
+        <li><strong>Devops／SRE skills</strong>：SSH policy 管理、network topology 產圖、憑證管理——不是 Tailscale 專屬但天天用到。</li>
+        <li><strong>Home-lab skills</strong>：把 Home Assistant／Proxmox／NAS 這類個人環境的維運知識包起來，是 HA + Tailscale 用戶的近親。</li>
+      </ul>
+      <p>Skill 的原理（怎麼被掃描、怎麼進 system prompt、AI 怎麼決定用不用）在<a href="https://docs.claude.com/en/docs/build-with-claude/agent-skills" rel="noopener">Anthropic Skills 官方文件</a>有完整說明。本冊專注「Tailscale 場景挑哪些、怎麼裝」。</p>
+    </section>
+
+    <section id="install" data-nav="怎麼裝">
+      <h2 data-icon="steps">怎麼裝（3 分鐘版）</h2>
+      <p>Skills 支援 Claude Code、Cursor、Cline、Codex、pi-web 等 agent 平台。以 <strong>Claude Code</strong> 為例：</p>
+      <ol class="steps">
+        <li>
+          <h3>選好放置位置</h3>
+          <p>三種常見：user scope (<code>~/.claude/skills/</code>)、project scope (<code>.claude/skills/</code>)、plugin scope（透過 <code>claude plugin install</code>）。網路類 skills 建議 user scope，跨專案通用。</p>
+        </li>
+        <li>
+          <h3>Clone 或裝進去</h3>
+          <p>最簡：<code>cd ~/.claude/skills && git clone &lt;repo&gt;</code>。plugin 系統（Claude Code v2 開始）用：</p>
+          <pre class="code-block"><code>claude plugin install &lt;marketplace&gt;/&lt;plugin&gt;
+# 例：
+claude plugin install obra/superpowers
+claude plugin install mattpocock/skills</code></pre>
+        </li>
+        <li>
+          <h3>重啟 agent 或開新 session</h3>
+          <p>Skill 是 session 開始時掃描的。裝完新 skill 一定要開新 session，問它「你目前載入了哪些 skill？」確認出現。</p>
+        </li>
+        <li>
+          <h3>用一句話觸發測試</h3>
+          <p>照該 skill 的 <code>description</code> 講一個對應需求。例：裝了 tailscale skill 就說「幫我列出我 tailnet 上目前所有 subnet router」，看它會不會拿 skill 出來用。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>Tailscale／Headscale 這類專門 skill 大多依賴 <code>tailscale</code> CLI 或環境變數裡的 API token（<code>TAILSCALE_API_KEY</code>）。裝完先驗證環境準備好，別到 debug 時才發現 skill 拿不到憑證。</div>
+    </section>
+
+    <section id="picks" data-nav="精選 skills">
+      <h2 data-icon="skill">精選 Skills（Tailscale／網路自動化視角）</h2>
+      <p>從 GitHub 熱門與社群推薦裡挑出來，對 Tailscale／Home Assistant／home-lab 使用者最對口的 skill。<strong>網路自動化這個 niche 目前 skill 數量還在成長</strong>——本節誠實列出「專屬 skill」與「通用但很有用」兩類。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Skill</th><th>它幫你做什麼</th><th>安裝方式</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://github.com/HexmosTech/lama2" rel="noopener">HexmosTech/lama2 API skill</a></td>
+            <td>把 REST API 呼叫變成 <code>.l2</code> 語法文件——寫 Tailscale／Headscale API 互動時，讓 agent 用一致的檔案格式管理 endpoint 與 payload。<strong>最實用的 API 通用 skill</strong>。</td>
+            <td><code>git clone https://github.com/HexmosTech/lama2</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/tailscale/tailscale/blob/main/cmd/tailscale/README.md" rel="noopener">tailscale CLI 官方文件</a>（自製 SKILL.md）</td>
+            <td>把 <code>tailscale up / status / serve / netcheck / ping</code> 的用法整理成 SKILL.md，觸發條件寫「tailnet、subnet router、DERP、magic DNS」等關鍵字。<strong>自己 5 分鐘寫得出來</strong>。</td>
+            <td>手寫 SKILL.md → <code>~/.claude/skills/tailscale-cli/</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/anthropics/skills" rel="noopener">mcp-builder</a>（anthropics/skills 中一顆）</td>
+            <td>包 REST API 為 MCP server 的做法 skill——想自己把 Tailscale API 包成 tailscale-mcp 給多個 agent 用時很值得。</td>
+            <td><code>git:github.com/anthropics/skills</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/OthmanAdi/planning-with-files" rel="noopener">planning-with-files</a></td>
+            <td>複雜 tailnet 遷移（Tailscale → Headscale、單站 → 多站）常見 session 中斷；這顆用檔案持久化計畫，斷了也能接。</td>
+            <td><code>git:github.com/OthmanAdi/planning-with-files</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mattpocock/skills" rel="noopener">diagnosing-bugs</a>（mattpocock/skills 中一顆）</td>
+            <td>診斷網路連線問題（tailnet 節點連不上、subnet router 看不到、DERP 走 relay）時的系統化排錯 SOP。Model-invoked。</td>
+            <td><code>git:github.com/mattpocock/skills</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mattpocock/skills" rel="noopener">grill-me</a>（mattpocock/skills 中一顆）</td>
+            <td>設計 ACL policy 前被 agent 連環拷問「誰能連到誰、例外是什麼、失敗怎麼處理」，避免下手就寫錯 policy。</td>
+            <td><code>git:github.com/mattpocock/skills</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/komal-SkyNET/claude-skill-homeassistant" rel="noopener">home-assistant-manager</a></td>
+            <td>讓 agent 直接管理 HA：寫自動化、看 log、做儀表板。<strong>接了 Tailscale 之後 HA 遠端可管，這顆的價值就浮出來</strong>。會動線上設定，先在測試環境驗證。</td>
+            <td><code>git clone https://github.com/komal-SkyNET/claude-skill-homeassistant</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/HugoWisers/aurora-smart-home" rel="noopener">aurora-smart-home</a></td>
+            <td>唯一找到的多 skill 智慧家庭集合：home-assistant、esphome、node-red、ha-dashboard-design、ha-integration-dev。星數少但最對口。</td>
+            <td><code>git clone https://github.com/HugoWisers/aurora-smart-home</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/anthropics/skills" rel="noopener">skill-creator</a>（anthropics/skills 中一顆）</td>
+            <td>教 agent 幫你把「你家 Tailscale 常做的操作」寫成新 skill——包 SOP、寫 description、加安全守則。<strong>自己養一顆 tailscale-ops skill 最快的路徑</strong>。</td>
+            <td><code>git:github.com/anthropics/skills</code></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/anthropics/skills" rel="noopener">devops / linux-shell-scripting</a>（anthropics/skills 中一顆）</td>
+            <td>撰寫 systemd unit（把 <code>tailscale serve</code> 註冊為服務）、cron backup（每天備份 tailnet policy）等家常自動化。</td>
+            <td><code>git:github.com/anthropics/skills</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>誠實話：</strong>2026-08-20 這個時點，「Tailscale 專屬 skill」在 GitHub 上還很少（Tailscale 的 API 太成熟，反而不需要 skill 化包裝）。真正對 Tailscale 使用者<strong>加分最多的是通用 skill</strong>：diagnosing-bugs、grill-me、planning-with-files、home-assistant-manager。把 <code>tailscale-cli</code> 自己寫成 SKILL.md 是 5 分鐘的事，見下方規格速查。</div>
+    </section>
+
+    <section id="collections" data-nav="熱門集合">
+      <h2 data-icon="collections">熱門集合型錄</h2>
+      <p>要一次裝一整包、或自己逛著挑，從這幾個入口開始。所有數字為 2026-08-20 snapshot。</p>
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <h3>anthropics/skills</h3>
+          <div class="pnote">官方示範＋規格所在地 · ≈17 萬★ · 活躍</div>
+          <p>Agent Skills 規格與官方 template 的家。19 顆 skill 含 devops、mcp-builder、skill-creator、linux-shell-scripting、docx/pdf/pptx/xlsx。<strong>Tailscale 使用者第一包就裝這個。</strong></p>
+          <pre class="code-block"><code>git:github.com/anthropics/skills</code></pre>
+          <p class="pnote">注意：文件四件套為 source-available 非開源；部分 skill 附 scripts 需要 Python／JS 環境。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>obra/superpowers</h3>
+          <div class="pnote">開發方法論框架 · ≈27 萬★ · Claude Code 官方 marketplace</div>
+          <p>14 顆紀律型 skill：brainstorming、TDD、systematic-debugging、writing-plans、diagnosing-bugs。<strong>寫 Tailscale ACL policy 前用 brainstorming／writing-plans 走一遍，policy 品質差一個檔次。</strong></p>
+          <pre class="code-block"><code>claude plugin install obra/superpowers</code></pre>
+          <p class="pnote">注意：完整體驗依賴 hooks（部分 agent 上可能退化）；內建遙測可用環境變數關閉。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>mattpocock/skills</h3>
+          <div class="pnote">Skills For Real Engineers · ≈22 萬★ · 極活躍</div>
+          <p>grill-me、tdd、diagnosing-bugs、handoff、teach。工程向為主，但 <strong>grill-me 對「要不要開 Funnel」「這條 policy 有沒有想清楚」這類決策特別對口</strong>。純 Markdown、跨模型可用。</p>
+          <pre class="code-block"><code>claude plugin install mattpocock/skills</code></pre>
+          <p class="pnote">Skill 分放在 skills/engineering 與 skills/productivity 兩層，agent 遞迴掃描抓得到。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>HugoWisers/aurora-smart-home</h3>
+          <div class="pnote">智慧家庭專門 · ≈100+★ · 小眾但最對口</div>
+          <p>目前找到的智慧家庭多 skill 集合：home-assistant、esphome、node-red、ha-dashboard-design、ha-integration-dev。<strong>Tailscale + HA 使用者的近親包。</strong></p>
+          <pre class="code-block"><code>git clone https://github.com/HugoWisers/aurora-smart-home</code></pre>
+          <p class="pnote">注意：星數少＝審閱的人少，會指導 agent 改你的 HA 設定——匯入前自己把 SKILL.md 讀一遍。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>ComposioHQ/awesome-claude-skills</h3>
+          <div class="pnote">策展清單＋自帶部分 skill · ≈7.3 萬★</div>
+          <p>1000+ 條目的入口站。當目錄逛，用「網路 / devops / infrastructure / homelab」關鍵字翻，點進去裝各原始 repo。找 Tailscale 相關 skill 從這裡入門最快。</p>
+          <pre class="code-block"><code># 當清單用，不建議整包安裝
+https://github.com/ComposioHQ/awesome-claude-skills</code></pre>
+          <p class="pnote">品質參差、不少條目綁 SaaS 帳號，逐顆檢視再裝。</p>
+        </div>
+
+        <div class="feature-card">
+          <h3>VoltAgent/awesome-agent-skills</h3>
+          <div class="pnote">跨 agent 純索引 · ≈3.1 萬★</div>
+          <p>只收官方團隊出品：Anthropic 全系列、openai/slides、Google Workspace、cloudflare（含 Cloudflare Tunnel／Zero Trust）。<strong>Cloudflare Tunnel 常被拿來跟 Tailscale 比較，這裡有官方 skill 參考</strong>。</p>
+          <pre class="code-block"><code># 純索引，照連結裝各原始 repo
+https://github.com/VoltAgent/awesome-agent-skills</code></pre>
+        </div>
+
+      </div>
+      <p class="pnote" style="margin-top:14px">備查未列入：K-Dense-AI/scientific-agent-skills（研究向，跟網路無關）、mukul975/Anthropic-Cybersecurity-Skills（資安向，部分紅隊 skill 對 tailnet 稽核有幫助但要小心使用）、calesthio/OpenMontage（影片產製，AGPL 授權注意）。</p>
+    </section>
+
+    <section id="compat" data-nav="相容性須知">
+      <h2 data-icon="what">相容性須知</h2>
+      <p>SKILL.md 規格已被 Claude Code、Codex、Gemini CLI、Cursor、Cline、Continue、OpenCode 等採用；純 Markdown 的 skill 幾乎到處能跑。會「退化」的情況：</p>
+      <ul>
+        <li><strong>依賴 Claude Code 專屬機制</strong>（hooks、plugin marketplace、subagent 派工）——skill 本文仍可讀，但自動觸發行為可能不完整。</li>
+        <li><strong>依賴 <code>tailscale</code> CLI 或 API token</strong>——沒接就沒用。裝之前先確認你的 agent 有 shell 執行權，或已在環境變數放好 <code>TAILSCALE_API_KEY</code>。</li>
+        <li><strong><code>scripts/</code> 需要容器內沒有的 runtime</strong>——HA add-on 或 Docker container 環境要特別注意。純 Markdown skill 相容性最好。</li>
+        <li><strong>Tailscale API 版本</strong>——2024 的 <code>acls</code> 舊格式與 2024+ 的 <code>grants</code> 新格式在部分 skill 裡混用；跑前先看 skill 支援哪一版。</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>挑 skill 的第一準則不是星數，是「它假設的環境你有沒有」。Tailscale 使用者最常踩雷是：skill 假設 agent 能自由執行 <code>tailscale</code> CLI，但你的 agent 執行在 sandbox 裡沒 shell。</div>
+    </section>
+
+    <section id="safety" data-nav="安全守則">
+      <h2 data-icon="safety">安全守則</h2>
+      <div class="callout warn"><strong>注意：</strong>Skill 的本質是「餵給 agent 的指令」。裝第三方 skill＝讓一段陌生文字指揮 agent 對你的 tailnet 動手動腳。</div>
+      <ul>
+        <li><strong>先讀後裝</strong>：安裝前把 SKILL.md 打開讀一遍。特別注意 <code>allowed-tools</code>、<code>metadata.dangerous</code> 這類欄位——會 <code>DELETE /api/v2/device</code> 或 <code>PUT /api/v2/tailnet/{tailnet}/acl</code> 的必須看清楚。</li>
+        <li><strong>會動 policy／keys 的先進測試 tailnet</strong>：Tailscale 可以開多個 tailnet，用測試 tailnet 跑第一遍，正式的等有把握再切過去。</li>
+        <li><strong>API token 給最小權限</strong>：Tailscale OAuth client 可以限定 scope（<code>devices:read</code>、<code>acl</code>、<code>keys</code> 等）——skill 要用什麼就只給什麼，別給 admin 全開。</li>
+        <li><strong>正式環境釘版本</strong>：用 git <code>@tag</code> 或 <code>@commit</code> 釘住，避免上游改內容你無感升級。</li>
+        <li><strong>Policy PR 化</strong>：真正的 production tailnet policy 建議走 <code>tailscale acl</code> + GitHub Actions PR 流程，agent 只出 diff，不直接 PUT。skill 的價值在生成正確 diff，不在按下 apply。</li>
+        <li><strong>星數＝人氣，不＝安全</strong>：熱門集合裡也有偷 export 環境變數的個案。</li>
+      </ul>
+    </section>
+
+    <section id="spec" data-nav="SKILL.md 速查">
+      <h2 data-icon="what">SKILL.md 規格速查 · 附自製 tailscale-cli 範例</h2>
+      <p>一顆 skill 的最小骨架：</p>
+      <pre class="code-block"><code>tailscale-cli/
+└── SKILL.md          ← 唯一必要檔案
+
+# SKILL.md 內容
+---
+name: tailscale-cli
+description: 使用者提到 tailnet、tailscale status、subnet router、DERP、
+  magic DNS、tailscale serve、tailscale ssh、tailscale ping、tailscale netcheck
+  時觸發。用本機 tailscale CLI 完成查詢與設定；改動 tailnet policy 或 keys
+  請改用 tailscale-api skill。
+allowed-tools: ["Bash"]
+---
+
+# tailscale CLI 使用手冊
+
+## 常用命令
+- `tailscale status --json` — 列出目前 tailnet 節點、連線狀態
+- `tailscale ping &lt;host&gt;` — 測 P2P 連線（direct vs DERP）
+- `tailscale up --advertise-routes=192.168.1.0/24 --reset` — 宣告 subnet router
+- `tailscale serve https://ha-home / http://localhost:8123` — HA HTTPS 反代
+
+## 安全守則
+- `tailscale up --reset` 會覆蓋現有 flags，先跑 `tailscale up --json` 存目前設定
+- 不要在未確認前執行 `tailscale logout`（會把裝置從 tailnet 摘掉）
+</code></pre>
+      <p>放到 <code>~/.claude/skills/tailscale-cli/SKILL.md</code>，開新 session 就會被載入。這種<strong>自製 skill</strong>對 Tailscale 使用者最實用——把你家的 tailnet 命名慣例、常用 subnet CIDR、DERP 偏好都寫進去，agent 立刻不用再問你。</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>欄位</th><th>必填</th><th>說明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>name</code></td><td>是</td><td>小寫英數與連字號，1–64 字元。</td></tr>
+          <tr><td><code>description</code></td><td>是</td><td>做什麼＋何時用。<strong>AI 靠這行決定要不要載入</strong>，把使用者會講的話（tailnet、tailscale up、subnet router）寫進去。</td></tr>
+          <tr><td><code>allowed-tools</code></td><td>否</td><td>工具白名單。例：<code>["Bash", "WebFetch"]</code>。網路類 skill 幾乎都要 <code>Bash</code>。</td></tr>
+          <tr><td><code>license</code> / <code>compatibility</code></td><td>否</td><td>授權、相容性標注。</td></tr>
+        </tbody>
+      </table>
+      <p>慣例：SKILL.md 保持精簡（&lt; 5000 字），附件放 <code>references/</code>、<code>scripts/</code>、<code>assets/</code>，用到才讀，避免吃爆 context。</p>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>裝了但完全沒反應？</summary>
+        <div class="body">先開新 session（skill 是 session 開始時載入的）。再問「你目前載入了哪些 skill？」確認有進清單；有進但不觸發，多半是 description 沒涵蓋你的講法——直接點名：「用 tailscale-cli skill 幫我做這件事」。</div>
+      </details>
+      <details class="faq">
+        <summary>Tailscale 官方會不會出自己的 skill？</summary>
+        <div class="body">2026-08-20 沒有官方 Anthropic Skill 發布，但 Tailscale 有官方 MCP server（<code>tailscale-mcp</code>）與 <code>tailscale</code> CLI 支援 JSON 輸出；把這兩個包成 skill 幾乎是 5 分鐘的事。VoltAgent 索引裡有 cloudflare 的官方 skill 可參考類似做法。</div>
+      </details>
+      <details class="faq">
+        <summary>skill 裝太多會怎樣？</summary>
+        <div class="body">每顆 skill 的名稱與描述都會佔 system prompt 的 context，裝幾十包會讓 AI 分心也變貴。原則：常用的留著，試玩過不用的就移除。網路相關留 3-5 顆通常夠用。</div>
+      </details>
+      <details class="faq">
+        <summary>Headscale 用戶要選什麼？</summary>
+        <div class="body">用 <code>tailscale</code> CLI 相關的 skill 幾乎全部相容（client 是同一支）。Headscale 專屬的管控介面（<code>headscale</code> CLI／gRPC）目前沒看到現成 skill，最快做法是照上方 tailscale-cli 範例改寫一顆 <code>headscale-cli</code>。</div>
+      </details>
+      <details class="faq">
+        <summary>可以只裝 monorepo 裡的其中一顆嗎？</summary>
+        <div class="body">Claude Code v2 的 plugin 系統支援單顆安裝；舊版本或其他 agent 平台就 clone 到本機、把想要的資料夾放到 skills 目錄，或用本地路徑安裝。anthropics/skills、mattpocock/skills 都是 monorepo。</div>
+      </details>
+    </section>
+
+    <section id="download" data-nav="下載">
+      <h2 data-icon="download">把這本帶走</h2>
+      <p>整本是自包含單檔 HTML，下載後離線可開。集合資訊會過期，重要決定前回<a href="index.html">資源總覽</a>看線上版。</p>
+      <p>
+        <a class="btn-pill" href="skills.html" download="tailscale-skill手冊.html">下載本冊 HTML</a>
+        <a class="btn-ghost" href="index.html">回資源總覽</a>
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <p>《Home Assistant Tailscale Skill 手冊》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出。集合規模為 2026-08-20 GitHub 調查數據。</p>
+      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · Tailscale™ 為 Tailscale Inc. 商標；Headscale 為社群開源專案。 · <a href="index.html">HA Tailscale 資源總覽</a></p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('navToggle');
+  var mq = window.matchMedia('(max-width: 960px)');
+  function applyCollapse(e) {
+    if (e.matches) { sidebar.classList.add('is-collapsed'); }
+    else { sidebar.classList.remove('is-collapsed'); }
+  }
+  applyCollapse(mq);
+  mq.addEventListener ? mq.addEventListener('change', applyCollapse) : mq.addListener(applyCollapse);
+  toggle.addEventListener('click', function () { sidebar.classList.toggle('is-collapsed'); });
+  sidebar.querySelectorAll('.toc-in-chapter a').forEach(function (a) {
+    a.addEventListener('click', function () { if (mq.matches) sidebar.classList.add('is-collapsed'); });
+  });
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('.toc-in-chapter a[href^="#"]'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  function onScroll() {
+    var current = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= 120) current = sections[i].id;
+    }
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current && map[current]) map[current].classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
