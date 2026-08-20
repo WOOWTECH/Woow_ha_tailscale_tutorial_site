@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tailscale API/CLI/MCP 控制提示詞庫 · 40+ 條可複製 · WoowTech</title>
+  <meta name="description" content="讓 Claude／Cursor／Codex 等 AI agent 用自然語言操作 Tailscale：ACL policy 生成、subnet router、MagicDNS、Serve/Funnel、SSH、node approval、拓撲查詢、故障排除。40+ 條分 7 類，可複製直接貼給 agent。" />
+  <meta name="author" content="WoowTech" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/prompts.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <style>
+/* HA Tailscale 提示詞庫 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+:root {
+  /* Brand palette — blue is the ONLY spot color */
+  --ww-blue: #6183FC;
+  --ww-blue-600: #4A6DE8;
+  --ww-blue-700: #3A57C4;
+  --ww-blue-050: #EEF2FF;
+  --ww-blue-100: #DCE4FF;
+
+  --ink-900: #1B2033;
+  --ink-700: #3A4054;
+  --ink-500: #6B7186;
+  --ink-300: #A5AAB9;
+  --ink-100: #E7E9F0;
+
+  --paper: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3FA;
+  --hairline: #E2E5EF;
+
+  --info: var(--ww-blue);
+  --tip:  #8CD37F;
+  --warn: #E66D3E;
+  --danger: #F45D6D;
+
+  /* Radius — 20px hard rule; 12px chips; pill buttons */
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --radius-pill: 999px;
+
+  /* Soft diffuse shadows */
+  --shadow-sm: 0 2px 6px rgba(27, 32, 51, 0.05), 0 1px 2px rgba(27, 32, 51, 0.04);
+  --shadow-md: 0 8px 24px rgba(27, 32, 51, 0.08), 0 2px 6px rgba(27, 32, 51, 0.04);
+  --shadow-lg: 0 20px 48px rgba(27, 32, 51, 0.12), 0 4px 12px rgba(27, 32, 51, 0.06);
+  --shadow-float: 0 26px 60px -18px rgba(97, 131, 252, 0.28);
+
+  --font-display: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-script: "Yellowtail", cursive;
+  --font-mono: "SF Mono", Menlo, Consolas, "Fira Code", monospace;
+
+  --sidebar-w: 268px;
+  --max-content: 780px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-body);
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html { scroll-behavior: smooth; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.005em; }
+
+a { color: var(--ww-blue-600); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--ww-blue-700); text-decoration: underline; }
+
+/* ---------- Layout ---------- */
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--hairline);
+  padding: 28px 22px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar h2 {
+  font-family: var(--font-body); font-size: 12px; color: var(--ink-500);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0 0 12px;
+}
+.sidebar .brand {
+  display: block; font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: var(--ink-900); margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.sidebar .brand-sub { font-size: 13px; color: var(--ink-500); margin-bottom: 6px; }
+.sidebar .hub-link { display: inline-block; font-size: 12.5px; color: var(--ink-500); margin-bottom: 22px; }
+.sidebar .hub-link:hover { color: var(--ww-blue-700); text-decoration: none; }
+.sidebar .toc-in-chapter { border-top: 1px solid var(--hairline); padding-top: 16px; margin-top: 8px; }
+.sidebar .toc-in-chapter:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.sidebar .toc-in-chapter a {
+  display: block; padding: 7px 12px; border-radius: var(--radius-xs);
+  color: var(--ink-700); font-size: 13.5px;
+}
+.sidebar .toc-in-chapter a:hover { background: var(--surface-alt); text-decoration: none; }
+.sidebar .toc-in-chapter a.active { background: var(--ww-blue-050); color: var(--ww-blue-700); font-weight: 600; }
+
+/* ---------- Content ---------- */
+.content { padding: 56px 64px 96px; max-width: calc(var(--max-content) + 128px); }
+
+.chapter-header { margin-bottom: 40px; }
+.chapter-header .kicker-script {
+  font-family: var(--font-script); font-size: 30px; color: var(--ww-blue);
+  line-height: 1; margin-bottom: 10px; display: block;
+}
+.chapter-header .kicker {
+  color: var(--ww-blue); font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+}
+.chapter-header h1 {
+  font-family: "Noto Sans TC", var(--font-display); font-size: 38px; font-weight: 700;
+  margin: 0 0 14px; letter-spacing: -0.02em; line-height: 1.25;
+}
+.chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
+
+/* KPI floating frame（品牌規範：floating frame 必帶 shadow-float） */
+.kpi-frame {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-float);
+  margin: 28px 0 8px; overflow: hidden;
+}
+.kpi { padding: 22px 20px; text-align: center; }
+.kpi + .kpi { border-left: 1px solid var(--hairline); }
+.kpi .num {
+  font-family: var(--font-display); font-size: 26px; font-weight: 700;
+  color: var(--ww-blue); line-height: 1.2;
+}
+.kpi .cap { font-size: 13px; color: var(--ink-500); margin-top: 4px; }
+
+/* Sections */
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+section h2 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  margin: 0 0 20px; padding: 0; border: 0;
+  display: flex; align-items: center; gap: 14px; color: var(--ink-900);
+}
+section h2[data-icon]::before {
+  content: ""; display: inline-flex; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  background-color: var(--ww-blue-050);
+  background-repeat: no-repeat; background-position: center; background-size: 22px 22px;
+}
+section h2[data-icon="why"]::before         { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="what"]::before        { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="ai"]::before          { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,1L9,9L1,12L9,15L12,23L15,15L23,12L15,9L12,1Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="security"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11,13H13V16H16V11H18L12,6L6,11H8V16H11V13M12,1L21,5V11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="brain"]::before       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21.33,12.91C21.42,14.46 20.71,15.95 19.44,16.86L20.21,18.35C20.44,18.8 20.47,19.33 20.27,19.8C20.08,20.27 19.69,20.64 19.21,20.8L18.42,21.05C18.25,21.11 18.06,21.14 17.88,21.14C17.37,21.14 16.89,20.91 16.56,20.5L14.44,18C13.55,17.85 12.71,17.47 12,16.9C11.5,17.05 11,17.13 10.5,17.13C9.62,17.13 8.74,16.86 8,16.34C7.47,16.5 6.93,16.57 6.38,16.56C5.59,16.57 4.81,16.41 4.08,16.11C2.65,15.47 1.7,14.07 1.65,12.5C1.57,11.78 1.69,11.05 2,10.39C1.71,9.64 1.68,8.82 1.93,8.06C2.3,7.11 3,6.32 3.87,5.82C4.45,4.13 6.08,3 7.87,3.12C9.47,1.62 11.92,1.46 13.7,2.75C14.12,2.64 14.56,2.58 15,2.58C16.36,2.55 17.65,3.15 18.5,4.22C20.54,4.75 22,6.57 22.08,8.69C22.13,9.8 21.83,10.89 21.22,11.82C21.29,12.18 21.33,12.54 21.33,12.91M16.33,11.5C16.9,11.57 17.35,12 17.35,12.57A1,1 0 0,1 16.35,13.57H15.72C15.4,14.47 14.84,15.26 14.1,15.86C14.35,15.95 14.61,16 14.87,16.07C20,16 19.4,12.87 19.4,12.82C19.34,11.39 18.14,10.27 16.71,10.33A1,1 0 0,1 15.71,9.33A1,1 0 0,1 16.71,8.33C17.94,8.36 19.12,8.82 20.04,9.63C20.09,9.34 20.12,9.04 20.12,8.74C20.06,7.5 19.5,6.42 17.25,6.21C16,3.25 12.85,4.89 12.85,5.81V5.81C12.82,6.04 13.06,6.53 13.1,6.56A1,1 0 0,1 14.1,7.56C14.1,8.11 13.65,8.56 13.1,8.56V8.56C12.57,8.54 12.07,8.34 11.67,8C11.19,8.31 10.64,8.5 10.07,8.56V8.56C9.5,8.61 9.03,8.21 9,7.66C8.92,7.1 9.33,6.61 9.88,6.56C10.04,6.54 10.82,6.42 10.82,5.79V5.79C10.82,5.13 11.07,4.5 11.5,4C10.58,3.75 9.59,4.08 8.59,5.29C6.75,5 6,5.25 5.45,7.2C4.5,7.67 4,8 3.78,9C4.86,8.78 5.97,8.87 7,9.25C7.5,9.44 7.78,10 7.59,10.54C7.4,11.06 6.82,11.32 6.3,11.13C5.57,10.81 4.75,10.79 4,11.07C3.68,11.34 3.68,11.9 3.68,12.34C3.68,13.08 4.05,13.77 4.68,14.17C5.21,14.44 5.8,14.58 6.39,14.57C6.24,14.31 6.11,14.04 6,13.76C5.81,13.22 6.1,12.63 6.64,12.44C7.18,12.25 7.77,12.54 7.96,13.08C8.36,14.22 9.38,15 10.58,15.13C11.95,15.06 13.17,14.25 13.77,13C14,11.62 15.11,11.5 16.33,11.5M18.33,18.97L17.71,17.67L17,17.83L18,19.08L18.33,18.97M13.68,10.36C13.7,9.83 13.3,9.38 12.77,9.33C12.06,9.29 11.37,9.53 10.84,10C10.27,10.58 9.97,11.38 10,12.19A1,1 0 0,0 11,13.19C11.57,13.19 12,12.74 12,12.19C12,11.92 12.07,11.65 12.23,11.43C12.35,11.33 12.5,11.28 12.66,11.28C13.21,11.31 13.68,10.9 13.68,10.36Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="integration"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="persons"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="clock"]::before       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="compare"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,3C10.73,3 9.6,3.8 9.18,5H3V7H4.95L2,14C1.53,16 3,17 5.5,17C8,17 9.56,16 9,14L6.05,7H9.17C9.5,7.85 10.15,8.5 11,8.83V20H2V22H22V20H13V8.82C13.85,8.5 14.5,7.85 14.82,7H17.95L15,14C14.53,16 16,17 18.5,17C21,17 22.56,16 22,14L19.05,7H21V5H14.83C14.4,3.8 13.27,3 12,3M12,5A1,1 0 0,1 13,6A1,1 0 0,1 12,7A1,1 0 0,1 11,6A1,1 0 0,1 12,5M5.5,10.25L7,14H4L5.5,10.25M18.5,10.25L20,14H17L18.5,10.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="faq"]::before         { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,2A2,2 0 0,0 2,4V16A2,2 0 0,0 4,18H8V21A1,1 0 0,0 9,22H9.5V22C9.75,22 10,21.9 10.2,21.71L13.9,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2H4M4,4H20V16H13.08L10,19.08V16H4V4M12.19,5.5C11.3,5.5 10.59,5.68 10.05,6.04C9.5,6.4 9.22,7 9.27,7.69C0.21,7.69 6.57,7.69 11.24,7.69C11.24,7.41 11.34,7.2 11.5,7.06C11.7,6.92 11.92,6.85 12.19,6.85C12.5,6.85 12.77,6.93 12.95,7.11C13.13,7.28 13.22,7.5 13.22,7.8C13.22,8.08 13.14,8.33 13,8.54C12.83,8.76 12.62,8.94 12.36,9.08C11.84,9.4 11.5,9.68 11.29,9.92C11.1,10.16 11,10.5 11,11H13C13,10.72 13.05,10.5 13.14,10.32C13.23,10.15 13.4,10 13.66,9.85C14.12,9.64 14.5,9.36 14.79,9C15.08,8.63 15.23,8.24 15.23,7.8C15.23,7.1 14.96,6.54 14.42,6.12C13.88,5.71 13.13,5.5 12.19,5.5M11,12V14H13V12H11Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="handshake"]::before   { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11 6H14L17.29 2.7A1 1 0 0 1 18.71 2.7L21.29 5.29A1 1 0 0 1 21.29 6.7L19 9H11V11A1 1 0 0 1 10 12A1 1 0 0 1 9 11V8A2 2 0 0 1 11 6M5 11V15L2.71 17.29A1 1 0 0 0 2.71 18.7L5.29 21.29A1 1 0 0 0 6.71 21.29L11 17H15A1 1 0 0 0 16 16V15H17A1 1 0 0 0 18 14V13H19A1 1 0 0 0 20 12V11H13V12A2 2 0 0 1 11 14H9A2 2 0 0 1 7 12V9Z'/%3E%3C/svg%3E"); }
+
+section h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  margin: 28px 0 12px; color: var(--ink-900);
+}
+section p, section li { color: var(--ink-700); max-width: var(--max-content); }
+
+/* 功能卡（沿用目錄頁 chapter-card 視覺） */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.feature-card {
+  padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow-sm);
+}
+.feature-card .tile {
+  display: inline-flex; width: 48px; height: 48px; border-radius: 16px;
+  background: var(--ww-blue-050); align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.feature-card .tile svg { display: block; }
+.feature-card h3 { margin: 0 0 8px; font-size: 18px; }
+.feature-card > p { margin: 0 0 14px; color: var(--ink-700); font-size: 14.5px; }
+
+/* 對話範例 chips（12px 圓角 = 品牌 chip 規則） */
+.chips { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; max-width: var(--max-content); }
+.chip {
+  background: var(--surface-alt); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  font-size: 14px; line-height: 1.6; color: var(--ink-700);
+}
+.chip.say { background: var(--ww-blue-050); border-color: rgba(97, 131, 252, 0.22); }
+.chip .who {
+  font-family: var(--font-display); font-weight: 600; font-size: 12.5px;
+  color: var(--ww-blue-700); margin-right: 6px;
+}
+.chip .who.ai { color: #4E9C42; }
+.chip .who::before {
+  content: ""; display: inline-block; width: 13px; height: 13px; margin-right: 4px;
+  vertical-align: -1.5px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z'/%3E%3C/svg%3E");
+}
+.chip .who.ai::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M10.5 15.5C10.5 15.87 10.4 16.2 10.22 16.5C9.88 15.91 9.24 15.5 8.5 15.5S7.12 15.91 6.78 16.5C6.61 16.2 6.5 15.87 6.5 15.5C6.5 14.4 7.4 13.5 8.5 13.5S10.5 14.4 10.5 15.5M23 15V18C23 18.55 22.55 19 22 19H21V20C21 21.11 20.11 22 19 22H5C3.9 22 3 21.11 3 20V19H2C1.45 19 1 18.55 1 18V15C1 14.45 1.45 14 2 14H3C3 10.13 6.13 7 10 7H11V5.73C10.4 5.39 10 4.74 10 4C10 2.9 10.9 2 12 2S14 2.9 14 4C14 4.74 13.6 5.39 13 5.73V7H14C17.87 7 21 10.13 21 14H22C22.55 14 23 14.45 23 15M21 16H19V14C19 11.24 16.76 9 14 9H10C7.24 9 5 11.24 5 14V16H3V17H5V20H19V17H21V16M15.5 13.5C14.4 13.5 13.5 14.4 13.5 15.5C13.5 15.87 13.61 16.2 13.78 16.5C14.12 15.91 14.76 15.5 15.5 15.5S16.88 15.91 17.22 16.5C17.4 16.2 17.5 15.87 17.5 15.5C17.5 14.4 16.61 13.5 15.5 13.5Z'/%3E%3C/svg%3E"); }
+.chip-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; max-width: var(--max-content); }
+.chip-legend .chip { flex: 0 0 auto; font-size: 13px; padding: 7px 12px; }
+
+/* Steps（一天的生活也用它） */
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps > li {
+  counter-increment: step; position: relative;
+  padding: 22px 22px 22px 72px; margin-bottom: 14px;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 20px; top: 20px; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ww-blue); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(97, 131, 252, 0.35);
+}
+.steps > li h3 { margin: 0 0 8px; font-size: 16px; }
+.steps > li p:last-child { margin-bottom: 0; }
+.steps > li .time {
+  font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--ww-blue); text-transform: uppercase;
+  display: block; margin-bottom: 4px;
+}
+.steps.timeline > li::before {
+  content: "";
+  background: var(--ww-blue-050) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z'/%3E%3C/svg%3E") no-repeat center / 20px 20px;
+  box-shadow: none;
+}
+
+/* Callout — info/tip/warn/danger */
+.callout {
+  padding: 14px 18px 14px 44px; border-radius: var(--radius-sm);
+  background: var(--ww-blue-050); margin: 16px 0; font-size: 14px; color: var(--ink-700);
+  position: relative; border: 1px solid rgba(97, 131, 252, 0.18);
+  max-width: var(--max-content);
+}
+.callout::before {
+  content: ""; position: absolute; left: 14px; top: 15px; width: 18px; height: 18px;
+  background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'/%3E%3C/svg%3E");
+}
+.callout.tip { background: rgba(140, 211, 127, 0.14); border-color: rgba(140, 211, 127, 0.32); }
+.callout.tip::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z'/%3E%3C/svg%3E"); }
+.callout.warn { background: rgba(230, 109, 62, 0.10); border-color: rgba(230, 109, 62, 0.28); }
+.callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
+.callout strong { color: var(--ink-900); }
+
+/* 資料表格 */
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-size: 14px; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.data-table thead th {
+  text-align: left; padding: 12px 14px; background: var(--surface-alt); color: var(--ink-900);
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--hairline); white-space: nowrap;
+}
+.data-table thead th.pi-col { color: var(--ww-blue-700); }
+.data-table tbody td, .data-table tbody th {
+  padding: 11px 14px; border-bottom: 1px solid var(--hairline);
+  color: var(--ink-700); vertical-align: top; text-align: left;
+}
+.data-table tbody th { font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.data-table tbody td.pi-col { background: var(--ww-blue-050); color: var(--ink-900); font-weight: 500; }
+.data-table tbody tr:last-child td, .data-table tbody tr:last-child th { border-bottom: 0; }
+
+/* FAQ */
+details.faq {
+  margin-bottom: 10px; border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow-sm);
+  max-width: var(--max-content);
+}
+details.faq summary {
+  cursor: pointer; padding: 16px 48px 16px 20px;
+  font-family: var(--font-display); font-weight: 600; color: var(--ink-900);
+  list-style: none; position: relative;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after {
+  content: ""; position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E");
+}
+details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H5V11H19V13Z'/%3E%3C/svg%3E"); }
+details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
+details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
+
+/* CTA band */
+.cta-band {
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-float);
+  padding: 40px 36px; text-align: center; max-width: var(--max-content);
+}
+.cta-band .script { font-family: var(--font-script); font-size: 26px; color: var(--ww-blue); display: block; margin-bottom: 6px; }
+.cta-band h3 { margin: 0 0 10px; font-size: 22px; }
+.cta-band p { color: var(--ink-700); margin: 0 auto 22px; max-width: 520px; font-size: 15px; }
+.btn-pill {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--ww-blue); color: #fff; padding: 13px 32px;
+  border-radius: var(--radius-pill); transition: background 0.15s, transform 0.15s;
+}
+.btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+
+/* Footer */
+.site-footer {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--hairline);
+  color: var(--ink-700); font-size: 13.5px; line-height: 1.75;
+}
+.site-footer p { margin: 0 0 6px; }
+.site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
+
+/* 手機版側欄收合 */
+.nav-toggle {
+  display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 4px 0 0; padding: 12px 16px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-900);
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.nav-toggle-caret {
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--ink-500); transition: transform 0.15s ease;
+}
+.sidebar.is-collapsed .nav-toggle-caret { transform: rotate(-90deg); }
+
+.layout > * { min-width: 0; }
+.content .data-table { max-width: 100%; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--hairline); }
+  .content { padding: 32px 20px 64px; }
+  .chapter-header h1 { font-size: 30px; }
+  .chapter-header .kicker-script { font-size: 26px; }
+  section h2 { font-size: 20px; }
+  section h2[data-icon]::before { width: 36px; height: 36px; background-size: 20px 20px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .kpi-frame { grid-template-columns: 1fr; }
+  .kpi + .kpi { border-left: 0; border-top: 1px solid var(--hairline); }
+  .data-table { display: block; overflow-x: auto; }
+  .data-table tbody td, .data-table thead th { min-width: 120px; }
+  .sidebar .nav-toggle { display: flex; }
+  .sidebar.is-collapsed .toc-in-chapter { display: none; }
+  .sidebar.is-collapsed > h2 { display: none; }
+}
+/* —— 本頁擴充圖示 —— */
+section h2[data-icon="steps"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M7,13V11H21V13H7M7,19V17H21V19H7M7,7V5H21V7H7M3,8V5H2V4H4V8H3M2,17V16H5V20H2V19H4V18.5H3V17.5H4V17H2M4.25,10A0.75,0.75 0 0,1 5,10.75C5,10.95 4.92,11.14 4.79,11.27L3.12,13H5V14H2V13.08L4,11H2V10H4.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="acl"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="subnet"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M15,20A1,1 0 0,0 14,19H13V17H17A2,2 0 0,0 19,15V5A2,2 0 0,0 17,3H7A2,2 0 0,0 5,5V15A2,2 0 0,0 7,17H11V19H10A1,1 0 0,0 9,20H2V22H9A1,1 0 0,0 10,23H14A1,1 0 0,0 15,22H22V20H15Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="dns"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17M9,5H10V3H9V5M9,13H10V11H9V13M9,21H10V19H9V21M5,3V5H7V3H5M5,11V13H7V11H5M5,19V21H7V19H5Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="serve"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.1 14.8,9.5V11C15.4,11 16,11.6 16,12.3V15.8C16,16.4 15.4,17 14.7,17H9.2C8.6,17 8,16.4 8,15.7V12.2C8,11.6 8.6,11 9.2,11V9.5C9.2,8.1 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,9.5V11H13.5V9.5C13.5,8.7 12.8,8.2 12,8.2Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="ssh"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M20,19V7H4V19H20M20,3A2,2 0 0,1 22,5V19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19V5C2,3.89 2.9,3 4,3H20M13,17V15H18V17H13M9.58,13L5.57,9H8.4L11.7,12.3C12.09,12.69 12.09,13.33 11.7,13.72L8.42,17H5.59L9.58,13Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="node"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17M9,5H10V3H9V5M9,13H10V11H9V13M9,21H10V19H9V21M5,3V5H7V3H5M5,11V13H7V11H5M5,19V21H7V19H5Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="topo"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,3L2,12H5V20H10V14H14V20H19V12H22M12,7.7L14.9,10.4V11.9H12.9V16.5H11.1V11.9H9.1V10.4L12,7.7Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="debug"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M14,12H10V10H14M14,16H10V14H14M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.03,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.03,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.97,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.97,10.33 17.91,10H20V8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="download"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z'/%3E%3C/svg%3E"); }
+
+/* —— 程式碼區塊 —— */
+pre.code-block {
+  background: var(--surface-alt); color: var(--ink-900);
+  padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hairline);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+  overflow-x: auto; margin: 12px 0; max-width: var(--max-content);
+}
+code {
+  font-family: var(--font-mono); font-size: 13px;
+  background: var(--surface-alt); padding: 2px 8px; border-radius: var(--radius-xs);
+  color: var(--ww-blue-700);
+}
+pre.code-block code { background: none; padding: 0; color: inherit; }
+
+/* —— 提示詞卡 —— */
+.prompt-card {
+  position: relative; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  padding: 16px 96px 16px 18px; margin: 10px 0;
+  box-shadow: var(--shadow-sm); max-width: var(--max-content);
+}
+.prompt-card .ptext { margin: 0; font-size: 14.5px; color: var(--ink-900); }
+.prompt-card .pnote, .pnote { margin: 8px 0 0; font-size: 13px; color: var(--ink-500); }
+.prompt-card .copy {
+  position: absolute; right: 12px; top: 12px;
+  font-family: var(--font-display); font-weight: 600; font-size: 12.5px;
+  color: var(--ww-blue-700); background: var(--ww-blue-050);
+  border: 1px solid rgba(97, 131, 252, 0.25); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; transition: background 0.15s;
+}
+.prompt-card .copy:hover { background: var(--ww-blue-100); }
+.prompt-card .copy.ok { background: rgba(140, 211, 127, 0.2); color: #3d7a34; border-color: rgba(140, 211, 127, 0.5); }
+@media (max-width: 720px) { .prompt-card { padding-right: 18px; padding-top: 46px; } }
+
+/* —— ghost 按鈕 —— */
+.btn-ghost {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--surface); color: var(--ink-900);
+  border: 1.5px solid var(--hairline); padding: 12px 30px; border-radius: 999px;
+  text-decoration: none; transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--ww-blue); color: var(--ww-blue-700); text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#top">Tailscale 提示詞庫</a>
+    <div class="brand-sub">WoowTech · 給 AI agent 的 40+ 條範例</div>
+    <a class="hub-link" href="index.html">◂ HA Tailscale 資源總覽</a>
+    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <div class="toc-in-chapter">
+      <h2>本冊內容</h2>
+      <a href="#why">這本是什麼</a>
+      <a href="#howto">怎麼用</a>
+      <a href="#cat-acl">ACL policy 生成</a>
+      <a href="#cat-subnet">Subnet router</a>
+      <a href="#cat-dns">MagicDNS 記錄</a>
+      <a href="#cat-serve">Serve／Funnel</a>
+      <a href="#cat-ssh">Tailscale SSH</a>
+      <a href="#cat-node">Node approval</a>
+      <a href="#cat-topo">拓撲與清點</a>
+      <a href="#cat-debug">故障排除</a>
+      <a href="#tips">寫法小抄</a>
+      <a href="#faq">常見問題</a>
+      <a href="#download">下載</a>
+    </div>
+  </aside>
+
+  <main class="content" id="top">
+    <div class="chapter-header">
+      <span class="kicker-script">just tell your agent</span>
+      <div class="kicker">WoowTech 提示詞庫</div>
+      <h1>用自然語言操作 Tailscale：40+ 條給 AI agent 的範例</h1>
+      <p class="lead">Claude、Cursor、Codex、Continue、Cline——這些 AI agent 只要接得到 Tailscale REST API（<code>api.tailscale.com/api/v2/</code>）、<code>tailscale</code> CLI，或 tailscale 的 MCP server，就能被你「用中文交代事情」。這本收錄 40+ 條真實可用的提示詞，每一條都能直接複製，貼到 agent 對話框改成你家的細節就送出。</p>
+    </div>
+
+    <section id="why" data-nav="這本是什麼">
+      <h2 data-icon="why">這本是什麼</h2>
+      <p>這是一份「開口範例集」，讓你把 AI agent 當成 Tailscale 副手：<strong>寫 ACL policy 不用背 hujson 語法、宣告 subnet router 不用查 flag、查裝置清單不用 SSH 進去下 CLI</strong>——講一句話，agent 幫你調 API 或 CLI 完成。</p>
+      <p>每一條卡片右上角有「複製」按鈕，貼進 Claude Code／Cursor Chat／Codex Agent 對話框（agent 需已配置 Tailscale API key 或 <code>tailscale</code> CLI 可執行權限），把「你家的裝置名／CIDR／使用者 email」換一換就能送。</p>
+      <div class="callout"><strong>觀念：</strong>提示詞不是咒語。真正的價值是<strong>示範哪些欄位要講清楚</strong>（tailnet、user email、tag、CIDR、hostname）。照抄能動，改成你家的版本更精準。</div>
+      <div class="callout tip"><strong>Tailscale API 前提：</strong>大部分「寫 policy／approve node／管 key」的操作走 REST API（<code>https://api.tailscale.com/api/v2/tailnet/&lt;tailnet&gt;/...</code>），需要在 Tailscale 主控台建立 <strong>OAuth client 或 API access token</strong>。查看類（who's online、routes）也能用本機 <code>tailscale status --json</code>。詳見 <a href="https://tailscale.com/api" rel="noopener">tailscale.com/api</a>。</div>
+    </section>
+
+    <section id="howto" data-nav="怎麼用">
+      <h2 data-icon="steps">怎麼用這些提示詞</h2>
+      <ol class="steps">
+        <li>
+          <h3>先把 agent 接到 Tailscale</h3>
+          <p>三種常見接法：(a) 給 agent 一支 API token（例：Claude Code + Bash tool）；(b) agent 直接呼叫本機 <code>tailscale</code> CLI；(c) 掛 Tailscale MCP server（例：<code>tailscale-mcp</code>、<code>headscale-mcp</code> 之類的社群 server）。任一種都好用。</p>
+        </li>
+        <li>
+          <h3>挑最接近你需求的一條，按複製</h3>
+          <p>貼進 agent 對話框。這本每條提示詞的措辭都是<strong>寫給 agent 讀</strong>的，不是給你自己看的。</p>
+        </li>
+        <li>
+          <h3>把佔位符換掉</h3>
+          <p><code>&lt;tailnet&gt;</code>、<code>&lt;user@example.com&gt;</code>、<code>192.168.1.0/24</code>、<code>ha-home</code> 這類是佔位——改成你的實況。有寫「先給我摘要再改」的一定保留。</p>
+        </li>
+        <li>
+          <h3>危險操作先看 dry-run</h3>
+          <p>會改 policy 或撤銷 auth key 的操作，第一次跑一定先看 agent 提供的 diff／摘要，確認再放行。</p>
+        </li>
+      </ol>
+      <div class="callout tip"><strong>提示：</strong>Tailscale API 的 policy 更新是<strong>整包覆蓋</strong>（PUT hujson）——所以「加一條規則」的正確做法一定是「拉當前 policy → 改 → PUT 回去」，本冊每條相關提示詞都有寫。</div>
+    </section>
+
+    <section id="cat-acl" data-nav="ACL policy 生成">
+      <h2 data-icon="acl">ACL policy 生成與編輯</h2>
+      <p>Tailscale policy 是一份 hujson，難點在寫對又不寫過頭。用 agent 生成後手動 review，比自己從頭寫快得多。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 Tailscale API 拉我 tailnet「&lt;tailnet-name&gt;」的目前 ACL policy，pretty-print hujson 給我看，並用白話解釋每一條 grants／acls／tagOwners／nodeAttrs 各在做什麼。<strong>只讀不改</strong>。</p>
+        <p class="pnote">API 端點：<code>GET /api/v2/tailnet/{tailnet}/acl</code>。這條當作「先讀後改」的第一步。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">請幫我把當前 policy 加一條規則：<strong>tag:family 群組的裝置</strong>可以連 <strong>tag:ha</strong> 群組的 8123 port（Home Assistant Web UI），但不能連其他任何 port。先拉當前 policy、產出修改後版本給我看 diff、我按確認你才 PUT。</p>
+        <p class="pnote">policy 更新是整包覆蓋（PUT）——所以流程一定是 read-modify-write。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">幫我把 policy 的 <code>acls</code> 舊格式重寫成新的 <code>grants</code> 格式（Tailscale 2024 之後推薦寫法），語義完全等價。改完先做 <code>POST /api/v2/tailnet/{tailnet}/acl/validate</code> 檢查通過，才 PUT 上去。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">寫一份最小權限的 policy 骨架給我家用：3 個 tag（<code>tag:ha</code>、<code>tag:family</code>、<code>tag:guest</code>）。tagOwners 都指向 <code>&lt;me@example.com&gt;</code>。規則：family 可以連 ha 的 8123、guest 只能連我對外開放的 <code>*:80/443</code>、其他一切拒絕。附上每一段的中文註解。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我要幫外包工程師「&lt;contractor@example.com&gt;」開一週的臨時存取：只能連 <code>tag:zigbee-gateway</code> 這一台的 22 port，8 天後自動失效。用 <code>autoApprovers</code> ＋ <code>autoDelete</code>／<code>expiry</code> 設好給我。改動前先看 diff。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">請 dry-run 我這份 policy 對現有裝置的影響：跑 <code>POST /api/v2/tailnet/{tailnet}/acl/preview</code>，帶上 policy 內容和實際 tailnet 節點清單，告訴我哪些原本能通的路徑會被切斷、哪些新開通。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">把我這份 policy 交叉檢查一次：找出 (a) 沒被任何規則使用的 tag、(b) 授權太寬的 <code>*:*</code>、(c) 沒設 tagOwners 的 tag。給我一張改善清單，不要動 policy。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">把我這份 Tailscale policy 轉譯成等價的 Headscale ACL（v0.23+ 的格式）；有 Headscale 不支援的欄位標出來並說明替代做法。輸出兩份：Tailscale 原版、Headscale 對應版。</p>
+        <p class="pnote">要從 Tailscale 搬到 Headscale 時的必備一步。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-subnet" data-nav="Subnet router">
+      <h2 data-icon="subnet">Subnet router 設定</h2>
+      <p>Subnet router 讓 tailnet 看見某一段 LAN，是 Tailscale 最實用也最容易設錯的功能之一。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在這台 Home Assistant 主機上把 Tailscale 設成 subnet router，宣告 <code>192.168.1.0/24</code> 進 tailnet。步驟：(1) 用 <code>tailscale up --advertise-routes=192.168.1.0/24 --reset</code> 重新宣告；(2) 檢查 <code>tailscale status --json</code> 確認狀態；(3) 提醒我到管理主控台按核准。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 Tailscale API 核准 tailnet 中裝置「ha-home」宣告的所有 subnet routes：先 GET <code>/api/v2/device/{id}/routes</code> 看目前 advertised vs enabled，把 advertised 的全部加進 enabled 再 POST 回去。改動前先給我列出來確認。</p>
+        <p class="pnote">Subnet route「被宣告」不等於「已核准」——這是最常見的踩雷。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我家有兩個站點：家（LAN 192.168.1.0/24，subnet router = ha-home）、工作室（LAN 10.10.0.0/24，subnet router = studio-nas）。請寫 policy 讓：(a) 我自己可以從家看工作室、工作室看家；(b) 家人只能看家；(c) 工作室的訪客不能連任何一段。改動先 preview。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出 tailnet 裡目前所有 subnet routers 與各自宣告的 CIDR，用表格輸出：hostname、tags、advertised routes、enabled routes、last seen。用 <code>tailscale status --json</code> 或 API 都行，挑你手邊有的。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我要撤掉 subnet router「old-nas」的所有宣告：把它 enabled routes 清空、把 hostname 也 rename 標記為 <code>DEPRECATED-old-nas</code>，最後產出撤除紀錄（時間、原因、影響哪些 tag）。動之前先給我 checklist 確認。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 exit node 模式啟用「ha-home」：<code>tailscale up --advertise-exit-node</code>，然後叫我到主控台核准 exit node 使用權。列出核准後手機端要下的指令（<code>tailscale set --exit-node=ha-home</code>）。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-dns" data-nav="MagicDNS 記錄">
+      <h2 data-icon="dns">MagicDNS 與 DNS 設定</h2>
+      <p>MagicDNS 讓每台裝置有一個好記的短網址（例：<code>ha-home</code>），也可以設 split DNS 或加自訂 nameserver。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 API 打開我 tailnet 的 MagicDNS：GET <code>/api/v2/tailnet/{tailnet}/dns/preferences</code> 看現況，如果沒開就 POST 設 <code>{"magicDNS": true}</code>。同時檢查 nameservers 有沒有設，沒設就跳過先不動。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">幫我在 tailnet DNS 加一組 split DNS：對 <code>*.internal.example.com</code> 這個 domain 用 <code>192.168.1.53</code> 這台 DNS 伺服器解析；其他 domain 走原本設定。用 <code>POST /api/v2/tailnet/{tailnet}/dns/nameservers</code> 或 <code>/dns/searchpaths</code>，看正確端點是哪個。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">重新命名 tailnet 裡的裝置「laptop-1234」為 <code>work-laptop</code>：用 <code>POST /api/v2/device/{id}/name</code>。改完給我看 MagicDNS 生效後對應的 <code>*.tailXXXX.ts.net</code> 短網址。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">產出 tailnet 所有裝置的 MagicDNS 短網址對照表：hostname、magicDNS FQDN、tailnet IP、tags。輸出成 markdown 表格，我要貼進 Notion。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 Tailscale API 把 tailnet 的 override local DNS 設成開啟（<code>overrideLocalDNS: true</code>），這樣所有裝置優先用 tailnet DNS。改動前告訴我對「家裡本來用 router 當 DNS」的影響。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-serve" data-nav="Serve／Funnel">
+      <h2 data-icon="serve">Serve／Funnel HTTPS 反代</h2>
+      <p>Serve 讓 tailnet 內裝置得到合法 HTTPS 短網址（<code>*.tailXXXX.ts.net</code>）；Funnel 進一步讓它可以對公網開放——後者比較危險，本冊優先做 Serve。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在這台 HA 主機上用 <code>tailscale serve</code> 幫 Home Assistant Web UI 掛一個 tailnet 內的 HTTPS 短網址：把 <code>localhost:8123</code> 反代到 <code>https://ha-home.tailXXXX.ts.net</code>。<strong>不要開 Funnel</strong>，只給 tailnet 內看。設完 <code>tailscale serve status</code> 給我確認。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出這台機器目前所有 Serve／Funnel 設定：跑 <code>tailscale serve status --json</code>，解析出來用表格呈現「路徑 → 後端」對應，並標示哪些是 Serve、哪些是 Funnel（公網可見）。有 Funnel 的請特別標紅。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">幫我把 <code>tailscale serve</code> 的 HA 反代設定寫成 systemd unit 或 add-on 啟動 hook，確保 HA 或機器重啟後 serve 會自動恢復。給我完整的 unit 檔內容和放置位置。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我想把 tailnet 內 <code>ha-home.tailXXXX.ts.net</code> 反代到 HA 的 <code>trusted_proxies</code>：幫我生成 Home Assistant <code>configuration.yaml</code> 需要加的 <code>http:</code> 區塊，並解釋為什麼要加。<strong>只給我 YAML，不要真的改 HA 設定。</strong></p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">警告分析：如果我把 HA 從 Serve 改成 Funnel（公網可見），有哪些風險？列成 checklist：驗證機制、rate limit、公開的 attack surface、Funnel 有沒有 IP 白名單機制。不動任何設定。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-ssh" data-nav="Tailscale SSH">
+      <h2 data-icon="ssh">Tailscale SSH 授權</h2>
+      <p>Tailscale SSH 讓你用 tailnet 身分登入其他裝置，不用管 authorized_keys，policy 中直接寫誰能 SSH 到哪。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">幫我在 policy 中開啟 Tailscale SSH：讓 <code>&lt;me@example.com&gt;</code> 可以用 <code>root</code> 或 <code>admin</code> 身分 SSH 進 tag:ha 群組的所有機器；<strong>其他任何人都不行</strong>。寫成 <code>ssh</code> 區塊給我看 diff、確認再 PUT。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">在這台機器上打開 Tailscale SSH server：跑 <code>tailscale up --ssh</code>（保留原有 flags），確認 <code>tailscale status</code> 顯示 SSH 已啟用。改動前提醒我這會取代傳統 sshd 的授權路徑。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">為外包工程師「&lt;contractor@example.com&gt;」開<strong>只有 7 天有效期</strong>的 Tailscale SSH 存取，只能 SSH 進 <code>tag:sandbox</code>，check-mode 為 <code>check</code>（登入前需二次確認）。用 policy 的 <code>ssh</code> block 完成，加上 <code>expiry</code>。改前先給我 diff。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">產出 tailnet SSH 稽核報告：拉最近 30 天所有 SSH 連線紀錄（GET <code>/api/v2/tailnet/{tailnet}/logging/network/read</code>），聚合出「誰連了哪台、幾次、平均連線時長」的表格，找出異常。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-node" data-nav="Node approval">
+      <h2 data-icon="node">Node approval 與 key 管理</h2>
+      <p>Node approval 讓新裝置加入 tailnet 時要人工核准；auth key 是自動化加入的憑證。兩者都需要照顧。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">列出 tailnet 中<strong>目前狀態為 pending approval 的新裝置</strong>：hostname、user、tags、requested at。列完問我要不要 approve；我按 approve 你就 <code>POST /api/v2/device/{id}/authorized</code>。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">建立一支<strong>可重用</strong>、24 小時內有效、只能建立 <code>tag:ephemeral-test</code> 標籤裝置的 auth key。用 <code>POST /api/v2/tailnet/{tailnet}/keys</code>，設 <code>reusable: true</code>、<code>ephemeral: true</code>、<code>expirySeconds: 86400</code>。回傳 key 之後<strong>提醒我立即安全保存</strong>。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">找出 tailnet 中 <code>keyExpiryDisabled: true</code>（永不過期）的裝置——這通常代表有人偷懶。列出來，並建議：哪些適合開回 expiry、哪些是 subnet router 本來就該關的。<strong>只列不改</strong>。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">批次撤銷 tailnet 中所有 90 天沒有 <code>lastSeen</code> 的裝置：先列給我看清單並讓我確認，我按確認你才呼叫 <code>DELETE /api/v2/device/{id}</code>。過程中每刪一台印一行 log。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">審計目前 tailnet 上所有 auth keys：查 <code>GET /api/v2/tailnet/{tailnet}/keys</code>，列出「哪支還沒被用過」「哪支已經過期沒刪」「哪支 reusable 又永不過期」。給我一份清理建議清單，不動 keys。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-topo" data-nav="拓撲與清點">
+      <h2 data-icon="topo">網路拓撲查詢與清點</h2>
+      <p>問你的 tailnet 現在長什麼樣、誰在線、走什麼 relay，都是 read-only 但很常用的操作。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 <code>tailscale status --json</code> 列出目前 tailnet 中所有線上裝置，輸出成表格：hostname、tailnet IP、OS、tags、last seen、目前是走 <strong>direct</strong> 還是 <strong>DERP relay</strong>。DERP 的另外標出哪個 region。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">畫出我 tailnet 的 mermaid graph：節點是裝置（以 tag 分色），邊代表 policy 中允許的存取關係，subnet router 帶進來的 LAN CIDR 標成 cloud shape。輸出成一段 <code>```mermaid</code> 區塊我要貼到 GitHub README。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">用 <code>tailscale ping</code> 測所有其他線上裝置的 P2P 連線：迴圈跑 <code>tailscale ping --c 1 &lt;hostname&gt;</code>，把「走 direct 還是 DERP」「延遲」整理成表格。DERP 的建議我開 UPnP／NAT-PMP 看能不能 NAT 打洞成 direct。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">產出 tailnet 月報：用 API 拉本月新增／移除裝置、subnet route 變更、policy 修改次數、SSH 連線總數。輸出成 markdown 給我貼到工作群。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">找出 tailnet 中<strong>沒有任何 tag</strong>的裝置——這些通常是「用個人 email 隨手加進來的」漏管理裝置。列給我看，並幫每一台建議一組適合的 tag（用 hostname 猜）。<strong>只建議不改</strong>。</p>
+      </div>
+
+    </section>
+
+    <section id="cat-debug" data-nav="故障排除">
+      <h2 data-icon="debug">故障排除 prompts</h2>
+      <p>連不上、看不到、慢——這幾條給 agent 跑診斷，比自己盲拆快。</p>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">診斷：我從手機（<code>iphone-15</code>）連 <code>ha-home</code> 打不開。請 agent 依序：(1) <code>tailscale status</code> 看兩台都在線；(2) <code>tailscale ping ha-home</code> 看能不能通；(3) <code>tailscale netcheck</code> 看網路健檢；(4) 拉 policy 看有沒有規則擋；(5) 給我一段結論說是哪一層的問題。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">我宣告了 <code>192.168.1.0/24</code> 但 tailnet 裡的手機還是連不到 <code>192.168.1.50</code>。跑：(a) subnet route enabled 檢查、(b) 目標 IP 是否真在該段、(c) 目標裝置有沒有防火牆擋 tailnet 來源、(d) HA 主機 IP forwarding 是否開（<code>sysctl net.ipv4.ip_forward</code>）。給我逐項結論。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Tailscale SSH 突然登不進去了。診斷：(1) <code>tailscale status --json</code> 看目標裝置的 <code>sshHostKeys</code>；(2) 拉 policy 的 <code>ssh</code> block 看規則有沒有動過；(3) 目標機器 <code>journalctl -u tailscaled</code> 最後 30 行；(4) 給我可能原因排序。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">為什麼我的裝置全部走 DERP 而不是 direct？請跑 <code>tailscale netcheck</code> 分析報告：UPnP／NAT-PMP／PCP 狀態、preferred DERP、Global v4/v6 是否有、home NAT type。給我改善建議清單（例如：改用 <code>--advertise-exit-node</code>、開路由器 UPnP、換 DERP region）。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">拉最近 24 小時 tailnet 的 <strong>audit log</strong>（<code>GET /api/v2/tailnet/{tailnet}/logging/configuration/read</code>），列出所有「policy 變更、key 建立、node approval」操作，格式 <code>[時刻] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>，並標出看起來異常的。</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">複製</button>
+        <p class="ptext">Home Assistant Tailscale add-on 起不來。診斷：(1) HA supervisor logs 找 <code>tailscaled</code> 相關；(2) 檢查 add-on 設定裡的 <code>auth_key</code> 是不是過期；(3) 檢查 supervisor 對 <code>NET_ADMIN</code> capability 是否給滿；(4) 給我三個最可能原因＋對應解法。</p>
+      </div>
+
+    </section>
+
+    <section id="tips" data-nav="寫法小抄">
+      <h2 data-icon="what">寫法小抄：讓 agent 少猜一輪</h2>
+      <ul>
+        <li><strong>先讀後改</strong>：所有會動 policy 的動作，第一句都寫「先拉當前 policy」。避免 agent 誤覆蓋。</li>
+        <li><strong>指定 API 端點</strong>：例如寫「<code>GET /api/v2/tailnet/{tailnet}/acl</code>」比說「查 ACL」精準十倍。</li>
+        <li><strong>tailnet 用符號</strong>：Tailscale 官方接受 <code>-</code> 代替 tailnet 名（用當前 OAuth 對應的 tailnet），寫 <code>{tailnet}</code> 讓 agent 自己填。</li>
+        <li><strong>要求 dry-run／diff</strong>：加一句「先給我 diff 或摘要、我按確認你才 apply」是最便宜的保險。</li>
+        <li><strong>tag 加冒號</strong>：Tailscale tag 一定是 <code>tag:xxx</code>，別漏冒號 agent 會生成錯格式。</li>
+        <li><strong>操作範圍要限縮</strong>：寫「只找 last seen 超過 90 天的」比「找沒在用的」清楚，避免誤刪。</li>
+        <li><strong>回傳格式指定</strong>：要 markdown 表格、mermaid、CSV，先講清楚——agent 產文貼哪都不用再修。</li>
+      </ul>
+      <div class="callout"><strong>觀念：</strong>提示詞的價值不是「完美措辭」，是「讓 agent 少做假設」。每加一個具體條件，就少一次來回修改。</div>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>沒有 Tailscale API token 也能用嗎？</summary>
+        <div class="body">很多提示詞可以——凡是走 <code>tailscale</code> CLI（<code>status</code>、<code>ping</code>、<code>up</code>、<code>serve</code>、<code>netcheck</code>）的，agent 只需要能執行 shell 指令就行。要動 policy／keys／device authorization 才需要 API token。</div>
+      </details>
+      <details class="faq">
+        <summary>這些 prompts 用在 Headscale 也可以嗎？</summary>
+        <div class="body">CLI 相關的完全通用（Tailscale client 連 Headscale 也是同一支）。REST API 的部分：Headscale 有自己的 API（<code>headscale api ...</code> CLI 或 gRPC），提示詞的<strong>意圖</strong>能重用，端點與參數要換成 Headscale 版本。有一條專門的 policy 轉譯提示詞。</div>
+      </details>
+      <details class="faq">
+        <summary>Agent 執行時要不要開什麼權限？</summary>
+        <div class="body">看你的 agent。Claude Code／Cursor 需要允許 <code>Bash</code> 或 <code>Terminal</code> 工具；MCP 版本用戶只需要授權 tailscale-mcp server 存取。有 policy 變更的建議都在受控環境（測試 tailnet）跑第一遍。</div>
+      </details>
+      <details class="faq">
+        <summary>會不會有 prompt 讓 agent 亂改我 policy？</summary>
+        <div class="body">本冊每一條會改動的都有「先給 diff、我確認再 PUT」句子。如果 agent 直接跳過確認上 policy，那是 agent 沒讀清楚指令，你可以在提示詞後加一句「<strong>禁止未經確認就 PUT</strong>」。正式環境建議 policy 走 GitHub PR 流程。</div>
+      </details>
+      <details class="faq">
+        <summary>我要接哪個 MCP server？</summary>
+        <div class="body">2026-08 目前社群主流有兩個方向：(1) <code>tailscale-mcp</code>（社群包裝 REST API）、(2) 通用 <code>bash</code>／<code>shell</code> MCP + 本機 <code>tailscale</code> CLI。前者裝置操作更安全（有型別檢查），後者最靈活。若走 Headscale，直接用 <code>headscale</code> CLI 或它的 gRPC MCP 適配。</div>
+      </details>
+    </section>
+
+    <section id="download" data-nav="下載">
+      <h2 data-icon="download">把這本帶走</h2>
+      <p>整本是自包含單檔 HTML，圖示全部內嵌，下載後離線可開、可直接轉寄給同事。</p>
+      <p>
+        <a class="btn-pill" href="prompts.html" download="tailscale-提示詞庫.html">下載本冊 HTML</a>
+        <a class="btn-ghost" href="index.html">回資源總覽</a>
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <p>《Home Assistant Tailscale API/CLI/MCP 提示詞庫》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出。</p>
+      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · Tailscale™ 為 Tailscale Inc. 商標；Headscale 為社群開源專案。 · <a href="index.html">HA Tailscale 資源總覽</a></p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('navToggle');
+  var mq = window.matchMedia('(max-width: 960px)');
+  function applyCollapse(e) {
+    if (e.matches) { sidebar.classList.add('is-collapsed'); }
+    else { sidebar.classList.remove('is-collapsed'); }
+  }
+  applyCollapse(mq);
+  mq.addEventListener ? mq.addEventListener('change', applyCollapse) : mq.addListener(applyCollapse);
+  toggle.addEventListener('click', function () { sidebar.classList.toggle('is-collapsed'); });
+  sidebar.querySelectorAll('.toc-in-chapter a').forEach(function (a) {
+    a.addEventListener('click', function () { if (mq.matches) sidebar.classList.add('is-collapsed'); });
+  });
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('.toc-in-chapter a[href^="#"]'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  function onScroll() {
+    var current = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= 120) current = sections[i].id;
+    }
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current && map[current]) map[current].classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+(function () {
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  document.querySelectorAll('.prompt-card').forEach(function (card) {
+    var btn = card.querySelector('.copy');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var text = card.querySelector('.ptext').innerText;
+      var done = function () {
+        btn.textContent = '已複製'; btn.classList.add('ok');
+        setTimeout(function () { btn.textContent = '複製'; btn.classList.remove('ok'); }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+      } else { fallbackCopy(text, done); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
