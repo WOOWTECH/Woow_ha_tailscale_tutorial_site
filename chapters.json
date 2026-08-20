@@ -1,5 +1,5 @@
 {
-  "_readme": "側欄、上下章導覽、目錄卡片、章節編號、SEO meta 與 sitemap 都由此檔產生；改完請執行 node scripts/build_nav.js。",
+  "_readme": "側欄、上下章導覽、目錄卡片、章節編號、SEO meta 與 sitemap 都由此檔產生；改完請執行 node scripts/build_nav.js。hub 模式：index.html 是資源總覽（人手維護），教學目錄由 build_nav 產到 hub.catalog；hub.pages 是自包含單檔手冊，納入 sitemap 與 check_links 白名單但不吃內容頁房規。",
   "site": {
     "title": "Home Assistant Tailscale 遠端連線指南",
     "brand": "HA Tailscale 指南",
@@ -14,6 +14,12 @@
       "url": "https://creativecommons.org/licenses/by/4.0/deed.zh-hant",
       "holder": "woowtech"
     }
+  },
+  "hub": {
+    "_readme": "index.html 為四類資源總覽(hub),人手維護、build_nav 不碰。教學目錄頁由 build_nav 產到 catalog 指定的檔案。pages 是 hub 底下的獨立單檔手冊(自帶 head 與樣式),納入 sitemap 與 check_links 白名單。",
+    "catalog": "tutorial.html",
+    "navLabel": "資源總覽",
+    "pages": ["sales.html", "prompts.html", "skills.html"]
   },
   "chapters": [
     {

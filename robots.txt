@@ -1,3 +1,4 @@
+# Home Assistant Tailscale 遠端連線指南 — 公開教學站，歡迎索引
 User-agent: *
 Allow: /
 

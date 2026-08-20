@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home Assistant Tailscale 遠端連線指南 · 安全回家，不開埠</title>
+  <meta name="description" content="12 章繁體中文 Home Assistant Tailscale App 教學：從安裝、加入 tailnet、私有遠端存取、最小權限，到 subnet router 基礎與排錯維護。" />
+  <meta name="author" content="woowtech" />
+  <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/tutorial.html" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Home Assistant Tailscale 遠端連線指南" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="Home Assistant Tailscale 遠端連線指南 · 安全回家，不開埠" />
+  <meta property="og:description" content="12 章繁體中文 Home Assistant Tailscale App 教學：從安裝、加入 tailnet、私有遠端存取、最小權限，到 subnet router 基礎與排錯維護。" />
+  <meta property="og:url" content="https://ha-tailscale-guide.woowtech.io/tutorial.html" />
+  <meta property="og:image" content="https://ha-tailscale-guide.woowtech.io/assets/screenshots/ch3/01_tailscale_web_ui.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Home Assistant Tailscale 遠端連線指南 · 安全回家，不開埠" />
+  <meta name="twitter:description" content="12 章繁體中文 Home Assistant Tailscale App 教學：從安裝、加入 tailnet、私有遠端存取、最小權限，到 subnet router 基礎與排錯維護。" />
+  <meta name="twitter:image" content="https://ha-tailscale-guide.woowtech.io/assets/screenshots/ch3/01_tailscale_web_ui.png" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <main class="home">
+    <div class="hero">
+      <span class="kicker-script">make it yours</span>
+      <div class="kicker">Home Assistant Tailscale 入住指南</div>
+      <h1>安全回家，不開埠</h1>
+      <p>從盤點 tailnet、安裝 App、加入 tailnet，一路帶到私有遠端存取、最小權限、Serve、subnet router 基礎與排錯維護。12 章，每章 10 分鐘。銷售手冊、提示詞庫與 Skill 手冊在 <a href="index.html">資源總覽</a>。</p>
+    </div>
+
+    <section class="chapter-index">
+      <h2 class="index-title">基礎：認識安全遠端連線</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch1_overview.html">
+          <span class="num">01</span>
+          <h3>開始前</h3>
+          <p>先界定誰能進入你的 Home Assistant、哪些裝置要加入 tailnet，以及這份教學刻意不處理什麼。</p>
+        </a>
+        <a class="chapter-card" href="ch2_install.html">
+          <span class="num">02</span>
+          <h3>安裝 App</h3>
+          <p>從 Home Assistant 的 Apps 頁面找到 Tailscale、安裝並啟動；不猜設定、不急著公開服務。</p>
+        </a>
+        <a class="chapter-card" href="ch3_join_tailnet.html">
+          <span class="num">03</span>
+          <h3>加入 tailnet</h3>
+          <p>用 Tailscale App 的 Web UI 讓這台 Home Assistant 成為 tailnet 的一員，再到管理主控台確認它出現。</p>
+        </a>
+        <a class="chapter-card" href="ch4_status_logs.html">
+          <span class="num">04</span>
+          <h3>狀態與日誌</h3>
+          <p>在改任何網路選項以前，先讀懂 App 的狀態與日誌；這是排錯時最短的路。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">日常：私有遠端存取</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch5_remote_ha.html">
+          <span class="num">05</span>
+          <h3>遠端開 HA</h3>
+          <p>只讓已加入 tailnet 的手機和電腦打開 HA，先建立可驗證的私有遠端工作流程。</p>
+        </a>
+        <a class="chapter-card" href="ch6_machines.html">
+          <span class="num">06</span>
+          <h3>管理裝置</h3>
+          <p>把 Home Assistant、手機與筆電當成可管理的 Machines：命名、清查、撤銷不用的裝置與 key expiry 檢查。</p>
+        </a>
+        <a class="chapter-card" href="ch7_access_controls.html">
+          <span class="num">07</span>
+          <h3>最小權限</h3>
+          <p>Tailscale 不是「裝了就全部互通」的理由。先用管理主控台檢查 policy，再把可存取範圍寫得剛好。</p>
+        </a>
+        <a class="chapter-card" href="ch8_serve.html">
+          <span class="num">08</span>
+          <h3>Serve</h3>
+          <p>需要漂亮 HTTPS 入口時，先理解 Serve 與 Funnel 的安全差別；本教程只做私有的 Serve。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">進階：Subnet router 基礎</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch9_subnet_basics.html">
+          <span class="num">09</span>
+          <h3>Subnet router</h3>
+          <p>只在確定需要時，讓這台 HA 宣告一段家中 LAN；本章只講單一子網的基本單向存取。</p>
+        </a>
+        <a class="chapter-card" href="ch10_approve_routes.html">
+          <span class="num">10</span>
+          <h3>核准路由</h3>
+          <p>路由「被宣告」不代表已可用：到 Machines 核准它，然後從另一台 tailnet 裝置驗證。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">維護：穩定使用與排錯</h2>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="ch11_daily_use.html">
+          <span class="num">11</span>
+          <h3>日常使用</h3>
+          <p>把遠端操作變成可重複的習慣：先確認 Tailscale，再開 HA；失聯時也知道回哪裡查。</p>
+        </a>
+        <a class="chapter-card" href="ch12_troubleshooting.html">
+          <span class="num">12</span>
+          <h3>排錯維護</h3>
+          <p>用一份由外到內的檢查表處理連不上、看不到路由、登入逾期與設定變更後的問題。</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter-index" style="margin-top:56px;">
+      <h2 class="index-title">附錄</h2>
+      <div class="chapter-grid">
+
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>《Home Assistant Tailscale 遠端連線指南》由 <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">woowtech</a> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.zh-hant">CC BY 4.0</a> 授權釋出 — 可自由分享與改作，請保留出處。</p>
+      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">原始碼與勘誤</a></p>
+    </footer>
+  </main>
+</body>
+</html>
