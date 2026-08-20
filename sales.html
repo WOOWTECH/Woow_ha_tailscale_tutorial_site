@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home Assistant Tailscale 私有遠端方案 · 銷售手冊 · WoowTech 渥屋科技</title>
+  <meta name="description" content="兩種模式讓 Home Assistant 安全遠端存取：HAOS Tailscale add-on 由 WoowTech 代設定 ACL/subnet router/Serve/MagicDNS；或租用 WoowTech Headscale 雲端 PaaS——不受 Tailscale 免費方案限制、私有座標伺服器、多站點內網互通。給家庭與 SOHO。" />
+  <meta name="author" content="WoowTech" />
+  <meta name="theme-color" content="#6183FC" />
+  <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/sales.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Yellowtail&display=swap" />
+  <style>
+/* HA Tailscale 銷售手冊 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+:root {
+  /* Brand palette — blue is the ONLY spot color */
+  --ww-blue: #6183FC;
+  --ww-blue-600: #4A6DE8;
+  --ww-blue-700: #3A57C4;
+  --ww-blue-050: #EEF2FF;
+  --ww-blue-100: #DCE4FF;
+
+  --ink-900: #1B2033;
+  --ink-700: #3A4054;
+  --ink-500: #6B7186;
+  --ink-300: #A5AAB9;
+  --ink-100: #E7E9F0;
+
+  --paper: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F1F3FA;
+  --hairline: #E2E5EF;
+
+  --info: var(--ww-blue);
+  --tip:  #8CD37F;
+  --warn: #E66D3E;
+  --danger: #F45D6D;
+
+  /* Radius — 20px hard rule; 12px chips; pill buttons */
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --radius-pill: 999px;
+
+  /* Soft diffuse shadows */
+  --shadow-sm: 0 2px 6px rgba(27, 32, 51, 0.05), 0 1px 2px rgba(27, 32, 51, 0.04);
+  --shadow-md: 0 8px 24px rgba(27, 32, 51, 0.08), 0 2px 6px rgba(27, 32, 51, 0.04);
+  --shadow-lg: 0 20px 48px rgba(27, 32, 51, 0.12), 0 4px 12px rgba(27, 32, 51, 0.06);
+  --shadow-float: 0 26px 60px -18px rgba(97, 131, 252, 0.28);
+
+  --font-display: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-body: "Poppins", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-script: "Yellowtail", cursive;
+  --font-mono: "SF Mono", Menlo, Consolas, "Fira Code", monospace;
+
+  --sidebar-w: 268px;
+  --max-content: 780px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-body);
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html { scroll-behavior: smooth; }
+
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.005em; }
+
+a { color: var(--ww-blue-600); text-decoration: none; transition: color 0.15s; }
+a:hover { color: var(--ww-blue-700); text-decoration: underline; }
+
+/* ---------- Layout ---------- */
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--hairline);
+  padding: 28px 22px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar h2 {
+  font-family: var(--font-body); font-size: 12px; color: var(--ink-500);
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0 0 12px;
+}
+.sidebar .brand {
+  display: block; font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: var(--ink-900); margin-bottom: 4px; letter-spacing: -0.01em;
+}
+.sidebar .brand-sub { font-size: 13px; color: var(--ink-500); margin-bottom: 6px; }
+.sidebar .hub-link { display: inline-block; font-size: 12.5px; color: var(--ink-500); margin-bottom: 22px; }
+.sidebar .hub-link:hover { color: var(--ww-blue-700); text-decoration: none; }
+.sidebar .toc-in-chapter { border-top: 1px solid var(--hairline); padding-top: 16px; margin-top: 8px; }
+.sidebar .toc-in-chapter:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.sidebar .toc-in-chapter a {
+  display: block; padding: 7px 12px; border-radius: var(--radius-xs);
+  color: var(--ink-700); font-size: 13.5px;
+}
+.sidebar .toc-in-chapter a:hover { background: var(--surface-alt); text-decoration: none; }
+.sidebar .toc-in-chapter a.active { background: var(--ww-blue-050); color: var(--ww-blue-700); font-weight: 600; }
+
+/* ---------- Content ---------- */
+.content { padding: 56px 64px 96px; max-width: calc(var(--max-content) + 128px); }
+
+.chapter-header { margin-bottom: 40px; }
+.chapter-header .kicker-script {
+  font-family: var(--font-script); font-size: 30px; color: var(--ww-blue);
+  line-height: 1; margin-bottom: 10px; display: block;
+}
+.chapter-header .kicker {
+  color: var(--ww-blue); font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+}
+.chapter-header h1 {
+  font-family: "Noto Sans TC", var(--font-display); font-size: 38px; font-weight: 700;
+  margin: 0 0 14px; letter-spacing: -0.02em; line-height: 1.25;
+}
+.chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
+
+/* KPI floating frame（品牌規範：floating frame 必帶 shadow-float） */
+.kpi-frame {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-float);
+  margin: 28px 0 8px; overflow: hidden;
+}
+.kpi { padding: 22px 20px; text-align: center; }
+.kpi + .kpi { border-left: 1px solid var(--hairline); }
+.kpi .num {
+  font-family: var(--font-display); font-size: 26px; font-weight: 700;
+  color: var(--ww-blue); line-height: 1.2;
+}
+.kpi .cap { font-size: 13px; color: var(--ink-500); margin-top: 4px; }
+
+/* Sections */
+section { margin-bottom: 56px; scroll-margin-top: 24px; }
+section h2 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  margin: 0 0 20px; padding: 0; border: 0;
+  display: flex; align-items: center; gap: 14px; color: var(--ink-900);
+}
+section h2[data-icon]::before {
+  content: ""; display: inline-flex; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  background-color: var(--ww-blue-050);
+  background-repeat: no-repeat; background-position: center; background-size: 22px 22px;
+}
+section h2[data-icon="why"]::before         { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,2A7,7 0 0,1 19,9C19,11.38 17.81,13.47 16,14.74V17A1,1 0 0,1 15,18H9A1,1 0 0,1 8,17V14.74C6.19,13.47 5,11.38 5,9A7,7 0 0,1 12,2M9,21V20H15V21A1,1 0 0,1 14,22H10A1,1 0 0,1 9,21M12,4A5,5 0 0,0 7,9C7,11.05 8.23,12.81 10,13.58V16H14V13.58C15.77,12.81 17,11.05 17,9A5,5 0 0,0 12,4Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="what"]::before        { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="ai"]::before          { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,1L9,9L1,12L9,15L12,23L15,15L23,12L15,9L12,1Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="security"]::before    { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11,13H13V16H16V11H18L12,6L6,11H8V16H11V13M12,1L21,5V11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="brain"]::before       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M21.33,12.91C21.42,14.46 20.71,15.95 19.44,16.86L20.21,18.35C20.44,18.8 20.47,19.33 20.27,19.8C20.08,20.27 19.69,20.64 19.21,20.8L18.42,21.05C18.25,21.11 18.06,21.14 17.88,21.14C17.37,21.14 16.89,20.91 16.56,20.5L14.44,18C13.55,17.85 12.71,17.47 12,16.9C11.5,17.05 11,17.13 10.5,17.13C9.62,17.13 8.74,16.86 8,16.34C7.47,16.5 6.93,16.57 6.38,16.56C5.59,16.57 4.81,16.41 4.08,16.11C2.65,15.47 1.7,14.07 1.65,12.5C1.57,11.78 1.69,11.05 2,10.39C1.71,9.64 1.68,8.82 1.93,8.06C2.3,7.11 3,6.32 3.87,5.82C4.45,4.13 6.08,3 7.87,3.12C9.47,1.62 11.92,1.46 13.7,2.75C14.12,2.64 14.56,2.58 15,2.58C16.36,2.55 17.65,3.15 18.5,4.22C20.54,4.75 22,6.57 22.08,8.69C22.13,9.8 21.83,10.89 21.22,11.82C21.29,12.18 21.33,12.54 21.33,12.91M16.33,11.5C16.9,11.57 17.35,12 17.35,12.57A1,1 0 0,1 16.35,13.57H15.72C15.4,14.47 14.84,15.26 14.1,15.86C14.35,15.95 14.61,16 14.87,16.07C20,16 19.4,12.87 19.4,12.82C19.34,11.39 18.14,10.27 16.71,10.33A1,1 0 0,1 15.71,9.33A1,1 0 0,1 16.71,8.33C17.94,8.36 19.12,8.82 20.04,9.63C20.09,9.34 20.12,9.04 20.12,8.74C20.06,7.5 19.5,6.42 17.25,6.21C16,3.25 12.85,4.89 12.85,5.81V5.81C12.82,6.04 13.06,6.53 13.1,6.56A1,1 0 0,1 14.1,7.56C14.1,8.11 13.65,8.56 13.1,8.56V8.56C12.57,8.54 12.07,8.34 11.67,8C11.19,8.31 10.64,8.5 10.07,8.56V8.56C9.5,8.61 9.03,8.21 9,7.66C8.92,7.1 9.33,6.61 9.88,6.56C10.04,6.54 10.82,6.42 10.82,5.79V5.79C10.82,5.13 11.07,4.5 11.5,4C10.58,3.75 9.59,4.08 8.59,5.29C6.75,5 6,5.25 5.45,7.2C4.5,7.67 4,8 3.78,9C4.86,8.78 5.97,8.87 7,9.25C7.5,9.44 7.78,10 7.59,10.54C7.4,11.06 6.82,11.32 6.3,11.13C5.57,10.81 4.75,10.79 4,11.07C3.68,11.34 3.68,11.9 3.68,12.34C3.68,13.08 4.05,13.77 4.68,14.17C5.21,14.44 5.8,14.58 6.39,14.57C6.24,14.31 6.11,14.04 6,13.76C5.81,13.22 6.1,12.63 6.64,12.44C7.18,12.25 7.77,12.54 7.96,13.08C8.36,14.22 9.38,15 10.58,15.13C11.95,15.06 13.17,14.25 13.77,13C14,11.62 15.11,11.5 16.33,11.5M18.33,18.97L17.71,17.67L17,17.83L18,19.08L18.33,18.97M13.68,10.36C13.7,9.83 13.3,9.38 12.77,9.33C12.06,9.29 11.37,9.53 10.84,10C10.27,10.58 9.97,11.38 10,12.19A1,1 0 0,0 11,13.19C11.57,13.19 12,12.74 12,12.19C12,11.92 12.07,11.65 12.23,11.43C12.35,11.33 12.5,11.28 12.66,11.28C13.21,11.31 13.68,10.9 13.68,10.36Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="integration"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="persons"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="clock"]::before       { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="compare"]::before     { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,3C10.73,3 9.6,3.8 9.18,5H3V7H4.95L2,14C1.53,16 3,17 5.5,17C8,17 9.56,16 9,14L6.05,7H9.17C9.5,7.85 10.15,8.5 11,8.83V20H2V22H22V20H13V8.82C13.85,8.5 14.5,7.85 14.82,7H17.95L15,14C14.53,16 16,17 18.5,17C21,17 22.56,16 22,14L19.05,7H21V5H14.83C14.4,3.8 13.27,3 12,3M12,5A1,1 0 0,1 13,6A1,1 0 0,1 12,7A1,1 0 0,1 11,6A1,1 0 0,1 12,5M5.5,10.25L7,14H4L5.5,10.25M18.5,10.25L20,14H17L18.5,10.25Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="faq"]::before         { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M4,2A2,2 0 0,0 2,4V16A2,2 0 0,0 4,18H8V21A1,1 0 0,0 9,22H9.5V22C9.75,22 10,21.9 10.2,21.71L13.9,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2H4M4,4H20V16H13.08L10,19.08V16H4V4M12.19,5.5C11.3,5.5 10.59,5.68 10.05,6.04C9.5,6.4 9.22,7 9.27,7.69C0.21,7.69 6.57,7.69 11.24,7.69C11.24,7.41 11.34,7.2 11.5,7.06C11.7,6.92 11.92,6.85 12.19,6.85C12.5,6.85 12.77,6.93 12.95,7.11C13.13,7.28 13.22,7.5 13.22,7.8C13.22,8.08 13.14,8.33 13,8.54C12.83,8.76 12.62,8.94 12.36,9.08C11.84,9.4 11.5,9.68 11.29,9.92C11.1,10.16 11,10.5 11,11H13C13,10.72 13.05,10.5 13.14,10.32C13.23,10.15 13.4,10 13.66,9.85C14.12,9.64 14.5,9.36 14.79,9C15.08,8.63 15.23,8.24 15.23,7.8C15.23,7.1 14.96,6.54 14.42,6.12C13.88,5.71 13.13,5.5 12.19,5.5M11,12V14H13V12H11Z'/%3E%3C/svg%3E"); }
+section h2[data-icon="handshake"]::before   { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M11 6H14L17.29 2.7A1 1 0 0 1 18.71 2.7L21.29 5.29A1 1 0 0 1 21.29 6.7L19 9H11V11A1 1 0 0 1 10 12A1 1 0 0 1 9 11V8A2 2 0 0 1 11 6M5 11V15L2.71 17.29A1 1 0 0 0 2.71 18.7L5.29 21.29A1 1 0 0 0 6.71 21.29L11 17H15A1 1 0 0 0 16 16V15H17A1 1 0 0 0 18 14V13H19A1 1 0 0 0 20 12V11H13V12A2 2 0 0 1 11 14H9A2 2 0 0 1 7 12V9Z'/%3E%3C/svg%3E"); }
+
+section h3 {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  margin: 28px 0 12px; color: var(--ink-900);
+}
+section p, section li { color: var(--ink-700); max-width: var(--max-content); }
+
+/* 功能卡（沿用目錄頁 chapter-card 視覺） */
+.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.feature-card {
+  padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow-sm);
+}
+.feature-card .tile {
+  display: inline-flex; width: 48px; height: 48px; border-radius: 16px;
+  background: var(--ww-blue-050); align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.feature-card .tile svg { display: block; }
+.feature-card h3 { margin: 0 0 8px; font-size: 18px; }
+.feature-card > p { margin: 0 0 14px; color: var(--ink-700); font-size: 14.5px; }
+
+/* 對話範例 chips（12px 圓角 = 品牌 chip 規則） */
+.chips { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; max-width: var(--max-content); }
+.chip {
+  background: var(--surface-alt); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  font-size: 14px; line-height: 1.6; color: var(--ink-700);
+}
+.chip.say { background: var(--ww-blue-050); border-color: rgba(97, 131, 252, 0.22); }
+.chip .who {
+  font-family: var(--font-display); font-weight: 600; font-size: 12.5px;
+  color: var(--ww-blue-700); margin-right: 6px;
+}
+.chip .who.ai { color: #4E9C42; }
+.chip .who::before {
+  content: ""; display: inline-block; width: 13px; height: 13px; margin-right: 4px;
+  vertical-align: -1.5px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z'/%3E%3C/svg%3E");
+}
+.chip .who.ai::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M10.5 15.5C10.5 15.87 10.4 16.2 10.22 16.5C9.88 15.91 9.24 15.5 8.5 15.5S7.12 15.91 6.78 16.5C6.61 16.2 6.5 15.87 6.5 15.5C6.5 14.4 7.4 13.5 8.5 13.5S10.5 14.4 10.5 15.5M23 15V18C23 18.55 22.55 19 22 19H21V20C21 21.11 20.11 22 19 22H5C3.9 22 3 21.11 3 20V19H2C1.45 19 1 18.55 1 18V15C1 14.45 1.45 14 2 14H3C3 10.13 6.13 7 10 7H11V5.73C10.4 5.39 10 4.74 10 4C10 2.9 10.9 2 12 2S14 2.9 14 4C14 4.74 13.6 5.39 13 5.73V7H14C17.87 7 21 10.13 21 14H22C22.55 14 23 14.45 23 15M21 16H19V14C19 11.24 16.76 9 14 9H10C7.24 9 5 11.24 5 14V16H3V17H5V20H19V17H21V16M15.5 13.5C14.4 13.5 13.5 14.4 13.5 15.5C13.5 15.87 13.61 16.2 13.78 16.5C14.12 15.91 14.76 15.5 15.5 15.5S16.88 15.91 17.22 16.5C17.4 16.2 17.5 15.87 17.5 15.5C17.5 14.4 16.61 13.5 15.5 13.5Z'/%3E%3C/svg%3E"); }
+.chip-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; max-width: var(--max-content); }
+.chip-legend .chip { flex: 0 0 auto; font-size: 13px; padding: 7px 12px; }
+
+/* Steps（一天的生活也用它） */
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps > li {
+  counter-increment: step; position: relative;
+  padding: 22px 22px 22px 72px; margin-bottom: 14px;
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-sm);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 20px; top: 20px; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ww-blue); color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(97, 131, 252, 0.35);
+}
+.steps > li h3 { margin: 0 0 8px; font-size: 16px; }
+.steps > li p:last-child { margin-bottom: 0; }
+.steps > li .time {
+  font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; color: var(--ww-blue); text-transform: uppercase;
+  display: block; margin-bottom: 4px;
+}
+.steps.timeline > li::before {
+  content: "";
+  background: var(--ww-blue-050) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z'/%3E%3C/svg%3E") no-repeat center / 20px 20px;
+  box-shadow: none;
+}
+
+/* Callout — info/tip/warn/danger */
+.callout {
+  padding: 14px 18px 14px 44px; border-radius: var(--radius-sm);
+  background: var(--ww-blue-050); margin: 16px 0; font-size: 14px; color: var(--ink-700);
+  position: relative; border: 1px solid rgba(97, 131, 252, 0.18);
+  max-width: var(--max-content);
+}
+.callout::before {
+  content: ""; position: absolute; left: 14px; top: 15px; width: 18px; height: 18px;
+  background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z'/%3E%3C/svg%3E");
+}
+.callout.tip { background: rgba(140, 211, 127, 0.14); border-color: rgba(140, 211, 127, 0.32); }
+.callout.tip::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234E9C42' d='M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z'/%3E%3C/svg%3E"); }
+.callout.warn { background: rgba(230, 109, 62, 0.10); border-color: rgba(230, 109, 62, 0.28); }
+.callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
+.callout strong { color: var(--ink-900); }
+
+/* 資料表格 */
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
+  font-size: 14px; background: var(--surface);
+  border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.data-table thead th {
+  text-align: left; padding: 12px 14px; background: var(--surface-alt); color: var(--ink-900);
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--hairline); white-space: nowrap;
+}
+.data-table thead th.pi-col { color: var(--ww-blue-700); }
+.data-table tbody td, .data-table tbody th {
+  padding: 11px 14px; border-bottom: 1px solid var(--hairline);
+  color: var(--ink-700); vertical-align: top; text-align: left;
+}
+.data-table tbody th { font-weight: 600; color: var(--ink-900); white-space: nowrap; }
+.data-table tbody td.pi-col { background: var(--ww-blue-050); color: var(--ink-900); font-weight: 500; }
+.data-table tbody tr:last-child td, .data-table tbody tr:last-child th { border-bottom: 0; }
+
+/* FAQ */
+details.faq {
+  margin-bottom: 10px; border: 1px solid var(--hairline); border-radius: var(--radius-sm);
+  background: var(--surface); overflow: hidden; box-shadow: var(--shadow-sm);
+  max-width: var(--max-content);
+}
+details.faq summary {
+  cursor: pointer; padding: 16px 48px 16px 20px;
+  font-family: var(--font-display); font-weight: 600; color: var(--ink-900);
+  list-style: none; position: relative;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after {
+  content: ""; position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; background-repeat: no-repeat; background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E");
+}
+details.faq[open] summary::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236183FC' d='M19,13H5V11H19V13Z'/%3E%3C/svg%3E"); }
+details.faq[open] summary { border-bottom: 1px solid var(--hairline); }
+details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; }
+
+/* CTA band */
+.cta-band {
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius); box-shadow: var(--shadow-float);
+  padding: 40px 36px; text-align: center; max-width: var(--max-content);
+}
+.cta-band .script { font-family: var(--font-script); font-size: 26px; color: var(--ww-blue); display: block; margin-bottom: 6px; }
+.cta-band h3 { margin: 0 0 10px; font-size: 22px; }
+.cta-band p { color: var(--ink-700); margin: 0 auto 22px; max-width: 520px; font-size: 15px; }
+.btn-pill {
+  display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  background: var(--ww-blue); color: #fff; padding: 13px 32px;
+  border-radius: var(--radius-pill); transition: background 0.15s, transform 0.15s;
+}
+.btn-pill:hover { background: var(--ww-blue-600); color: #fff; text-decoration: none; transform: translateY(-1px); }
+
+/* Footer */
+.site-footer {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--hairline);
+  color: var(--ink-700); font-size: 13.5px; line-height: 1.75;
+}
+.site-footer p { margin: 0 0 6px; }
+.site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
+
+/* 手機版側欄收合 */
+.nav-toggle {
+  display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
+  margin: 4px 0 0; padding: 12px 16px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink-900);
+  background: var(--surface); border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); cursor: pointer;
+}
+.nav-toggle-caret {
+  width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 6px solid var(--ink-500); transition: transform 0.15s ease;
+}
+.sidebar.is-collapsed .nav-toggle-caret { transform: rotate(-90deg); }
+
+.layout > * { min-width: 0; }
+.content .data-table { max-width: 100%; }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--hairline); }
+  .content { padding: 32px 20px 64px; }
+  .chapter-header h1 { font-size: 30px; }
+  .chapter-header .kicker-script { font-size: 26px; }
+  section h2 { font-size: 20px; }
+  section h2[data-icon]::before { width: 36px; height: 36px; background-size: 20px 20px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .kpi-frame { grid-template-columns: 1fr; }
+  .kpi + .kpi { border-left: 0; border-top: 1px solid var(--hairline); }
+  .data-table { display: block; overflow-x: auto; }
+  .data-table tbody td, .data-table thead th { min-width: 120px; }
+  .sidebar .nav-toggle { display: flex; }
+  .sidebar.is-collapsed .toc-in-chapter { display: none; }
+  .sidebar.is-collapsed > h2 { display: none; }
+}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#top">HA Tailscale 私有遠端方案</a>
+    <div class="brand-sub">WoowTech · The Smart Space Solution</div>
+    <a class="hub-link" href="index.html">◂ HA Tailscale 資源總覽</a>
+    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <div class="toc-in-chapter">
+      <h2>本冊內容</h2>
+      <a href="#why">為什麼要 Tailscale</a>
+      <a href="#what">兩種模式一次看懂</a>
+      <a href="#mode-a">A：add-on 代設定</a>
+      <a href="#mode-b">B：Headscale PaaS</a>
+      <a href="#scenarios">典型情境</a>
+      <a href="#security">安全與隱私</a>
+      <a href="#compare">方案比一比</a>
+      <a href="#pricing">價格與交付</a>
+      <a href="#faq">常見問題</a>
+      <a href="#cta">聯絡 WoowTech</a>
+    </div>
+  </aside>
+
+  <main class="content" id="top">
+    <div class="chapter-header">
+      <span class="kicker-script">safe way home</span>
+      <div class="kicker">WoowTech 銷售手冊</div>
+      <h1>安全回家，不用開埠——兩種 Tailscale 交付方案</h1>
+      <p class="lead">遠端存取 Home Assistant、串接多個站點、把家裡的攝影機和 NAS 帶著走——用 Tailscale 的私有網路技術做，全部不用在路由器上開 port，也不用把家的入口暴露在公網。WoowTech 提供兩種代交付模式，選你要的那一種。</p>
+      <div class="kpi-frame">
+        <div class="kpi"><div class="num">0 個</div><div class="cap">路由器不用開任何埠</div></div>
+        <div class="kpi"><div class="num">2 種</div><div class="cap">代交付模式任選</div></div>
+        <div class="kpi"><div class="num">100%</div><div class="cap">私有網路，端到端加密</div></div>
+      </div>
+    </div>
+
+    <section id="why" data-nav="為什麼要 Tailscale">
+      <h2 data-icon="why">為什麼你家需要 Tailscale</h2>
+      <p>只要用手機從外面打開過家裡的 Home Assistant，你大概碰過三件事：<strong>Nabu Casa 每月付費</strong>、<strong>路由器 port forwarding 一開就被掃</strong>、<strong>DDNS + 反向代理設完自己都不敢碰</strong>。這些方案都有把家的入口「露在公網上」的味道。</p>
+      <p>Tailscale 走另一條路：手機、筆電、Home Assistant 主機各裝一支輕量 client，就地組成一個只有你自己的私有網路（tailnet）。<strong>路由器一個埠都不用開</strong>、封包端到端加密（WireGuard）、每台裝置都能用一個好記的短網址（MagicDNS）互相找到。</p>
+      <div class="callout"><strong>觀念：</strong>Tailscale 免費方案已經夠一家人用——但要玩到 ACL 分權、subnet router 帶進整段 LAN、Serve 給 HA 一個 HTTPS 短網址、多站點互通，你會發現「工具很強、設定的力氣是另外一件事」。這也是為什麼你會需要有人代交付。</div>
+    </section>
+
+    <section id="what" data-nav="兩種模式一次看懂">
+      <h2 data-icon="what">兩種代交付模式，一次看懂</h2>
+      <p>兩種模式都是「WoowTech 幫你把 Tailscale 用到位」，差別在於<strong>控制平面（誰在管你的裝置清單）</strong>放在哪裡：</p>
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M6.5,20Q4.22,20 2.61,18.43 1,16.85 1,14.58 1,12.63 2.17,11.1 3.35,9.57 5.25,9.15 5.88,6.85 7.75,5.43 9.63,4 12,4 14.93,4 16.96,6.04 19,8.07 19,11 20.73,11.2 21.86,12.5 23,13.78 23,15.5 23,17.38 21.69,18.69 20.38,20 18.5,20H13Q12.18,20 11.59,19.41 11,18.83 11,18V12.85L9.4,14.4L8,13L12,9L16,13L14.6,14.4L13,12.85V18H18.5Q19.55,18 20.27,17.27 21,16.55 21,15.5 21,14.45 20.27,13.73 19.55,13 18.5,13H17V11Q17,8.93 15.54,7.46 14.08,6 12,6 9.93,6 8.46,7.46 7,8.93 7,11H6.5Q5.05,11 4.03,12.03 3,13.05 3,14.5 3,15.95 4.03,16.97 5.05,18 6.5,18H9V20M12,13Z"/></svg></span>
+          <h3>A. HAOS Add-on 代設定</h3>
+          <p>你買一台跑 Home Assistant OS 的主機（例如 Yellow、Green、或自己組），我們在你家或遠端登入把 HA 內建的 Tailscale add-on 裝好、把 ACL／subnet router／Serve／MagicDNS 全部設對，最後交鑰匙給你。控制平面走<strong>官方 Tailscale.com</strong>。</p>
+          <p><strong>適合：</strong>單一家庭、只有一個站點、想用 Tailscale 官方 SaaS 又不想自己碰 policy hujson。</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M12,3L2,12H5V20H10V14H14V20H19V12H22M12,7.7L14.9,10.4V11.9H12.9V16.5H11.1V11.9H9.1V10.4L12,7.7Z"/></svg></span>
+          <h3>B. Headscale 雲端 PaaS 帳號</h3>
+          <p>不用官方 Tailscale.com——你在 WoowTech 的私有 Headscale 座標伺服器（跑在 <code>*.woowtech.io</code>）開一個 tenant，裝置照樣用開源 Tailscale client 連進來。<strong>裝置數不受 Tailscale 免費 3 使用者／100 裝置上限</strong>，多站點多路由更好談。</p>
+          <p><strong>適合：</strong>SOHO、想自主管控、多站點（家＋工作室＋長輩家）、要接超過 3 個家人或 100 台裝置、對「不想讓資料進美國廠商」有偏好。</p>
+        </div>
+
+      </div>
+      <div class="callout tip"><strong>提示：</strong>選 A 還是 B 不用一次選對——先跑 A 三個月再搬 B 也可以（tailnet policy 可轉譯，裝置需重新 join）；我們代交付時會把 policy 用文件備份。</div>
+    </section>
+
+    <section id="mode-a" data-nav="A：add-on 代設定">
+      <h2 data-icon="ai">模式 A · HAOS Tailscale add-on 代設定</h2>
+      <p>官方 Tailscale + 我們把細活做完，交鑰匙給你。以下每一項都是我們幫你設好、你不用學。</p>
+
+      <h3>交付內容</h3>
+      <div class="chips">
+        <div class="chip">Tailscale add-on 安裝、開機、加入 tailnet；HA 主機取好裝置名（例：<code>ha-home</code>）。</div>
+        <div class="chip">MagicDNS 開啟——手機打 <code>https://ha-home</code> 就進得去，不用背 IP。</div>
+        <div class="chip">Serve 設好——HA 得到<strong>合法 HTTPS 憑證</strong>的短網址（例：<code>https://ha-home.tail-scale.ts.net</code>），瀏覽器不再跳「不安全」。</div>
+        <div class="chip">Subnet router 宣告＋核准——tailnet 裡的手機可以直接連 <code>192.168.1.x</code> 上的攝影機、NAS、印表機。</div>
+        <div class="chip">ACL policy hujson 寫好——爸媽只能開 HA、小孩不能碰 NAS、外包工程師只能連 Zigbee 網關，一條條寫清楚。</div>
+        <div class="chip">Key expiry、node approval、tag 政策——過期自動下線、新裝置要你按核准才進來。</div>
+        <div class="chip">交付文件：一份「你家的 tailnet 圖」＋「政策說明」＋復原步驟。</div>
+      </div>
+
+      <h3>你負擔什麼</h3>
+      <p>Tailscale 免費方案（Personal Plan）就夠絕大多數家庭用：3 個使用者、100 台裝置、無限量流量。<strong>你不用另外付月費</strong>。</p>
+
+      <div class="callout"><strong>觀念：</strong>WoowTech 賣的是「幫你把 Tailscale 用對的服務」，不是 Tailscale 本身。控制平面仍屬 Tailscale 公司；他們的隱私政策與服務條款請以官方為準。</div>
+    </section>
+
+    <section id="mode-b" data-nav="B：Headscale PaaS">
+      <h2 data-icon="brain">模式 B · WoowTech Headscale 雲端 PaaS</h2>
+      <p>Headscale 是開源版的 Tailscale 控制平面。我們幫你維護一台跑在 <code>*.woowtech.io</code> 的 Headscale 伺服器，你在上面開個帳號，就有自己的私有 tailnet——但流量與資料仍然端到端加密、點對點直連，不會過 WoowTech 的機房。</p>
+
+      <h3>交付內容</h3>
+      <div class="chips">
+        <div class="chip">私有 tenant（例：<code>your-name.hs.woowtech.io</code>），我們幫你把 Home Assistant 加入、把手機／筆電 pre-auth key 準備好。</div>
+        <div class="chip">同樣做完 ACL policy、subnet router、MagicDNS、Serve——功能與模式 A 幾乎等價，但控制平面在我們的私有伺服器。</div>
+        <div class="chip"><strong>裝置數上不封頂</strong>——家＋工作室＋長輩家＋所有家人手機一次串起來，不用像官方 Tailscale 卡在 3 使用者。</div>
+        <div class="chip">DERP relay 走 WoowTech 自架節點（雙北低延遲），也可以照設定 fallback 到 Tailscale 公用 DERP。</div>
+        <div class="chip">跨站點 subnet router 拓撲：<strong>家的 tailnet 看得到工作室的 LAN</strong>、反之亦然，policy 精細到「工作室 NAS 只能被家裡書房那台筆電看到」。</div>
+        <div class="chip">交付文件：Headscale CLI 速查、tenant 匯出／備份步驟、災難復原 SLA。</div>
+      </div>
+
+      <h3>你負擔什麼</h3>
+      <p>按月／按年租用，含 Headscale tenant 維運、DERP relay、24/7 監控與版本升級。實際數字依裝置規模與 SLA 等級調整，詳洽經銷商。</p>
+
+      <div class="callout tip"><strong>為什麼要選 Headscale？</strong>三個常見理由：(1) Tailscale 免費 3 使用者不夠家人＋工作室分帳號；(2) 要在多個實體站點之間跑生產級 subnet router 拓撲；(3) 不想把裝置清單放在美國廠商的資料庫。三選一命中就值得考慮 B 模式。</div>
+    </section>
+
+    <section id="scenarios" data-nav="典型情境">
+      <h2 data-icon="integration">典型情境</h2>
+      <p>三個真實家庭的用法，讓你對號入座。</p>
+
+      <h3>1. 台北單棟透天，就一個站點</h3>
+      <p>爸媽退休回鄉，一台 HA 綠罐子放電視櫃，兩支手機一台筆電。想「出門也能開空調、看門口攝影機」，不想付 Nabu Casa 月費也不敢開 port。</p>
+      <div class="chips">
+        <div class="chip say"><span class="who">典型客戶</span>選 <strong>模式 A</strong>：一次交付服務費，之後 Tailscale 官方免費用到滿。</div>
+      </div>
+
+      <h3>2. SOHO 老闆兩地跑：家 + 工作室</h3>
+      <p>白天在工作室，工作室有 NAS 存客戶檔案、印表機、樓下咖啡廳的 IoT 攝影機。家裡有 HA、監控、爸媽 iPad。想從家連工作室 NAS 拿檔案、從工作室看家裡的攝影機、兩邊的 HA 在同一張儀表板上呈現。</p>
+      <div class="chips">
+        <div class="chip say"><span class="who">典型客戶</span>選 <strong>模式 B</strong>：兩個站點各裝一台 subnet router、policy 寫成「只有老闆自己可以跨站點」。免費方案裝置數會不夠。</div>
+      </div>
+
+      <h3>3. 三代同堂 + 家庭工作室</h3>
+      <p>爸媽家、自己家、長輩家三個 HA，加上老婆的手作工作室（有 NAS、印表機、對外沒 IP）。希望三家的 HA 都能在同一個儀表板看、緊急時可以互相看到彼此攝影機。</p>
+      <div class="chips">
+        <div class="chip say"><span class="who">典型客戶</span>選 <strong>模式 B</strong>：4 個站點、10+ 家人裝置，官方免費方案完全裝不下；私有 Headscale 沒這個限制。</div>
+      </div>
+    </section>
+
+    <section id="security" data-nav="安全與隱私">
+      <h2 data-icon="security">安全與隱私</h2>
+      <p>Tailscale 的安全設計來自兩件事：<strong>WireGuard 端到端加密</strong>（連我們也解不了）＋<strong>ACL 最小權限預設關閉</strong>（除非你明說要通，否則裝置之間看不到）。我們的代交付流程把這兩件事真的做出來。</p>
+      <ul>
+        <li><strong>不開 port</strong>：路由器上不動任何埠。你的 IP 對公網來說什麼都沒開。</li>
+        <li><strong>最小權限預設</strong>：交付當下的 policy 就是「爸媽只開 HA、外包工程師只碰他負責的區塊」，不會偷懶開全通。</li>
+        <li><strong>Key expiry 開啟</strong>：手機／筆電 90 天沒登入就自動下線；換手機不用擔心舊裝置還在名單。</li>
+        <li><strong>node approval 開啟</strong>：新裝置要你在管理介面按核准才進得來。防止陌生人拿到 auth key 就進 tailnet。</li>
+        <li><strong>Serve 而非 Funnel</strong>：HA 給 HTTPS 短網址是<strong>只給 tailnet 內</strong>看的，不會意外把 HA 掛到公網。</li>
+        <li><strong>模式 B 附加</strong>：控制平面本身跑在 WoowTech 私有伺服器（新加坡＋台灣雙節點），資料庫每日備份且加密，你要退租我們給你完整匯出。</li>
+      </ul>
+    </section>
+
+    <section id="compare" data-nav="方案比一比">
+      <h2 data-icon="compare">方案比一比：跟你可能想到的其他做法</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nabu Casa</th>
+            <th>路由器 port forwarding</th>
+            <th class="pi-col">WoowTech Tailscale 方案</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>費用結構</th>
+            <td>每月月費，終生要付</td>
+            <td>免費，但要買 SSL 憑證與研究</td>
+            <td class="pi-col">A：一次代設定費；B：月費含維運</td>
+          </tr>
+          <tr>
+            <th>暴露公網</th>
+            <td>透過 Nabu Casa 中繼，不直暴露</td>
+            <td><strong>直接暴露</strong>——被掃、被試密碼</td>
+            <td class="pi-col">完全不暴露，端到端加密</td>
+          </tr>
+          <tr>
+            <th>多站點互通</th>
+            <td>做不到</td>
+            <td>要各自設，policy 難管</td>
+            <td class="pi-col">B 模式原生支援，policy 集中管</td>
+          </tr>
+          <tr>
+            <th>接你家的 NAS/攝影機</th>
+            <td>只能透過 HA 中轉</td>
+            <td>要各裝置各自開埠（超危險）</td>
+            <td class="pi-col">Subnet router 一次帶進整段 LAN</td>
+          </tr>
+          <tr>
+            <th>HA 得到 HTTPS 短網址</th>
+            <td>有（<code>*.ui.nabu.casa</code>）</td>
+            <td>要自己弄反向代理＋Let's Encrypt</td>
+            <td class="pi-col">Serve 自動給合法 HTTPS，短網址好記</td>
+          </tr>
+          <tr>
+            <th>不熟網路的家人也能用</th>
+            <td>可以，接近一鍵</td>
+            <td>幾乎不行</td>
+            <td class="pi-col">裝一支 Tailscale App、掃 QR 就進來</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="pricing" data-nav="價格與交付">
+      <h2 data-icon="handshake">價格與交付流程</h2>
+      <p>價格會依站點數、裝置數、ACL 複雜度、是否含到府施工而不同——這裡先給一個代交付的「順序感」，實際數字請洽 WoowTech 或您的經銷商。</p>
+      <ol class="steps">
+        <li>
+          <h3>盤點通話（30 分鐘，免費）</h3>
+          <p>幾個站點、幾家人、有哪些 NAS／攝影機／印表機要接進來、想不想跟朋友分享——聊完決定 A 還是 B。</p>
+        </li>
+        <li>
+          <h3>報價與交付範圍書</h3>
+          <p>會列出：交付項目、SLA、你要提供什麼（HA 存取權限、家人清單、路由器管理權）、驗收條件。</p>
+        </li>
+        <li>
+          <h3>遠端或到府施工（半天）</h3>
+          <p>模式 A 多半遠端就能完成；模式 B 若含多站點 subnet router，會安排到府。</p>
+        </li>
+        <li>
+          <h3>驗收＋家人培訓（1 小時）</h3>
+          <p>每個家人現場裝 Tailscale App、掃 QR 上線；我們陪你把「從外面連家」跑一次。留一份小抄。</p>
+        </li>
+        <li>
+          <h3>30 天回訪＋交付文件</h3>
+          <p>你家的 tailnet 拓撲圖、policy 白話說明、Headscale 或 Tailscale 主控台入口、災難復原步驟。</p>
+        </li>
+      </ol>
+      <div class="callout"><strong>費用：</strong>詳洽經銷商。模式 A 為一次性代設定費；模式 B 為月費／年費（含 Headscale tenant 維運、DERP relay、版本升級）。多站點、含到府、多家人培訓另計。</div>
+    </section>
+
+    <section id="faq" data-nav="常見問題">
+      <h2 data-icon="faq">常見問題</h2>
+      <details class="faq">
+        <summary>我已經在用 Nabu Casa，還需要 Tailscale 嗎？</summary>
+        <div class="body">看你的需求。只想「外面能開 HA」，Nabu Casa 就夠；想從外面直接連 NAS／攝影機／印表機、想跨站點互通、想省月費，Tailscale 更適合。兩個也可以並存。</div>
+      </details>
+      <details class="faq">
+        <summary>不熟網路的家人會不會裝不起來？</summary>
+        <div class="body">Tailscale App 在 iOS／Android／Windows／macOS 都是「裝了掃個 QR 就好」的等級。我們的交付範圍就包含現場帶家人裝完、確認能連。之後長輩換手機你 LINE 我們，我們遠端幫你補一張 QR。</div>
+      </details>
+      <details class="faq">
+        <summary>選了 B（Headscale）之後，還能回頭用 A（官方 Tailscale）嗎？</summary>
+        <div class="body">可以。Headscale 的 policy 與 Tailscale 官方相容度極高，遷移主要是每台裝置重新 join（掃新的 QR）。我們代交付時會把 policy 用文件備份，隨時可搬。</div>
+      </details>
+      <details class="faq">
+        <summary>Headscale 的伺服器掛了，我家會斷嗎？</summary>
+        <div class="body">正常情況下裝置之間直接 P2P 連線，不會過 Headscale——控制平面只在「新裝置 join」「policy 變更」「key 過期」時被用到。真的掛了，已連上的裝置能持續運作到 key expiry；我們的 SLA 目標為 30 分鐘內修復，並且提供 fallback 至公用 Tailscale 的緊急遷移方案。</div>
+      </details>
+      <details class="faq">
+        <summary>可以只設定給我自己用，不讓家人加入嗎？</summary>
+        <div class="body">當然可以。ACL policy 就是這件事的答案——tailnet 裡有誰、誰能看誰，都是可設定的。我們甚至可以做「工程師調校期能進，交付後自動撤銷」的臨時帳號。</div>
+      </details>
+      <details class="faq">
+        <summary>如果 Tailscale 公司哪天倒了怎麼辦？</summary>
+        <div class="body">兩個保險：(1) Tailscale client 是開源軟體、WireGuard 協議是業界標準，就算公司沒了 client 還是能用；(2) Headscale 是官方開源相容伺服器——所以我們的 B 模式其實就是「怕 A 模式廠商鎖定」的天然備案。</div>
+      </details>
+      <details class="faq">
+        <summary>要不要準備哪些東西再約通話？</summary>
+        <div class="body">最好先想清楚三件事：(a) 你家幾個「站點」（幾間房子、辦公室）；(b) 有哪些非 HA 的裝置想遠端連（NAS／攝影機／印表機／自架 Docker）；(c) 幾個人要用（大概數字就好）。這三件事決定 A 還是 B、與價格級距。</div>
+      </details>
+    </section>
+
+    <section id="cta" data-nav="聯絡 WoowTech">
+      <h2 data-icon="handshake">下一步</h2>
+      <div class="cta-band">
+        <span class="script">talk to us</span>
+        <h3>還在猶豫要 A 還是 B？先聊 30 分鐘</h3>
+        <p>把你的站點數、家人數、想接的裝置講一講，我們幫你算清楚要走哪一條。免費，也不會硬推。</p>
+        <a class="btn-pill" href="#">聯絡 WoowTech 或您的經銷商</a>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>《Home Assistant Tailscale 私有遠端方案》銷售手冊由 <strong>WoowTech 渥屋科技</strong> 製作。</p>
+      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · © 2026 WOOW Technology Co., Ltd. · Tailscale™ 為 Tailscale Inc. 商標；Headscale 為社群開源專案。本站與其無隸屬關係。</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('navToggle');
+  var mq = window.matchMedia('(max-width: 960px)');
+  function applyCollapse(e) {
+    if (e.matches) { sidebar.classList.add('is-collapsed'); }
+    else { sidebar.classList.remove('is-collapsed'); }
+  }
+  applyCollapse(mq);
+  mq.addEventListener ? mq.addEventListener('change', applyCollapse) : mq.addListener(applyCollapse);
+  toggle.addEventListener('click', function () { sidebar.classList.toggle('is-collapsed'); });
+  sidebar.querySelectorAll('.toc-in-chapter a').forEach(function (a) {
+    a.addEventListener('click', function () { if (mq.matches) sidebar.classList.add('is-collapsed'); });
+  });
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('.toc-in-chapter a[href^="#"]'));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  function onScroll() {
+    var current = null;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= 120) current = sections[i].id;
+    }
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (current && map[current]) map[current].classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
