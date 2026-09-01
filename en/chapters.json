@@ -1,26 +1,38 @@
 {
-  "_readme": "側欄、上下章導覽、目錄卡片、章節編號、SEO meta 與 sitemap 都由此檔產生；改完請執行 node scripts/build_nav.js。hub 模式：index.html 是資源總覽（人手維護），教學目錄由 build_nav 產到 hub.catalog；hub.pages 是自包含單檔手冊，納入 sitemap 與 check_links 白名單但不吃內容頁房規。",
+  "_readme": "Single source for the en/ site root (nav, SEO, catalog, sitemap). Human-readable fields are translation units tracked in i18n/ledger.json. Rebuild with: SITE_ROOT=en node scripts/build_nav.js",
   "site": {
     "title": "Home Assistant Tailscale 遠端連線指南",
     "brand": "HA Tailscale 指南",
     "subtitle": "安全回家，不開埠",
-    "baseUrl": "https://ha-tailscale-guide.woowtech.io",
+    "baseUrl": "https://ha-tailscale-guide.woowtech.io/en",
     "repoUrl": "https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site",
-    "locale": "zh_TW",
+    "locale": "en_US",
     "description": "12 章繁體中文 Home Assistant Tailscale App 教學：從安裝、加入 tailnet、私有遠端存取、最小權限，到 subnet router 基礎與排錯維護。",
     "footerMeta": "截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。",
-    "ogImage": "assets/screenshots/ch3/01_tailscale_web_ui.png",
+    "ogImage": "assets/screenshots/ch3/01_tailscale_web_ui.en.png",
     "license": {
       "name": "CC BY 4.0",
-      "url": "https://creativecommons.org/licenses/by/4.0/deed.zh-hant",
+      "url": "https://creativecommons.org/licenses/by/4.0/deed.en",
       "holder": "woowtech"
-    }
+    },
+    "assetBaseUrl": "https://ha-tailscale-guide.woowtech.io",
+    "assetBase": "../",
+    "lang": "en",
+    "localeCode": "en",
+    "localeAlternate": [
+      "zh_TW"
+    ],
+    "fontsUrl": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap"
   },
   "hub": {
     "_readme": "index.html 為四類資源總覽(hub),人手維護、build_nav 不碰。教學目錄頁由 build_nav 產到 catalog 指定的檔案。pages 是 hub 底下的獨立單檔手冊(自帶 head 與樣式),納入 sitemap 與 check_links 白名單。",
     "catalog": "tutorial.html",
     "navLabel": "資源總覽",
-    "pages": ["sales.html", "prompts.html", "skills.html"]
+    "pages": [
+      "sales.html",
+      "prompts.html",
+      "skills.html"
+    ]
   },
   "chapters": [
     {
