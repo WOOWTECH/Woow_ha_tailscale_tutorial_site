@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home Assistant Tailscale 私有遠端方案 · 銷售手冊 · WoowTech 渥屋科技</title>
-  <meta name="description" content="兩種模式讓 Home Assistant 安全遠端存取：HAOS Tailscale add-on 由 WoowTech 代設定 ACL/subnet router/Serve/MagicDNS；或租用 WoowTech Headscale 雲端 PaaS——不受 Tailscale 免費方案限制、私有座標伺服器、多站點內網互通。給家庭與 SOHO。" />
+  <title>Home Assistant Tailscale Private Remote Access · Sales Handbook · WoowTech</title>
+  <meta name="description" content="Two options for secure remote access to Home Assistant: the HAOS Tailscale add-on, with WoowTech setting up ACL/subnet router/Serve/MagicDNS for you; or subscribe to the WoowTech Headscale cloud PaaS — no Tailscale free-plan limits, a private coordination server, multi-site LAN connectivity. For homes and SOHO businesses." />
   <meta name="author" content="WoowTech" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/en/sales.html" />
@@ -360,271 +360,271 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 <body>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#top">HA Tailscale 私有遠端方案</a>
+    <a class="brand" href="#top">HA Tailscale Private Remote Access</a>
     <div class="brand-sub">WoowTech · The Smart Space Solution</div>
     <!-- i18n:switch --><nav class="lang-switch" aria-label="Language"><a href="../sales.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="sales.html" lang="en" aria-current="page">EN</a></nav><!-- /i18n:switch -->
-    <a class="hub-link" href="index.html">◂ HA Tailscale 資源總覽</a>
-    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <a class="hub-link" href="index.html">◂ HA Tailscale Resource Hub</a>
+    <button class="nav-toggle" id="navToggle" type="button">This handbook<span class="nav-toggle-caret"></span></button>
     <div class="toc-in-chapter">
-      <h2>本冊內容</h2>
-      <a href="#why">為什麼要 Tailscale</a>
-      <a href="#what">兩種模式一次看懂</a>
-      <a href="#mode-a">A：add-on 代設定</a>
-      <a href="#mode-b">B：Headscale PaaS</a>
-      <a href="#scenarios">典型情境</a>
-      <a href="#security">安全與隱私</a>
-      <a href="#compare">方案比一比</a>
-      <a href="#pricing">價格與交付</a>
-      <a href="#faq">常見問題</a>
-      <a href="#cta">聯絡 WoowTech</a>
+      <h2>This handbook</h2>
+      <a href="#why">Why Tailscale</a>
+      <a href="#what">Two options</a>
+      <a href="#mode-a">A: add-on setup</a>
+      <a href="#mode-b">B: Headscale PaaS</a>
+      <a href="#scenarios">Typical scenarios</a>
+      <a href="#security">Security and privacy</a>
+      <a href="#compare">Compare options</a>
+      <a href="#pricing">Pricing and delivery</a>
+      <a href="#faq">FAQ</a>
+      <a href="#cta">Contact WoowTech</a>
     </div>
   </aside>
 
   <main class="content" id="top">
     <div class="chapter-header">
       <span class="kicker-script">safe way home</span>
-      <div class="kicker">WoowTech 銷售手冊</div>
-      <h1>安全回家，不用開埠——兩種 Tailscale 交付方案</h1>
-      <p class="lead">遠端存取 Home Assistant、串接多個站點、把家裡的攝影機和 NAS 帶著走——用 Tailscale 的私有網路技術做，全部不用在路由器上開 port，也不用把家的入口暴露在公網。WoowTech 提供兩種代交付模式，選你要的那一種。</p>
+      <div class="kicker">WoowTech · Sales Handbook</div>
+      <h1>Safe way home, no open ports: two Tailscale delivery options</h1>
+      <p class="lead">Remote access to Home Assistant, several sites linked together, your home cameras and NAS wherever you go — all built on the Tailscale private network, with no port to open on the router and no entry point into your home exposed to the internet. WoowTech offers two managed-delivery options; pick the one you want.</p>
       <div class="kpi-frame">
-        <div class="kpi"><div class="num">0 個</div><div class="cap">路由器不用開任何埠</div></div>
-        <div class="kpi"><div class="num">2 種</div><div class="cap">代交付模式任選</div></div>
-        <div class="kpi"><div class="num">100%</div><div class="cap">私有網路，端到端加密</div></div>
+        <div class="kpi"><div class="num">0</div><div class="cap">router ports to open</div></div>
+        <div class="kpi"><div class="num">2</div><div class="cap">managed-delivery options</div></div>
+        <div class="kpi"><div class="num">100%</div><div class="cap">private network, end-to-end encrypted</div></div>
       </div>
     </div>
 
-    <section id="why" data-nav="為什麼要 Tailscale">
-      <h2 data-icon="why">為什麼你家需要 Tailscale</h2>
-      <p>只要用手機從外面打開過家裡的 Home Assistant，你大概碰過三件事：<strong>Nabu Casa 每月付費</strong>、<strong>路由器 port forwarding 一開就被掃</strong>、<strong>DDNS + 反向代理設完自己都不敢碰</strong>。這些方案都有把家的入口「露在公網上」的味道。</p>
-      <p>Tailscale 走另一條路：手機、筆電、Home Assistant 主機各裝一支輕量 client，就地組成一個只有你自己的私有網路（tailnet）。<strong>路由器一個埠都不用開</strong>、封包端到端加密（WireGuard）、每台裝置都能用一個好記的短網址（MagicDNS）互相找到。</p>
-      <div class="callout"><strong>觀念：</strong>Tailscale 免費方案已經夠一家人用——但要玩到 ACL 分權、subnet router 帶進整段 LAN、Serve 給 HA 一個 HTTPS 短網址、多站點互通，你會發現「工具很強、設定的力氣是另外一件事」。這也是為什麼你會需要有人代交付。</div>
+    <section id="why" data-nav="Why Tailscale">
+      <h2 data-icon="why">Why your home needs Tailscale</h2>
+      <p>If you have ever opened Home Assistant at home from a phone while you were out, you have probably run into three things: <strong>a monthly Nabu Casa bill</strong>, <strong>router port forwarding that gets scanned the moment you open it</strong>, and <strong>a DDNS plus reverse proxy setup you no longer dare to touch once it works</strong>. Every one of them leaves your home's entry point sitting on the public internet.</p>
+      <p>Tailscale takes another route: install a lightweight client on your phone, your laptop and the Home Assistant host, and they form a private network that is yours alone (a tailnet). <strong>You never open a single router port</strong>, packets are encrypted end to end (WireGuard), and every device finds the others through a short URL that is easy to remember (MagicDNS).</p>
+      <div class="callout"><strong>Concept:</strong> The Tailscale free plan is already enough for one family — but once you want ACL-based access control, a subnet router that brings in the whole LAN, Serve to give HA an HTTPS short URL, and several sites linked together, you find that the tool is one thing and the work of configuring it is another. That is why you may want someone to deliver it for you.</div>
     </section>
 
-    <section id="what" data-nav="兩種模式一次看懂">
-      <h2 data-icon="what">兩種代交付模式，一次看懂</h2>
-      <p>兩種模式都是「WoowTech 幫你把 Tailscale 用到位」，差別在於<strong>控制平面（誰在管你的裝置清單）</strong>放在哪裡：</p>
+    <section id="what" data-nav="Two options">
+      <h2 data-icon="what">Two managed-delivery options at a glance</h2>
+      <p>Both options are WoowTech getting Tailscale right for you. The difference is where the <strong>control plane (who manages your device list)</strong> lives:</p>
       <div class="feature-grid">
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M6.5,20Q4.22,20 2.61,18.43 1,16.85 1,14.58 1,12.63 2.17,11.1 3.35,9.57 5.25,9.15 5.88,6.85 7.75,5.43 9.63,4 12,4 14.93,4 16.96,6.04 19,8.07 19,11 20.73,11.2 21.86,12.5 23,13.78 23,15.5 23,17.38 21.69,18.69 20.38,20 18.5,20H13Q12.18,20 11.59,19.41 11,18.83 11,18V12.85L9.4,14.4L8,13L12,9L16,13L14.6,14.4L13,12.85V18H18.5Q19.55,18 20.27,17.27 21,16.55 21,15.5 21,14.45 20.27,13.73 19.55,13 18.5,13H17V11Q17,8.93 15.54,7.46 14.08,6 12,6 9.93,6 8.46,7.46 7,8.93 7,11H6.5Q5.05,11 4.03,12.03 3,13.05 3,14.5 3,15.95 4.03,16.97 5.05,18 6.5,18H9V20M12,13Z"/></svg></span>
-          <h3>A. HAOS Add-on 代設定</h3>
-          <p>你買一台跑 Home Assistant OS 的主機（例如 Yellow、Green、或自己組），我們在你家或遠端登入把 HA 內建的 Tailscale add-on 裝好、把 ACL／subnet router／Serve／MagicDNS 全部設對，最後交鑰匙給你。控制平面走<strong>官方 Tailscale.com</strong>。</p>
-          <p><strong>適合：</strong>單一家庭、只有一個站點、想用 Tailscale 官方 SaaS 又不想自己碰 policy hujson。</p>
+          <h3>A. HAOS add-on, set up by WoowTech</h3>
+          <p>You buy a host that runs Home Assistant OS (a Home Assistant Yellow or Green, or one you build yourself). We come to your home or log in remotely, install the built-in Tailscale add-on, set up ACL / subnet router / Serve / MagicDNS correctly, and hand you the keys at the end. The control plane is <strong>the official Tailscale.com</strong>.</p>
+          <p><strong>Good for:</strong> a single household, one site, and anyone who wants the official Tailscale SaaS without touching policy hujson themselves.</p>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M12,3L2,12H5V20H10V14H14V20H19V12H22M12,7.7L14.9,10.4V11.9H12.9V16.5H11.1V11.9H9.1V10.4L12,7.7Z"/></svg></span>
-          <h3>B. Headscale 雲端 PaaS 帳號</h3>
-          <p>不用官方 Tailscale.com——你在 WoowTech 的私有 Headscale 座標伺服器（跑在 <code>*.woowtech.io</code>）開一個 tenant，裝置照樣用開源 Tailscale client 連進來。<strong>裝置數不受 Tailscale 免費 3 使用者／100 裝置上限</strong>，多站點多路由更好談。</p>
-          <p><strong>適合：</strong>SOHO、想自主管控、多站點（家＋工作室＋長輩家）、要接超過 3 個家人或 100 台裝置、對「不想讓資料進美國廠商」有偏好。</p>
+          <h3>B. A Headscale cloud PaaS account</h3>
+          <p>No official Tailscale.com. You open a tenant on the private Headscale coordination server WoowTech runs (on <code>*.woowtech.io</code>), and your devices still connect with the open-source Tailscale client. <strong>The device count is not capped by the Tailscale free 3-user / 100-device limit</strong>, which makes multiple sites and multiple routes easier to arrange.</p>
+          <p><strong>Good for:</strong> a SOHO business, anyone who wants to stay in control, several sites (home + studio + a relative's house), more than 3 family members or 100 devices, and anyone who would prefer not to hand the device list to a US vendor.</p>
         </div>
 
       </div>
-      <div class="callout tip"><strong>提示：</strong>選 A 還是 B 不用一次選對——先跑 A 三個月再搬 B 也可以（tailnet policy 可轉譯，裝置需重新 join）；我們代交付時會把 policy 用文件備份。</div>
+      <div class="callout tip"><strong>Tip:</strong> You do not have to pick A or B correctly the first time — run A for three months and move to B later if you want (the tailnet policy carries over, and each device has to join again). When we deliver, we back up the policy as a document.</div>
     </section>
 
-    <section id="mode-a" data-nav="A：add-on 代設定">
-      <h2 data-icon="ai">模式 A · HAOS Tailscale add-on 代設定</h2>
-      <p>官方 Tailscale + 我們把細活做完，交鑰匙給你。以下每一項都是我們幫你設好、你不用學。</p>
+    <section id="mode-a" data-nav="A: add-on setup">
+      <h2 data-icon="ai">Option A · HAOS Tailscale add-on, set up by WoowTech</h2>
+      <p>Official Tailscale, with us doing the fiddly parts and handing you the keys. Every item below is something we set up for you; you do not have to learn it.</p>
 
-      <h3>交付內容</h3>
+      <h3>What you get</h3>
       <div class="chips">
-        <div class="chip">Tailscale add-on 安裝、開機、加入 tailnet；HA 主機取好裝置名（例：<code>ha-home</code>）。</div>
-        <div class="chip">MagicDNS 開啟——手機打 <code>https://ha-home</code> 就進得去，不用背 IP。</div>
-        <div class="chip">Serve 設好——HA 得到<strong>合法 HTTPS 憑證</strong>的短網址（例：<code>https://ha-home.tail-scale.ts.net</code>），瀏覽器不再跳「不安全」。</div>
-        <div class="chip">Subnet router 宣告＋核准——tailnet 裡的手機可以直接連 <code>192.168.1.x</code> 上的攝影機、NAS、印表機。</div>
-        <div class="chip">ACL policy hujson 寫好——爸媽只能開 HA、小孩不能碰 NAS、外包工程師只能連 Zigbee 網關，一條條寫清楚。</div>
-        <div class="chip">Key expiry、node approval、tag 政策——過期自動下線、新裝置要你按核准才進來。</div>
-        <div class="chip">交付文件：一份「你家的 tailnet 圖」＋「政策說明」＋復原步驟。</div>
+        <div class="chip">We install the Tailscale add-on, start it and join the tailnet; the HA host gets a proper device name (for example <code>ha-home</code>).</div>
+        <div class="chip">MagicDNS on — your phone opens <code>https://ha-home</code> and you are in, with no IP address to memorize.</div>
+        <div class="chip">Serve configured — HA gets a short URL with <strong>a valid HTTPS certificate</strong> (for example <code>https://ha-home.tail-scale.ts.net</code>), so the browser no longer flags it as not secure.</div>
+        <div class="chip">Subnet router advertised and approved — a phone on the tailnet reaches the cameras, NAS and printer on <code>192.168.1.x</code> directly.</div>
+        <div class="chip">The ACL policy hujson written out — parents can only open HA, the kids cannot touch the NAS, a contract engineer can only reach the Zigbee gateway, one rule at a time.</div>
+        <div class="chip">Key expiry, device approval and tag policy — an expired login drops off by itself, and a new device only joins once you approve it.</div>
+        <div class="chip">Handover documents: a map of your tailnet, an explanation of the policy, and the recovery steps.</div>
       </div>
 
-      <h3>你負擔什麼</h3>
-      <p>Tailscale 免費方案（Personal Plan）就夠絕大多數家庭用：3 個使用者、100 台裝置、無限量流量。<strong>你不用另外付月費</strong>。</p>
+      <h3>What you pay for</h3>
+      <p>The Tailscale free plan (Personal plan) is enough for most households: 3 users, 100 devices, unlimited traffic. <strong>There is no monthly fee on top</strong>.</p>
 
-      <div class="callout"><strong>觀念：</strong>WoowTech 賣的是「幫你把 Tailscale 用對的服務」，不是 Tailscale 本身。控制平面仍屬 Tailscale 公司；他們的隱私政策與服務條款請以官方為準。</div>
+      <div class="callout"><strong>Concept:</strong> What WoowTech sells is the service of getting Tailscale right for you, not Tailscale itself. The control plane still belongs to Tailscale the company; for their privacy policy and terms of service, go by the official documents.</div>
     </section>
 
-    <section id="mode-b" data-nav="B：Headscale PaaS">
-      <h2 data-icon="brain">模式 B · WoowTech Headscale 雲端 PaaS</h2>
-      <p>Headscale 是開源版的 Tailscale 控制平面。我們幫你維護一台跑在 <code>*.woowtech.io</code> 的 Headscale 伺服器，你在上面開個帳號，就有自己的私有 tailnet——但流量與資料仍然端到端加密、點對點直連，不會過 WoowTech 的機房。</p>
+    <section id="mode-b" data-nav="B: Headscale PaaS">
+      <h2 data-icon="brain">Option B · WoowTech Headscale cloud PaaS</h2>
+      <p>Headscale is the open-source version of the Tailscale control plane. We maintain a Headscale server for you on <code>*.woowtech.io</code>; you open an account on it and you have a private tailnet of your own — while the traffic and the data stay encrypted end to end over direct peer-to-peer connections, and never pass through a WoowTech data center.</p>
 
-      <h3>交付內容</h3>
+      <h3>What you get</h3>
       <div class="chips">
-        <div class="chip">私有 tenant（例：<code>your-name.hs.woowtech.io</code>），我們幫你把 Home Assistant 加入、把手機／筆電 pre-auth key 準備好。</div>
-        <div class="chip">同樣做完 ACL policy、subnet router、MagicDNS、Serve——功能與模式 A 幾乎等價，但控制平面在我們的私有伺服器。</div>
-        <div class="chip"><strong>裝置數上不封頂</strong>——家＋工作室＋長輩家＋所有家人手機一次串起來，不用像官方 Tailscale 卡在 3 使用者。</div>
-        <div class="chip">DERP relay 走 WoowTech 自架節點（雙北低延遲），也可以照設定 fallback 到 Tailscale 公用 DERP。</div>
-        <div class="chip">跨站點 subnet router 拓撲：<strong>家的 tailnet 看得到工作室的 LAN</strong>、反之亦然，policy 精細到「工作室 NAS 只能被家裡書房那台筆電看到」。</div>
-        <div class="chip">交付文件：Headscale CLI 速查、tenant 匯出／備份步驟、災難復原 SLA。</div>
+        <div class="chip">A private tenant (for example <code>your-name.hs.woowtech.io</code>). We join Home Assistant for you and prepare the preauth keys for the phones and laptops.</div>
+        <div class="chip">The same ACL policy, subnet router, MagicDNS and Serve work — what you get is all but identical to Option A, except that the control plane sits on our private server.</div>
+        <div class="chip"><strong>No cap on the device count</strong> — home, studio, a relative's house and every family phone linked up at once, without the official Tailscale ceiling of 3 users.</div>
+        <div class="chip">The DERP relay runs on WoowTech's own nodes (low latency in your region), and it can be configured to fall back to the public Tailscale DERP.</div>
+        <div class="chip">Cross-site subnet router topology: <strong>the tailnet at home can see the studio LAN</strong> and the other way round, with a policy fine-grained enough to say that the studio NAS is reachable only from the laptop in the study at home.</div>
+        <div class="chip">Handover documents: a Headscale CLI quick reference, the tenant export and backup steps, and the disaster recovery SLA.</div>
       </div>
 
-      <h3>你負擔什麼</h3>
-      <p>按月／按年租用，含 Headscale tenant 維運、DERP relay、24/7 監控與版本升級。實際數字依裝置規模與 SLA 等級調整，詳洽經銷商。</p>
+      <h3>What you pay for</h3>
+      <p>A monthly or yearly subscription, covering Headscale tenant operations, the DERP relay, 24/7 monitoring and version upgrades. The actual figures depend on how many devices you have and which SLA level you pick; ask WoowTech or your reseller.</p>
 
-      <div class="callout tip"><strong>為什麼要選 Headscale？</strong>三個常見理由：(1) Tailscale 免費 3 使用者不夠家人＋工作室分帳號；(2) 要在多個實體站點之間跑生產級 subnet router 拓撲；(3) 不想把裝置清單放在美國廠商的資料庫。三選一命中就值得考慮 B 模式。</div>
+      <div class="callout tip"><strong>Why choose Headscale?</strong> Three common reasons: (1) the free Tailscale limit of 3 users is not enough for separate family and studio accounts; (2) you need a production-grade subnet router topology across several physical sites; (3) you would rather not keep your device list in a US vendor's database. If any one of the three applies, Option B is worth considering.</div>
     </section>
 
-    <section id="scenarios" data-nav="典型情境">
-      <h2 data-icon="integration">典型情境</h2>
-      <p>三個真實家庭的用法，讓你對號入座。</p>
+    <section id="scenarios" data-nav="Typical scenarios">
+      <h2 data-icon="integration">Typical scenarios</h2>
+      <p>Three real households, so you can find the one that matches yours.</p>
 
-      <h3>1. 台北單棟透天，就一個站點</h3>
-      <p>爸媽退休回鄉，一台 HA 綠罐子放電視櫃，兩支手機一台筆電。想「出門也能開空調、看門口攝影機」，不想付 Nabu Casa 月費也不敢開 port。</p>
+      <h3>1. A single-family house, one site</h3>
+      <p>Retired parents, a Home Assistant Green on the TV cabinet, two phones and one laptop. They want to turn on the air conditioning and check the door camera while they are out, without paying the Nabu Casa monthly fee and without daring to open a port.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">典型客戶</span>選 <strong>模式 A</strong>：一次交付服務費，之後 Tailscale 官方免費用到滿。</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option A</strong>: one delivery fee, and after that the official Tailscale free plan for as long as they like.</div>
       </div>
 
-      <h3>2. SOHO 老闆兩地跑：家 + 工作室</h3>
-      <p>白天在工作室，工作室有 NAS 存客戶檔案、印表機、樓下咖啡廳的 IoT 攝影機。家裡有 HA、監控、爸媽 iPad。想從家連工作室 NAS 拿檔案、從工作室看家裡的攝影機、兩邊的 HA 在同一張儀表板上呈現。</p>
+      <h3>2. A SOHO business owner in two places: home + studio</h3>
+      <p>Daytime at the studio, where there is a NAS holding client files, a printer, and the IoT cameras of the cafe downstairs. At home there is HA, the security cameras and the parents' iPad. They want to pull files off the studio NAS from home, watch the home cameras from the studio, and see both sites' HA on one dashboard.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">典型客戶</span>選 <strong>模式 B</strong>：兩個站點各裝一台 subnet router、policy 寫成「只有老闆自己可以跨站點」。免費方案裝置數會不夠。</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option B</strong>: a subnet router at each of the two sites, and a policy that says only the owner may cross between sites. The free plan does not have room for this many devices.</div>
       </div>
 
-      <h3>3. 三代同堂 + 家庭工作室</h3>
-      <p>爸媽家、自己家、長輩家三個 HA，加上老婆的手作工作室（有 NAS、印表機、對外沒 IP）。希望三家的 HA 都能在同一個儀表板看、緊急時可以互相看到彼此攝影機。</p>
+      <h3>3. Three generations under one roof + a home studio</h3>
+      <p>Three Home Assistant installs — the parents' house, their own house and an older relative's house — plus a partner's craft studio (a NAS, a printer, no public IP). They want all three houses' HA on one dashboard, and to be able to see each other's cameras in an emergency.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">典型客戶</span>選 <strong>模式 B</strong>：4 個站點、10+ 家人裝置，官方免費方案完全裝不下；私有 Headscale 沒這個限制。</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option B</strong>: 4 sites and 10+ family devices do not fit in the official free plan at all; a private Headscale has no such limit.</div>
       </div>
     </section>
 
-    <section id="security" data-nav="安全與隱私">
-      <h2 data-icon="security">安全與隱私</h2>
-      <p>Tailscale 的安全設計來自兩件事：<strong>WireGuard 端到端加密</strong>（連我們也解不了）＋<strong>ACL 最小權限預設關閉</strong>（除非你明說要通，否則裝置之間看不到）。我們的代交付流程把這兩件事真的做出來。</p>
+    <section id="security" data-nav="Security and privacy">
+      <h2 data-icon="security">Security and privacy</h2>
+      <p>Tailscale's security design rests on two things: <strong>WireGuard end-to-end encryption</strong> (which not even we can decrypt) and <strong>an ACL that is closed by default under least privilege</strong> (unless you say a connection is allowed, devices cannot see each other). Our managed-delivery process actually puts both in place.</p>
       <ul>
-        <li><strong>不開 port</strong>：路由器上不動任何埠。你的 IP 對公網來說什麼都沒開。</li>
-        <li><strong>最小權限預設</strong>：交付當下的 policy 就是「爸媽只開 HA、外包工程師只碰他負責的區塊」，不會偷懶開全通。</li>
-        <li><strong>Key expiry 開啟</strong>：手機／筆電 90 天沒登入就自動下線；換手機不用擔心舊裝置還在名單。</li>
-        <li><strong>node approval 開啟</strong>：新裝置要你在管理介面按核准才進得來。防止陌生人拿到 auth key 就進 tailnet。</li>
-        <li><strong>Serve 而非 Funnel</strong>：HA 給 HTTPS 短網址是<strong>只給 tailnet 內</strong>看的，不會意外把 HA 掛到公網。</li>
-        <li><strong>模式 B 附加</strong>：控制平面本身跑在 WoowTech 私有伺服器（新加坡＋台灣雙節點），資料庫每日備份且加密，你要退租我們給你完整匯出。</li>
+        <li><strong>No open ports</strong>: nothing on the router changes. Seen from the internet, your IP address has nothing open at all.</li>
+        <li><strong>Least privilege by default</strong>: the policy as delivered already says parents can only open HA and a contract engineer only touches the part they are responsible for. We do not take the shortcut of allowing everything.</li>
+        <li><strong>Key expiry on</strong>: a phone or laptop that has not logged in for 90 days drops off by itself, so when you change phones you need not worry about the old device still being on the list.</li>
+        <li><strong>Device approval on</strong>: a new device only gets in once you approve it in the admin console. That stops a stranger who has an auth key from joining the tailnet.</li>
+        <li><strong>Serve, not Funnel</strong>: the HTTPS short URL for HA is <strong>tailnet-only</strong>, so HA never ends up on the public internet by accident.</li>
+        <li><strong>Option B extras</strong>: the control plane itself runs on WoowTech's private servers (two nodes, Singapore and Taiwan), the database is backed up daily and encrypted, and if you cancel we hand you a full export.</li>
       </ul>
     </section>
 
-    <section id="compare" data-nav="方案比一比">
-      <h2 data-icon="compare">方案比一比：跟你可能想到的其他做法</h2>
+    <section id="compare" data-nav="Compare options">
+      <h2 data-icon="compare">Compared with the alternatives you may be considering</h2>
       <table class="data-table">
         <thead>
           <tr>
             <th></th>
             <th>Nabu Casa</th>
-            <th>路由器 port forwarding</th>
-            <th class="pi-col">WoowTech Tailscale 方案</th>
+            <th>Router port forwarding</th>
+            <th class="pi-col">WoowTech Tailscale option</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th>費用結構</th>
-            <td>每月月費，終生要付</td>
-            <td>免費，但要買 SSL 憑證與研究</td>
-            <td class="pi-col">A：一次代設定費；B：月費含維運</td>
+            <th>Cost structure</th>
+            <td>A monthly fee, for as long as you use it</td>
+            <td>Free, but you buy an SSL certificate and do the research</td>
+            <td class="pi-col">A: a one-off setup fee; B: a subscription that includes operations</td>
           </tr>
           <tr>
-            <th>暴露公網</th>
-            <td>透過 Nabu Casa 中繼，不直暴露</td>
-            <td><strong>直接暴露</strong>——被掃、被試密碼</td>
-            <td class="pi-col">完全不暴露，端到端加密</td>
+            <th>Exposed to the internet</th>
+            <td>Relayed through Nabu Casa, not directly exposed</td>
+            <td><strong>Directly exposed</strong> — scanned, and passwords guessed at</td>
+            <td class="pi-col">Not exposed at all, encrypted end to end</td>
           </tr>
           <tr>
-            <th>多站點互通</th>
-            <td>做不到</td>
-            <td>要各自設，policy 難管</td>
-            <td class="pi-col">B 模式原生支援，policy 集中管</td>
+            <th>Multi-site connectivity</th>
+            <td>Not possible</td>
+            <td>Set up site by site, with a policy that is hard to manage</td>
+            <td class="pi-col">Native to Option B, with the policy managed in one place</td>
           </tr>
           <tr>
-            <th>接你家的 NAS/攝影機</th>
-            <td>只能透過 HA 中轉</td>
-            <td>要各裝置各自開埠（超危險）</td>
-            <td class="pi-col">Subnet router 一次帶進整段 LAN</td>
+            <th>Reach your NAS/cameras</th>
+            <td>Only relayed through HA</td>
+            <td>A port opened for every device (very risky)</td>
+            <td class="pi-col">A subnet router brings in the whole LAN at once</td>
           </tr>
           <tr>
-            <th>HA 得到 HTTPS 短網址</th>
-            <td>有（<code>*.ui.nabu.casa</code>）</td>
-            <td>要自己弄反向代理＋Let's Encrypt</td>
-            <td class="pi-col">Serve 自動給合法 HTTPS，短網址好記</td>
+            <th>HTTPS short URL for HA</th>
+            <td>Yes (<code>*.ui.nabu.casa</code>)</td>
+            <td>You build the reverse proxy plus Let's Encrypt yourself</td>
+            <td class="pi-col">Serve gives you a valid HTTPS certificate automatically, on a short URL that is easy to remember</td>
           </tr>
           <tr>
-            <th>不熟網路的家人也能用</th>
-            <td>可以，接近一鍵</td>
-            <td>幾乎不行</td>
-            <td class="pi-col">裝一支 Tailscale App、掃 QR 就進來</td>
+            <th>Works for non-technical family</th>
+            <td>Yes, close to one click</td>
+            <td>Almost never</td>
+            <td class="pi-col">Install the Tailscale app, scan a QR code and you are in</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <section id="pricing" data-nav="價格與交付">
-      <h2 data-icon="handshake">價格與交付流程</h2>
-      <p>價格會依站點數、裝置數、ACL 複雜度、是否含到府施工而不同——這裡先給一個代交付的「順序感」，實際數字請洽 WoowTech 或您的經銷商。</p>
+    <section id="pricing" data-nav="Pricing and delivery">
+      <h2 data-icon="handshake">Pricing and delivery process</h2>
+      <p>The price depends on the number of sites, the number of devices, how complex the ACL is, and whether on-site installation is included. What follows is the order a managed delivery runs in; for the actual figures, ask WoowTech or your reseller.</p>
       <ol class="steps">
         <li>
-          <h3>盤點通話（30 分鐘，免費）</h3>
-          <p>幾個站點、幾家人、有哪些 NAS／攝影機／印表機要接進來、想不想跟朋友分享——聊完決定 A 還是 B。</p>
+          <h3>Discovery call (30 minutes, free)</h3>
+          <p>How many sites, how many people in the household, which NAS / cameras / printers you want to bring in, whether you want to share with friends. By the end of the call we decide on A or B.</p>
         </li>
         <li>
-          <h3>報價與交付範圍書</h3>
-          <p>會列出：交付項目、SLA、你要提供什麼（HA 存取權限、家人清單、路由器管理權）、驗收條件。</p>
+          <h3>Quote and statement of work</h3>
+          <p>It lists what we deliver, the SLA, what you provide (access to HA, the list of family members, admin rights on the router), and the acceptance criteria.</p>
         </li>
         <li>
-          <h3>遠端或到府施工（半天）</h3>
-          <p>模式 A 多半遠端就能完成；模式 B 若含多站點 subnet router，會安排到府。</p>
+          <h3>Remote or on-site installation (half a day)</h3>
+          <p>Option A can usually be finished remotely; if Option B includes a multi-site subnet router, we schedule an on-site visit.</p>
         </li>
         <li>
-          <h3>驗收＋家人培訓（1 小時）</h3>
-          <p>每個家人現場裝 Tailscale App、掃 QR 上線；我們陪你把「從外面連家」跑一次。留一份小抄。</p>
+          <h3>Acceptance and family training (1 hour)</h3>
+          <p>Every family member installs the Tailscale app and scans a QR code to come online. We run through connecting to the house from outside once with you, and leave a cheat sheet behind.</p>
         </li>
         <li>
-          <h3>30 天回訪＋交付文件</h3>
-          <p>你家的 tailnet 拓撲圖、policy 白話說明、Headscale 或 Tailscale 主控台入口、災難復原步驟。</p>
+          <h3>30-day follow-up visit and handover documents</h3>
+          <p>A topology map of your tailnet, the policy explained in plain language, the entry point to the Headscale or Tailscale admin console, and the disaster recovery steps.</p>
         </li>
       </ol>
-      <div class="callout"><strong>費用：</strong>詳洽經銷商。模式 A 為一次性代設定費；模式 B 為月費／年費（含 Headscale tenant 維運、DERP relay、版本升級）。多站點、含到府、多家人培訓另計。</div>
+      <div class="callout"><strong>Pricing:</strong> Ask WoowTech or your reseller. Option A is a one-off managed-setup fee; Option B is a monthly or yearly fee (covering Headscale tenant operations, the DERP relay and version upgrades). Several sites, on-site work and training for a larger family are quoted separately.</div>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>我已經在用 Nabu Casa，還需要 Tailscale 嗎？</summary>
-        <div class="body">看你的需求。只想「外面能開 HA」，Nabu Casa 就夠；想從外面直接連 NAS／攝影機／印表機、想跨站點互通、想省月費，Tailscale 更適合。兩個也可以並存。</div>
+        <summary>I already use Nabu Casa. Do I still need Tailscale?</summary>
+        <div class="body">It depends on what you need. If you only want to open HA from outside, Nabu Casa is enough. If you want to reach a NAS, cameras or a printer directly from outside, to link several sites, or to drop the monthly fee, Tailscale suits you better. The two can also run side by side.</div>
       </details>
       <details class="faq">
-        <summary>不熟網路的家人會不會裝不起來？</summary>
-        <div class="body">Tailscale App 在 iOS／Android／Windows／macOS 都是「裝了掃個 QR 就好」的等級。我們的交付範圍就包含現場帶家人裝完、確認能連。之後長輩換手機你 LINE 我們，我們遠端幫你補一張 QR。</div>
+        <summary>Will family members who are not technical struggle to install it?</summary>
+        <div class="body">On iOS, Android, Windows and macOS, the Tailscale app is at the install-it-and-scan-a-QR-code level. Our delivery scope includes walking family members through the install on site and confirming that they can connect. Later, when an older relative changes phones, message us on &lt;contact channel&gt; and we will issue a fresh QR code remotely.</div>
       </details>
       <details class="faq">
-        <summary>選了 B（Headscale）之後，還能回頭用 A（官方 Tailscale）嗎？</summary>
-        <div class="body">可以。Headscale 的 policy 與 Tailscale 官方相容度極高，遷移主要是每台裝置重新 join（掃新的 QR）。我們代交付時會把 policy 用文件備份，隨時可搬。</div>
+        <summary>After choosing B (Headscale), can I go back to A (official Tailscale)?</summary>
+        <div class="body">Yes. The Headscale policy is highly compatible with official Tailscale, and the migration is mainly a matter of each device joining again (scanning a new QR code). When we deliver, we back up the policy as a document, so you can move at any time.</div>
       </details>
       <details class="faq">
-        <summary>Headscale 的伺服器掛了，我家會斷嗎？</summary>
-        <div class="body">正常情況下裝置之間直接 P2P 連線，不會過 Headscale——控制平面只在「新裝置 join」「policy 變更」「key 過期」時被用到。真的掛了，已連上的裝置能持續運作到 key expiry；我們的 SLA 目標為 30 分鐘內修復，並且提供 fallback 至公用 Tailscale 的緊急遷移方案。</div>
+        <summary>If the Headscale server goes down, does my home lose connectivity?</summary>
+        <div class="body">Normally devices connect directly peer to peer and nothing goes through Headscale — the control plane is only used when a new device joins, when the policy changes and when a key expires. If it really does go down, devices that are already connected keep working until key expiry; our SLA target is a fix within 30 minutes, and we provide an emergency migration path that falls back to the public Tailscale.</div>
       </details>
       <details class="faq">
-        <summary>可以只設定給我自己用，不讓家人加入嗎？</summary>
-        <div class="body">當然可以。ACL policy 就是這件事的答案——tailnet 裡有誰、誰能看誰，都是可設定的。我們甚至可以做「工程師調校期能進，交付後自動撤銷」的臨時帳號。</div>
+        <summary>Can you set it up for me alone, without letting the family join?</summary>
+        <div class="body">Of course. The ACL policy is the answer to exactly this — who is in the tailnet and who can see whom are both configurable. We can even set up a temporary account that an engineer uses while tuning and that is revoked automatically after handover.</div>
       </details>
       <details class="faq">
-        <summary>如果 Tailscale 公司哪天倒了怎麼辦？</summary>
-        <div class="body">兩個保險：(1) Tailscale client 是開源軟體、WireGuard 協議是業界標準，就算公司沒了 client 還是能用；(2) Headscale 是官方開源相容伺服器——所以我們的 B 模式其實就是「怕 A 模式廠商鎖定」的天然備案。</div>
+        <summary>What if Tailscale the company shuts down one day?</summary>
+        <div class="body">Two safeguards: (1) the Tailscale client is open-source software and the WireGuard protocol is an industry standard, so the client still works even if the company is gone; (2) Headscale is an open-source server compatible with the official one — which makes our Option B the natural fallback if you are worried about vendor lock-in with Option A.</div>
       </details>
       <details class="faq">
-        <summary>要不要準備哪些東西再約通話？</summary>
-        <div class="body">最好先想清楚三件事：(a) 你家幾個「站點」（幾間房子、辦公室）；(b) 有哪些非 HA 的裝置想遠端連（NAS／攝影機／印表機／自架 Docker）；(c) 幾個人要用（大概數字就好）。這三件事決定 A 還是 B、與價格級距。</div>
+        <summary>Should I prepare anything before booking the call?</summary>
+        <div class="body">It helps to be clear on three things first: (a) how many sites you have (how many houses and offices); (b) which non-HA devices you want to reach remotely (NAS / cameras / printer / self-hosted Docker); (c) how many people will use it (a rough number is fine). Those three decide A or B, and which price band you land in.</div>
       </details>
     </section>
 
-    <section id="cta" data-nav="聯絡 WoowTech">
-      <h2 data-icon="handshake">下一步</h2>
+    <section id="cta" data-nav="Contact WoowTech">
+      <h2 data-icon="handshake">Next step</h2>
       <div class="cta-band">
         <span class="script">talk to us</span>
-        <h3>還在猶豫要 A 還是 B？先聊 30 分鐘</h3>
-        <p>把你的站點數、家人數、想接的裝置講一講，我們幫你算清楚要走哪一條。免費，也不會硬推。</p>
-        <a class="btn-pill" href="#">聯絡 WoowTech 或您的經銷商</a>
+        <h3>Still deciding between A and B? Start with a 30-minute call</h3>
+        <p>Tell us how many sites you have, how many people in the household, and which devices you want to connect, and we will work out which route fits. It is free, and there is no hard sell.</p>
+        <a class="btn-pill" href="#">Contact WoowTech or your reseller</a>
       </div>
     </section>
 
     <footer class="site-footer">
-      <p>《Home Assistant Tailscale 私有遠端方案》銷售手冊由 <strong>WoowTech 渥屋科技</strong> 製作。</p>
-      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · © 2026 WOOW Technology Co., Ltd. · Tailscale™ 為 Tailscale Inc. 商標；Headscale 為社群開源專案。本站與其無隸屬關係。</p>
+      <p>The Home Assistant Tailscale Private Remote Access Sales Handbook is produced by <strong>WoowTech</strong>.</p>
+      <p class="footer-meta">The Smart Space Solution · © 2026 WOOW Technology Co., Ltd. · Tailscale™ is a trademark of Tailscale Inc.; Headscale is a community open-source project. This site is not affiliated with either.</p>
     </footer>
   </main>
 </div>

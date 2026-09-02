@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tailscale API/CLI/MCP 控制提示詞庫 · 40+ 條可複製 · WoowTech</title>
-  <meta name="description" content="讓 Claude／Cursor／Codex 等 AI agent 用自然語言操作 Tailscale：ACL policy 生成、subnet router、MagicDNS、Serve/Funnel、SSH、node approval、拓撲查詢、故障排除。40+ 條分 7 類，可複製直接貼給 agent。" />
+  <title>Tailscale API/CLI/MCP Prompt Library · 44 copy-and-paste prompts · WoowTech</title>
+  <meta name="description" content="Let AI agents such as Claude, Cursor and Codex run Tailscale in plain English: ACL policy generation, subnet router, MagicDNS, Serve/Funnel, SSH, device approval, topology queries and troubleshooting. 44 prompts in 7 categories, ready to copy and paste to your agent." />
   <meta name="author" content="WoowTech" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/en/prompts.html" />
@@ -414,346 +414,346 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 <body>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#top">Tailscale 提示詞庫</a>
-    <div class="brand-sub">WoowTech · 給 AI agent 的 40+ 條範例</div>
+    <a class="brand" href="#top">Tailscale Prompt Library</a>
+    <div class="brand-sub">WoowTech · 44 prompts for AI agents</div>
     <!-- i18n:switch --><nav class="lang-switch" aria-label="Language"><a href="../prompts.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="prompts.html" lang="en" aria-current="page">EN</a></nav><!-- /i18n:switch -->
-    <a class="hub-link" href="index.html">◂ HA Tailscale 資源總覽</a>
-    <button class="nav-toggle" id="navToggle" type="button">本冊內容<span class="nav-toggle-caret"></span></button>
+    <a class="hub-link" href="index.html">◂ HA Tailscale Resource Hub</a>
+    <button class="nav-toggle" id="navToggle" type="button">This handbook<span class="nav-toggle-caret"></span></button>
     <div class="toc-in-chapter">
-      <h2>本冊內容</h2>
-      <a href="#why">這本是什麼</a>
-      <a href="#howto">怎麼用</a>
-      <a href="#cat-acl">ACL policy 生成</a>
+      <h2>This handbook</h2>
+      <a href="#why">What this is</a>
+      <a href="#howto">How to use</a>
+      <a href="#cat-acl">ACL policy</a>
       <a href="#cat-subnet">Subnet router</a>
-      <a href="#cat-dns">MagicDNS 記錄</a>
-      <a href="#cat-serve">Serve／Funnel</a>
+      <a href="#cat-dns">MagicDNS and DNS</a>
+      <a href="#cat-serve">Serve/Funnel</a>
       <a href="#cat-ssh">Tailscale SSH</a>
-      <a href="#cat-node">Node approval</a>
-      <a href="#cat-topo">拓撲與清點</a>
-      <a href="#cat-debug">故障排除</a>
-      <a href="#tips">寫法小抄</a>
-      <a href="#faq">常見問題</a>
-      <a href="#download">下載</a>
+      <a href="#cat-node">Device approval</a>
+      <a href="#cat-topo">Topology and inventory</a>
+      <a href="#cat-debug">Troubleshooting</a>
+      <a href="#tips">Cheat sheet</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download">Download</a>
     </div>
   </aside>
 
   <main class="content" id="top">
     <div class="chapter-header">
       <span class="kicker-script">just tell your agent</span>
-      <div class="kicker">WoowTech 提示詞庫</div>
-      <h1>用自然語言操作 Tailscale：40+ 條給 AI agent 的範例</h1>
-      <p class="lead">Claude、Cursor、Codex、Continue、Cline——這些 AI agent 只要接得到 Tailscale REST API（<code>api.tailscale.com/api/v2/</code>）、<code>tailscale</code> CLI，或 tailscale 的 MCP server，就能被你「用中文交代事情」。這本收錄 40+ 條真實可用的提示詞，每一條都能直接複製，貼到 agent 對話框改成你家的細節就送出。</p>
+      <div class="kicker">WoowTech · Prompt Library</div>
+      <h1>Run Tailscale in plain English: 44 prompts for AI agents</h1>
+      <p class="lead">Claude, Cursor, Codex, Continue, Cline — as long as one of these AI agents can reach the Tailscale REST API (<code>api.tailscale.com/api/v2/</code>), the <code>tailscale</code> CLI, or a Tailscale MCP server, you can tell it what to do in plain English. This handbook collects 44 prompts that work in practice. Copy any of them, paste it into the agent's chat box, change the details to match your home, and send.</p>
     </div>
 
-    <section id="why" data-nav="這本是什麼">
-      <h2 data-icon="why">這本是什麼</h2>
-      <p>這是一份「開口範例集」，讓你把 AI agent 當成 Tailscale 副手：<strong>寫 ACL policy 不用背 hujson 語法、宣告 subnet router 不用查 flag、查裝置清單不用 SSH 進去下 CLI</strong>——講一句話，agent 幫你調 API 或 CLI 完成。</p>
-      <p>每一條卡片右上角有「複製」按鈕，貼進 Claude Code／Cursor Chat／Codex Agent 對話框（agent 需已配置 Tailscale API key 或 <code>tailscale</code> CLI 可執行權限），把「你家的裝置名／CIDR／使用者 email」換一換就能送。</p>
-      <div class="callout"><strong>觀念：</strong>提示詞不是咒語。真正的價值是<strong>示範哪些欄位要講清楚</strong>（tailnet、user email、tag、CIDR、hostname）。照抄能動，改成你家的版本更精準。</div>
-      <div class="callout tip"><strong>Tailscale API 前提：</strong>大部分「寫 policy／approve node／管 key」的操作走 REST API（<code>https://api.tailscale.com/api/v2/tailnet/&lt;tailnet&gt;/...</code>），需要在 Tailscale 主控台建立 <strong>OAuth client 或 API access token</strong>。查看類（who's online、routes）也能用本機 <code>tailscale status --json</code>。詳見 <a href="https://tailscale.com/api" rel="noopener">tailscale.com/api</a>。</div>
+    <section id="why" data-nav="What this is">
+      <h2 data-icon="why">What this is</h2>
+      <p>This is a phrasebook that turns an AI agent into your Tailscale sidekick: <strong>write an ACL policy without memorizing hujson syntax, advertise a subnet router without looking up the flag, list your devices without SSHing in to run the CLI</strong> — say one sentence and the agent calls the API or the CLI for you.</p>
+      <p>Every card has a "Copy" button in its top-right corner. Paste the prompt into Claude Code, Cursor Chat or Codex Agent (the agent needs a Tailscale API key, or permission to run the <code>tailscale</code> CLI), swap in your own device name, CIDR and user email, and send it.</p>
+      <div class="callout"><strong>Concept:</strong> a prompt is not a magic spell. Its real value is that it <strong>shows which fields you have to be explicit about</strong> (tailnet, user email, tag, CIDR, hostname). Copied as they are, these prompts work; rewritten for your own setup, they work better.</div>
+      <div class="callout tip"><strong>Tailscale API prerequisite:</strong> most "write the policy, approve a device, manage keys" work goes through the REST API (<code>https://api.tailscale.com/api/v2/tailnet/&lt;tailnet&gt;/...</code>), which needs an <strong>OAuth client or API access token</strong> created in the Tailscale admin console. Read-only work (who's online, routes) also runs from a local <code>tailscale status --json</code>. See <a href="https://tailscale.com/api" rel="noopener">tailscale.com/api</a>.</div>
     </section>
 
-    <section id="howto" data-nav="怎麼用">
-      <h2 data-icon="steps">怎麼用這些提示詞</h2>
+    <section id="howto" data-nav="How to use">
+      <h2 data-icon="steps">How to use these prompts</h2>
       <ol class="steps">
         <li>
-          <h3>先把 agent 接到 Tailscale</h3>
-          <p>三種常見接法：(a) 給 agent 一支 API token（例：Claude Code + Bash tool）；(b) agent 直接呼叫本機 <code>tailscale</code> CLI；(c) 掛 Tailscale MCP server（例：<code>tailscale-mcp</code>、<code>headscale-mcp</code> 之類的社群 server）。任一種都好用。</p>
+          <h3>Connect the agent to Tailscale first</h3>
+          <p>Three common ways: (a) give the agent an API token (for example, Claude Code plus the Bash tool); (b) let the agent call the local <code>tailscale</code> CLI directly; (c) attach a Tailscale MCP server (community servers such as <code>tailscale-mcp</code> or <code>headscale-mcp</code>). Any of the three works.</p>
         </li>
         <li>
-          <h3>挑最接近你需求的一條，按複製</h3>
-          <p>貼進 agent 對話框。這本每條提示詞的措辭都是<strong>寫給 agent 讀</strong>的，不是給你自己看的。</p>
+          <h3>Pick the prompt closest to what you need and press Copy</h3>
+          <p>Paste it into the agent's chat box. Every prompt in this handbook is worded <strong>to be read by the agent</strong>, not by you.</p>
         </li>
         <li>
-          <h3>把佔位符換掉</h3>
-          <p><code>&lt;tailnet&gt;</code>、<code>&lt;user@example.com&gt;</code>、<code>192.168.1.0/24</code>、<code>ha-home</code> 這類是佔位——改成你的實況。有寫「先給我摘要再改」的一定保留。</p>
+          <h3>Replace the placeholders</h3>
+          <p><code>&lt;tailnet&gt;</code>, <code>&lt;user@example.com&gt;</code>, <code>192.168.1.0/24</code> and <code>ha-home</code> are placeholders — change them to match your setup. Always keep the "give me a summary before you change anything" line where a prompt has one.</p>
         </li>
         <li>
-          <h3>危險操作先看 dry-run</h3>
-          <p>會改 policy 或撤銷 auth key 的操作，第一次跑一定先看 agent 提供的 diff／摘要，確認再放行。</p>
+          <h3>Dry-run anything risky</h3>
+          <p>For work that changes the policy or revokes an auth key, read the diff or summary the agent gives you on the first run, and confirm before you let it proceed.</p>
         </li>
       </ol>
-      <div class="callout tip"><strong>提示：</strong>Tailscale API 的 policy 更新是<strong>整包覆蓋</strong>（PUT hujson）——所以「加一條規則」的正確做法一定是「拉當前 policy → 改 → PUT 回去」，本冊每條相關提示詞都有寫。</div>
+      <div class="callout tip"><strong>Tip:</strong> a policy update through the Tailscale API is a <strong>full replace</strong> (PUT hujson), so the correct way to "add one rule" is always fetch the current policy → edit → PUT it back. Every prompt here that touches the policy says so.</div>
     </section>
 
-    <section id="cat-acl" data-nav="ACL policy 生成">
-      <h2 data-icon="acl">ACL policy 生成與編輯</h2>
-      <p>Tailscale policy 是一份 hujson，難點在寫對又不寫過頭。用 agent 生成後手動 review，比自己從頭寫快得多。</p>
+    <section id="cat-acl" data-nav="ACL policy">
+      <h2 data-icon="acl">ACL policy generation and editing</h2>
+      <p>The Tailscale policy is a hujson file, and the hard part is getting it right without opening it too wide. Having an agent draft it and reviewing it yourself is much faster than writing it from scratch.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 Tailscale API 拉我 tailnet「&lt;tailnet-name&gt;」的目前 ACL policy，pretty-print hujson 給我看，並用白話解釋每一條 grants／acls／tagOwners／nodeAttrs 各在做什麼。<strong>只讀不改</strong>。</p>
-        <p class="pnote">API 端點：<code>GET /api/v2/tailnet/{tailnet}/acl</code>。這條當作「先讀後改」的第一步。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use the Tailscale API to fetch the current ACL policy for my tailnet "&lt;tailnet-name&gt;", pretty-print the hujson for me, and explain in plain language what each grants, acls, tagOwners and nodeAttrs entry does. <strong>Read-only, do not change anything</strong>. Answer in English.</p>
+        <p class="pnote">API endpoint: <code>GET /api/v2/tailnet/{tailnet}/acl</code>. Treat this as step one of read before you write.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">請幫我把當前 policy 加一條規則：<strong>tag:family 群組的裝置</strong>可以連 <strong>tag:ha</strong> 群組的 8123 port（Home Assistant Web UI），但不能連其他任何 port。先拉當前 policy、產出修改後版本給我看 diff、我按確認你才 PUT。</p>
-        <p class="pnote">policy 更新是整包覆蓋（PUT）——所以流程一定是 read-modify-write。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Add one rule to my current policy: <strong>devices tagged tag:family</strong> may reach port 8123 on <strong>tag:ha</strong> devices (the Home Assistant Web UI), and no other port. Fetch the current policy first, produce the modified version and show me the diff, and PUT it only after I confirm. Answer in English.</p>
+        <p class="pnote">A policy update is a full replace (PUT), so the flow is always read-modify-write.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">幫我把 policy 的 <code>acls</code> 舊格式重寫成新的 <code>grants</code> 格式（Tailscale 2024 之後推薦寫法），語義完全等價。改完先做 <code>POST /api/v2/tailnet/{tailnet}/acl/validate</code> 檢查通過，才 PUT 上去。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Rewrite the old <code>acls</code> format in my policy as the newer <code>grants</code> format (the style Tailscale has recommended since 2024), keeping the semantics exactly equivalent. Once it is rewritten, run <code>POST /api/v2/tailnet/{tailnet}/acl/validate</code> and PUT it only after validation passes. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">寫一份最小權限的 policy 骨架給我家用：3 個 tag（<code>tag:ha</code>、<code>tag:family</code>、<code>tag:guest</code>）。tagOwners 都指向 <code>&lt;me@example.com&gt;</code>。規則：family 可以連 ha 的 8123、guest 只能連我對外開放的 <code>*:80/443</code>、其他一切拒絕。附上每一段的中文註解。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Write me a least-privilege policy skeleton for home use: 3 tags (<code>tag:ha</code>, <code>tag:family</code>, <code>tag:guest</code>). Point every tagOwners entry at <code>&lt;me@example.com&gt;</code>. Rules: family may reach port 8123 on ha, guest may reach only the <code>*:80/443</code> I have opened, everything else is denied. Add an English comment on each section. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我要幫外包工程師「&lt;contractor@example.com&gt;」開一週的臨時存取：只能連 <code>tag:zigbee-gateway</code> 這一台的 22 port，8 天後自動失效。用 <code>autoApprovers</code> ＋ <code>autoDelete</code>／<code>expiry</code> 設好給我。改動前先看 diff。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">I need to give a contractor, "&lt;contractor@example.com&gt;", one week of temporary access: port 22 on <code>tag:zigbee-gateway</code> and nothing else, expiring automatically after 8 days. Set it up with <code>autoApprovers</code> plus <code>autoDelete</code>/<code>expiry</code>. Show me the diff before you change anything. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">請 dry-run 我這份 policy 對現有裝置的影響：跑 <code>POST /api/v2/tailnet/{tailnet}/acl/preview</code>，帶上 policy 內容和實際 tailnet 節點清單，告訴我哪些原本能通的路徑會被切斷、哪些新開通。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Dry-run what this policy does to my existing devices: run <code>POST /api/v2/tailnet/{tailnet}/acl/preview</code> with the policy body and the real list of tailnet nodes, then tell me which paths that used to work would be cut off and which ones would newly open. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">把我這份 policy 交叉檢查一次：找出 (a) 沒被任何規則使用的 tag、(b) 授權太寬的 <code>*:*</code>、(c) 沒設 tagOwners 的 tag。給我一張改善清單，不要動 policy。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Cross-check this policy once: find (a) tags no rule uses, (b) <code>*:*</code> grants that are too wide, and (c) tags with no tagOwners. Give me a list of improvements, and do not change the policy. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">把我這份 Tailscale policy 轉譯成等價的 Headscale ACL（v0.23+ 的格式）；有 Headscale 不支援的欄位標出來並說明替代做法。輸出兩份：Tailscale 原版、Headscale 對應版。</p>
-        <p class="pnote">要從 Tailscale 搬到 Headscale 時的必備一步。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Translate this Tailscale policy into an equivalent Headscale ACL (the v0.23+ format); flag any field Headscale does not support and explain the workaround. Output both versions: the original Tailscale one and the matching Headscale one. Answer in English.</p>
+        <p class="pnote">A required step when you move from Tailscale to Headscale.</p>
       </div>
 
     </section>
 
     <section id="cat-subnet" data-nav="Subnet router">
-      <h2 data-icon="subnet">Subnet router 設定</h2>
-      <p>Subnet router 讓 tailnet 看見某一段 LAN，是 Tailscale 最實用也最容易設錯的功能之一。</p>
+      <h2 data-icon="subnet">Subnet router setup</h2>
+      <p>A subnet router lets the tailnet see one segment of your LAN. It is one of the most useful things Tailscale does, and one of the easiest to get wrong.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在這台 Home Assistant 主機上把 Tailscale 設成 subnet router，宣告 <code>192.168.1.0/24</code> 進 tailnet。步驟：(1) 用 <code>tailscale up --advertise-routes=192.168.1.0/24 --reset</code> 重新宣告；(2) 檢查 <code>tailscale status --json</code> 確認狀態；(3) 提醒我到管理主控台按核准。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Turn Tailscale on this Home Assistant host into a subnet router and advertise <code>192.168.1.0/24</code> into the tailnet. Steps: (1) re-advertise with <code>tailscale up --advertise-routes=192.168.1.0/24 --reset</code>; (2) check the state with <code>tailscale status --json</code>; (3) remind me to approve it in the admin console. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 Tailscale API 核准 tailnet 中裝置「ha-home」宣告的所有 subnet routes：先 GET <code>/api/v2/device/{id}/routes</code> 看目前 advertised vs enabled，把 advertised 的全部加進 enabled 再 POST 回去。改動前先給我列出來確認。</p>
-        <p class="pnote">Subnet route「被宣告」不等於「已核准」——這是最常見的踩雷。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use the Tailscale API to approve every subnet route the device "ha-home" advertises: GET <code>/api/v2/device/{id}/routes</code> first to see advertised vs enabled, add all the advertised ones to enabled, then POST it back. List them for me to confirm before you change anything. Answer in English.</p>
+        <p class="pnote">An advertised subnet route is not an approved one — this is the most common trap.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我家有兩個站點：家（LAN 192.168.1.0/24，subnet router = ha-home）、工作室（LAN 10.10.0.0/24，subnet router = studio-nas）。請寫 policy 讓：(a) 我自己可以從家看工作室、工作室看家；(b) 家人只能看家；(c) 工作室的訪客不能連任何一段。改動先 preview。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">I have two sites: home (LAN 192.168.1.0/24, subnet router = ha-home) and the studio (LAN 10.10.0.0/24, subnet router = studio-nas). Write a policy so that: (a) I can reach the studio from home and home from the studio; (b) family members can reach home only; (c) guests at the studio can reach neither subnet. Preview the change first. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出 tailnet 裡目前所有 subnet routers 與各自宣告的 CIDR，用表格輸出：hostname、tags、advertised routes、enabled routes、last seen。用 <code>tailscale status --json</code> 或 API 都行，挑你手邊有的。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List every subnet router in the tailnet and the CIDR each one advertises, as a table: hostname, tags, advertised routes, enabled routes, last seen. Use <code>tailscale status --json</code> or the API, whichever you have to hand. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我要撤掉 subnet router「old-nas」的所有宣告：把它 enabled routes 清空、把 hostname 也 rename 標記為 <code>DEPRECATED-old-nas</code>，最後產出撤除紀錄（時間、原因、影響哪些 tag）。動之前先給我 checklist 確認。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">I want to withdraw everything the subnet router "old-nas" advertises: clear its enabled routes, rename the hostname to <code>DEPRECATED-old-nas</code>, and produce a withdrawal record (time, reason, which tags are affected). Give me a checklist to confirm before you act. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 exit node 模式啟用「ha-home」：<code>tailscale up --advertise-exit-node</code>，然後叫我到主控台核准 exit node 使用權。列出核准後手機端要下的指令（<code>tailscale set --exit-node=ha-home</code>）。</p>
-      </div>
-
-    </section>
-
-    <section id="cat-dns" data-nav="MagicDNS 記錄">
-      <h2 data-icon="dns">MagicDNS 與 DNS 設定</h2>
-      <p>MagicDNS 讓每台裝置有一個好記的短網址（例：<code>ha-home</code>），也可以設 split DNS 或加自訂 nameserver。</p>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 API 打開我 tailnet 的 MagicDNS：GET <code>/api/v2/tailnet/{tailnet}/dns/preferences</code> 看現況，如果沒開就 POST 設 <code>{"magicDNS": true}</code>。同時檢查 nameservers 有沒有設，沒設就跳過先不動。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">幫我在 tailnet DNS 加一組 split DNS：對 <code>*.internal.example.com</code> 這個 domain 用 <code>192.168.1.53</code> 這台 DNS 伺服器解析；其他 domain 走原本設定。用 <code>POST /api/v2/tailnet/{tailnet}/dns/nameservers</code> 或 <code>/dns/searchpaths</code>，看正確端點是哪個。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">重新命名 tailnet 裡的裝置「laptop-1234」為 <code>work-laptop</code>：用 <code>POST /api/v2/device/{id}/name</code>。改完給我看 MagicDNS 生效後對應的 <code>*.tailXXXX.ts.net</code> 短網址。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">產出 tailnet 所有裝置的 MagicDNS 短網址對照表：hostname、magicDNS FQDN、tailnet IP、tags。輸出成 markdown 表格，我要貼進 Notion。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 Tailscale API 把 tailnet 的 override local DNS 設成開啟（<code>overrideLocalDNS: true</code>），這樣所有裝置優先用 tailnet DNS。改動前告訴我對「家裡本來用 router 當 DNS」的影響。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Enable "ha-home" as an exit node with <code>tailscale up --advertise-exit-node</code>, then tell me to approve exit node use in the admin console. List the command my phone has to run once it is approved (<code>tailscale set --exit-node=ha-home</code>). Answer in English.</p>
       </div>
 
     </section>
 
-    <section id="cat-serve" data-nav="Serve／Funnel">
-      <h2 data-icon="serve">Serve／Funnel HTTPS 反代</h2>
-      <p>Serve 讓 tailnet 內裝置得到合法 HTTPS 短網址（<code>*.tailXXXX.ts.net</code>）；Funnel 進一步讓它可以對公網開放——後者比較危險，本冊優先做 Serve。</p>
+    <section id="cat-dns" data-nav="MagicDNS and DNS">
+      <h2 data-icon="dns">MagicDNS and DNS settings</h2>
+      <p>MagicDNS gives every device a short URL that is easy to remember (<code>ha-home</code>, for example), and it can also do split DNS or add a custom nameserver.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在這台 HA 主機上用 <code>tailscale serve</code> 幫 Home Assistant Web UI 掛一個 tailnet 內的 HTTPS 短網址：把 <code>localhost:8123</code> 反代到 <code>https://ha-home.tailXXXX.ts.net</code>。<strong>不要開 Funnel</strong>，只給 tailnet 內看。設完 <code>tailscale serve status</code> 給我確認。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Turn on MagicDNS for my tailnet through the API: GET <code>/api/v2/tailnet/{tailnet}/dns/preferences</code> to see the current state, and if it is off, POST <code>{"magicDNS": true}</code>. Also check whether nameservers are set; if they are not, skip that and leave it alone for now. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出這台機器目前所有 Serve／Funnel 設定：跑 <code>tailscale serve status --json</code>，解析出來用表格呈現「路徑 → 後端」對應，並標示哪些是 Serve、哪些是 Funnel（公網可見）。有 Funnel 的請特別標紅。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Add a split DNS entry to the tailnet DNS: resolve the domain <code>*.internal.example.com</code> with the DNS server <code>192.168.1.53</code>, and leave every other domain on the existing settings. Use <code>POST /api/v2/tailnet/{tailnet}/dns/nameservers</code> or <code>/dns/searchpaths</code>, whichever is the right endpoint. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">幫我把 <code>tailscale serve</code> 的 HA 反代設定寫成 systemd unit 或 add-on 啟動 hook，確保 HA 或機器重啟後 serve 會自動恢復。給我完整的 unit 檔內容和放置位置。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Rename the device "laptop-1234" in the tailnet to <code>work-laptop</code> with <code>POST /api/v2/device/{id}/name</code>. Once it is renamed, show me the matching <code>*.tailXXXX.ts.net</code> short URL that MagicDNS serves. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我想把 tailnet 內 <code>ha-home.tailXXXX.ts.net</code> 反代到 HA 的 <code>trusted_proxies</code>：幫我生成 Home Assistant <code>configuration.yaml</code> 需要加的 <code>http:</code> 區塊，並解釋為什麼要加。<strong>只給我 YAML，不要真的改 HA 設定。</strong></p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Produce a MagicDNS short-URL reference for every device in the tailnet: hostname, magicDNS FQDN, tailnet IP, tags. Output it as a markdown table — I want to paste it into Notion. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">警告分析：如果我把 HA 從 Serve 改成 Funnel（公網可見），有哪些風險？列成 checklist：驗證機制、rate limit、公開的 attack surface、Funnel 有沒有 IP 白名單機制。不動任何設定。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use the Tailscale API to turn on override local DNS for the tailnet (<code>overrideLocalDNS: true</code>) so every device prefers the tailnet DNS. Before you change anything, tell me what this does to a home that currently uses the router as its DNS. Answer in English.</p>
+      </div>
+
+    </section>
+
+    <section id="cat-serve" data-nav="Serve/Funnel">
+      <h2 data-icon="serve">Serve/Funnel HTTPS reverse proxy</h2>
+      <p>Serve gives a device inside the tailnet a short URL with a valid HTTPS certificate (<code>*.tailXXXX.ts.net</code>); Funnel goes one step further and opens that URL to the public internet. Funnel is the riskier of the two, so this handbook does Serve first.</p>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">On this HA host, use <code>tailscale serve</code> to give the Home Assistant Web UI an HTTPS short URL inside the tailnet: reverse-proxy <code>localhost:8123</code> to <code>https://ha-home.tailXXXX.ts.net</code>. <strong>Do not turn on Funnel</strong> — keep it visible inside the tailnet only. When it is set up, show me <code>tailscale serve status</code> to confirm. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List every Serve and Funnel setting on this machine: run <code>tailscale serve status --json</code>, parse it, and present the path → backend mapping as a table, marking which entries are Serve and which are Funnel (visible on the public internet). Flag anything on Funnel in red. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Write my <code>tailscale serve</code> reverse-proxy setup for HA as a systemd unit or an add-on startup hook, so that serve comes back on its own after HA or the machine restarts. Give me the complete unit file and where to put it. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">I want <code>ha-home.tailXXXX.ts.net</code> inside the tailnet to be covered by HA's <code>trusted_proxies</code>: generate the addition my Home Assistant <code>configuration.yaml</code> needs — the <code>http:</code> section — and explain why it is needed. <strong>Give me the YAML only; do not actually change the HA configuration.</strong> Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Risk analysis: if I move HA from Serve to Funnel (visible on the public internet), what are the risks? Give me a checklist: authentication, rate limiting, the attack surface that becomes public, and whether Funnel has an IP allowlist. Do not change any settings. Answer in English.</p>
       </div>
 
     </section>
 
     <section id="cat-ssh" data-nav="Tailscale SSH">
-      <h2 data-icon="ssh">Tailscale SSH 授權</h2>
-      <p>Tailscale SSH 讓你用 tailnet 身分登入其他裝置，不用管 authorized_keys，policy 中直接寫誰能 SSH 到哪。</p>
+      <h2 data-icon="ssh">Tailscale SSH authorization</h2>
+      <p>Tailscale SSH lets you log in to other devices with your tailnet identity, with no authorized_keys to maintain; the policy states directly who may SSH where.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">幫我在 policy 中開啟 Tailscale SSH：讓 <code>&lt;me@example.com&gt;</code> 可以用 <code>root</code> 或 <code>admin</code> 身分 SSH 進 tag:ha 群組的所有機器；<strong>其他任何人都不行</strong>。寫成 <code>ssh</code> 區塊給我看 diff、確認再 PUT。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Turn on Tailscale SSH in the policy: let <code>&lt;me@example.com&gt;</code> SSH into every machine tagged tag:ha as <code>root</code> or <code>admin</code>; <strong>nobody else may</strong>. Write it as an <code>ssh</code> block, show me the diff, and PUT it only after I confirm. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">在這台機器上打開 Tailscale SSH server：跑 <code>tailscale up --ssh</code>（保留原有 flags），確認 <code>tailscale status</code> 顯示 SSH 已啟用。改動前提醒我這會取代傳統 sshd 的授權路徑。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Turn on the Tailscale SSH server on this machine: run <code>tailscale up --ssh</code> (keeping the existing flags) and confirm that <code>tailscale status</code> shows SSH enabled. Before the change, remind me that this replaces the authorization path of the traditional sshd. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">為外包工程師「&lt;contractor@example.com&gt;」開<strong>只有 7 天有效期</strong>的 Tailscale SSH 存取，只能 SSH 進 <code>tag:sandbox</code>，check-mode 為 <code>check</code>（登入前需二次確認）。用 policy 的 <code>ssh</code> block 完成，加上 <code>expiry</code>。改前先給我 diff。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Give a contractor, "&lt;contractor@example.com&gt;", Tailscale SSH access that is <strong>valid for 7 days only</strong>, into <code>tag:sandbox</code> and nothing else, with the check mode set to <code>check</code> (a second confirmation before login). Do it in the policy's <code>ssh</code> block, with an <code>expiry</code>. Show me the diff before the change. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">產出 tailnet SSH 稽核報告：拉最近 30 天所有 SSH 連線紀錄（GET <code>/api/v2/tailnet/{tailnet}/logging/network/read</code>），聚合出「誰連了哪台、幾次、平均連線時長」的表格，找出異常。</p>
-      </div>
-
-    </section>
-
-    <section id="cat-node" data-nav="Node approval">
-      <h2 data-icon="node">Node approval 與 key 管理</h2>
-      <p>Node approval 讓新裝置加入 tailnet 時要人工核准；auth key 是自動化加入的憑證。兩者都需要照顧。</p>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">列出 tailnet 中<strong>目前狀態為 pending approval 的新裝置</strong>：hostname、user、tags、requested at。列完問我要不要 approve；我按 approve 你就 <code>POST /api/v2/device/{id}/authorized</code>。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">建立一支<strong>可重用</strong>、24 小時內有效、只能建立 <code>tag:ephemeral-test</code> 標籤裝置的 auth key。用 <code>POST /api/v2/tailnet/{tailnet}/keys</code>，設 <code>reusable: true</code>、<code>ephemeral: true</code>、<code>expirySeconds: 86400</code>。回傳 key 之後<strong>提醒我立即安全保存</strong>。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">找出 tailnet 中 <code>keyExpiryDisabled: true</code>（永不過期）的裝置——這通常代表有人偷懶。列出來，並建議：哪些適合開回 expiry、哪些是 subnet router 本來就該關的。<strong>只列不改</strong>。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">批次撤銷 tailnet 中所有 90 天沒有 <code>lastSeen</code> 的裝置：先列給我看清單並讓我確認，我按確認你才呼叫 <code>DELETE /api/v2/device/{id}</code>。過程中每刪一台印一行 log。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">審計目前 tailnet 上所有 auth keys：查 <code>GET /api/v2/tailnet/{tailnet}/keys</code>，列出「哪支還沒被用過」「哪支已經過期沒刪」「哪支 reusable 又永不過期」。給我一份清理建議清單，不動 keys。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Produce a tailnet SSH audit report: fetch every SSH connection record from the last 30 days (GET <code>/api/v2/tailnet/{tailnet}/logging/network/read</code>), aggregate it into a table of who connected to which machine, how many times, and the average session length, and point out anything unusual. Answer in English.</p>
       </div>
 
     </section>
 
-    <section id="cat-topo" data-nav="拓撲與清點">
-      <h2 data-icon="topo">網路拓撲查詢與清點</h2>
-      <p>問你的 tailnet 現在長什麼樣、誰在線、走什麼 relay，都是 read-only 但很常用的操作。</p>
+    <section id="cat-node" data-nav="Device approval">
+      <h2 data-icon="node">Device approval and key management</h2>
+      <p>Device approval makes a new device wait for a human to approve it before it joins the tailnet; an auth key is the credential that lets automation join. Both need looking after.</p>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 <code>tailscale status --json</code> 列出目前 tailnet 中所有線上裝置，輸出成表格：hostname、tailnet IP、OS、tags、last seen、目前是走 <strong>direct</strong> 還是 <strong>DERP relay</strong>。DERP 的另外標出哪個 region。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">List the <strong>new devices currently pending approval</strong> in the tailnet: hostname, user, tags, requested at. When the list is done, ask me whether to approve them; when I say approve, call <code>POST /api/v2/device/{id}/authorized</code>. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">畫出我 tailnet 的 mermaid graph：節點是裝置（以 tag 分色），邊代表 policy 中允許的存取關係，subnet router 帶進來的 LAN CIDR 標成 cloud shape。輸出成一段 <code>```mermaid</code> 區塊我要貼到 GitHub README。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Create a <strong>reusable</strong> auth key, valid for 24 hours, that can only create devices tagged <code>tag:ephemeral-test</code>. Use <code>POST /api/v2/tailnet/{tailnet}/keys</code> with <code>reusable: true</code>, <code>ephemeral: true</code> and <code>expirySeconds: 86400</code>. After you return the key, <strong>remind me to store it safely right away</strong>. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">用 <code>tailscale ping</code> 測所有其他線上裝置的 P2P 連線：迴圈跑 <code>tailscale ping --c 1 &lt;hostname&gt;</code>，把「走 direct 還是 DERP」「延遲」整理成表格。DERP 的建議我開 UPnP／NAT-PMP 看能不能 NAT 打洞成 direct。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Find the devices in the tailnet with <code>keyExpiryDisabled: true</code> (key expiry off, so they never expire) — usually a sign that someone took a shortcut. List them, and say which ones should have expiry turned back on and which are subnet routers that are meant to have it off. <strong>List only, do not change anything</strong>. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">產出 tailnet 月報：用 API 拉本月新增／移除裝置、subnet route 變更、policy 修改次數、SSH 連線總數。輸出成 markdown 給我貼到工作群。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Remove in bulk every device in the tailnet with no <code>lastSeen</code> for 90 days: show me the list first and let me confirm, and call <code>DELETE /api/v2/device/{id}</code> only after I confirm. Print one log line for each device you delete. Answer in English.</p>
       </div>
 
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">找出 tailnet 中<strong>沒有任何 tag</strong>的裝置——這些通常是「用個人 email 隨手加進來的」漏管理裝置。列給我看，並幫每一台建議一組適合的 tag（用 hostname 猜）。<strong>只建議不改</strong>。</p>
-      </div>
-
-    </section>
-
-    <section id="cat-debug" data-nav="故障排除">
-      <h2 data-icon="debug">故障排除 prompts</h2>
-      <p>連不上、看不到、慢——這幾條給 agent 跑診斷，比自己盲拆快。</p>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">診斷：我從手機（<code>iphone-15</code>）連 <code>ha-home</code> 打不開。請 agent 依序：(1) <code>tailscale status</code> 看兩台都在線；(2) <code>tailscale ping ha-home</code> 看能不能通；(3) <code>tailscale netcheck</code> 看網路健檢；(4) 拉 policy 看有沒有規則擋；(5) 給我一段結論說是哪一層的問題。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">我宣告了 <code>192.168.1.0/24</code> 但 tailnet 裡的手機還是連不到 <code>192.168.1.50</code>。跑：(a) subnet route enabled 檢查、(b) 目標 IP 是否真在該段、(c) 目標裝置有沒有防火牆擋 tailnet 來源、(d) HA 主機 IP forwarding 是否開（<code>sysctl net.ipv4.ip_forward</code>）。給我逐項結論。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Tailscale SSH 突然登不進去了。診斷：(1) <code>tailscale status --json</code> 看目標裝置的 <code>sshHostKeys</code>；(2) 拉 policy 的 <code>ssh</code> block 看規則有沒有動過；(3) 目標機器 <code>journalctl -u tailscaled</code> 最後 30 行；(4) 給我可能原因排序。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">為什麼我的裝置全部走 DERP 而不是 direct？請跑 <code>tailscale netcheck</code> 分析報告：UPnP／NAT-PMP／PCP 狀態、preferred DERP、Global v4/v6 是否有、home NAT type。給我改善建議清單（例如：改用 <code>--advertise-exit-node</code>、開路由器 UPnP、換 DERP region）。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">拉最近 24 小時 tailnet 的 <strong>audit log</strong>（<code>GET /api/v2/tailnet/{tailnet}/logging/configuration/read</code>），列出所有「policy 變更、key 建立、node approval」操作，格式 <code>[時刻] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>，並標出看起來異常的。</p>
-      </div>
-
-      <div class="prompt-card"><button class="copy" type="button">複製</button>
-        <p class="ptext">Home Assistant Tailscale add-on 起不來。診斷：(1) HA supervisor logs 找 <code>tailscaled</code> 相關；(2) 檢查 add-on 設定裡的 <code>auth_key</code> 是不是過期；(3) 檢查 supervisor 對 <code>NET_ADMIN</code> capability 是否給滿；(4) 給我三個最可能原因＋對應解法。</p>
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Audit every auth key on the tailnet: query <code>GET /api/v2/tailnet/{tailnet}/keys</code> and list which keys have never been used, which have expired but were never deleted, and which are both reusable and never expire. Give me a cleanup list, and do not change any keys. Answer in English.</p>
       </div>
 
     </section>
 
-    <section id="tips" data-nav="寫法小抄">
-      <h2 data-icon="what">寫法小抄：讓 agent 少猜一輪</h2>
+    <section id="cat-topo" data-nav="Topology and inventory">
+      <h2 data-icon="topo">Network topology and inventory</h2>
+      <p>Asking what your tailnet looks like right now, who is online and which relay the traffic takes is all read-only work, and you will do it often.</p>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Use <code>tailscale status --json</code> to list every device currently online in the tailnet as a table: hostname, tailnet IP, OS, tags, last seen, and whether it is <strong>direct</strong> right now or on a <strong>DERP relay</strong>. For the DERP ones, also say which region. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Draw a mermaid graph of my tailnet: nodes are devices (colored by tag), edges are the access the policy allows, and the LAN CIDRs a subnet router brings in are drawn as cloud shapes. Output it as one <code>```mermaid</code> block — I want to paste it into a GitHub README. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Test the P2P connection to every other online device with <code>tailscale ping</code>: loop over <code>tailscale ping --c 1 &lt;hostname&gt;</code> and collect direct-or-DERP and latency into a table. For the DERP ones, tell me whether turning on UPnP or NAT-PMP could get NAT traversal to make them direct. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Produce a monthly report for the tailnet: use the API to fetch the devices added and removed this month, subnet route changes, how many times the policy was modified, and the total number of SSH connections. Output it as markdown so I can post it to the team chat. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Find the devices in the tailnet with <strong>no tags at all</strong> — usually the ones someone added on the fly with a personal email and nobody manages. Show me the list, and suggest a suitable tag for each one (guess from the hostname). <strong>Suggest only, do not change anything</strong>. Answer in English.</p>
+      </div>
+
+    </section>
+
+    <section id="cat-debug" data-nav="Troubleshooting">
+      <h2 data-icon="debug">Troubleshooting prompts</h2>
+      <p>Cannot connect, cannot see it, too slow — hand these to the agent and let it run the diagnosis; it beats taking things apart blind.</p>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Diagnose this: from my phone (<code>iphone-15</code>) I cannot open <code>ha-home</code>. Work through it in order: (1) <code>tailscale status</code> to see that both are online; (2) <code>tailscale ping ha-home</code> to see whether it gets through; (3) <code>tailscale netcheck</code> for a network health check; (4) fetch the policy to see whether a rule blocks it; (5) give me a short conclusion naming the layer at fault. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">I advertised <code>192.168.1.0/24</code>, but a phone on the tailnet still cannot reach <code>192.168.1.50</code>. Check: (a) that the subnet route is enabled; (b) that the target IP really is in that range; (c) whether a firewall on the target device blocks tailnet sources; (d) whether IP forwarding is on for the HA host (<code>sysctl net.ipv4.ip_forward</code>). Give me a conclusion for each item. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Tailscale SSH suddenly stopped letting me in. Diagnose: (1) <code>tailscale status --json</code> to look at <code>sshHostKeys</code> on the target device; (2) fetch the policy's <code>ssh</code> block to see whether the rules changed; (3) the last 30 lines of <code>journalctl -u tailscaled</code> on the target machine; (4) give me the likely causes in order. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Why is every one of my devices relayed through DERP instead of direct? Run <code>tailscale netcheck</code> and analyze the report: UPnP, NAT-PMP and PCP status, preferred DERP, whether Global v4/v6 is present, and the home NAT type. Give me a list of improvements (switch to <code>--advertise-exit-node</code>, turn on UPnP on the router, or change the DERP region, for example). Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">Fetch the tailnet's <strong>audit log</strong> for the last 24 hours (<code>GET /api/v2/tailnet/{tailnet}/logging/configuration/read</code>), list every policy change, key creation and device approval, in the format <code>[時刻] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>, and flag the ones that look unusual. Answer in English.</p>
+      </div>
+
+      <div class="prompt-card"><button class="copy" type="button">Copy</button>
+        <p class="ptext">The Home Assistant Tailscale add-on will not start. Diagnose: (1) search the HA supervisor logs for anything about <code>tailscaled</code>; (2) check whether the <code>auth_key</code> in the add-on configuration has expired; (3) check whether the supervisor grants the full <code>NET_ADMIN</code> capability; (4) give me the three most likely causes and the fix for each. Answer in English.</p>
+      </div>
+
+    </section>
+
+    <section id="tips" data-nav="Cheat sheet">
+      <h2 data-icon="what">Cheat sheet: save the agent a round of guessing</h2>
       <ul>
-        <li><strong>先讀後改</strong>：所有會動 policy 的動作，第一句都寫「先拉當前 policy」。避免 agent 誤覆蓋。</li>
-        <li><strong>指定 API 端點</strong>：例如寫「<code>GET /api/v2/tailnet/{tailnet}/acl</code>」比說「查 ACL」精準十倍。</li>
-        <li><strong>tailnet 用符號</strong>：Tailscale 官方接受 <code>-</code> 代替 tailnet 名（用當前 OAuth 對應的 tailnet），寫 <code>{tailnet}</code> 讓 agent 自己填。</li>
-        <li><strong>要求 dry-run／diff</strong>：加一句「先給我 diff 或摘要、我按確認你才 apply」是最便宜的保險。</li>
-        <li><strong>tag 加冒號</strong>：Tailscale tag 一定是 <code>tag:xxx</code>，別漏冒號 agent 會生成錯格式。</li>
-        <li><strong>操作範圍要限縮</strong>：寫「只找 last seen 超過 90 天的」比「找沒在用的」清楚，避免誤刪。</li>
-        <li><strong>回傳格式指定</strong>：要 markdown 表格、mermaid、CSV，先講清楚——agent 產文貼哪都不用再修。</li>
+        <li><strong>Read before you write</strong>: for anything that touches the policy, open with "fetch the current policy first". It stops the agent overwriting by mistake.</li>
+        <li><strong>Name the API endpoint</strong>: writing "<code>GET /api/v2/tailnet/{tailnet}/acl</code>" is ten times more precise than "look up the ACL".</li>
+        <li><strong>Use a symbol for the tailnet</strong>: Tailscale accepts <code>-</code> in place of the tailnet name (it means the tailnet the current OAuth client belongs to), so write <code>{tailnet}</code> and let the agent fill it in.</li>
+        <li><strong>Ask for a dry run or a diff</strong>: adding "give me a diff or a summary first, and apply it only after I confirm" is the cheapest insurance there is.</li>
+        <li><strong>Keep the colon in a tag</strong>: a Tailscale tag is always <code>tag:xxx</code>; drop the colon and the agent generates the wrong format.</li>
+        <li><strong>Narrow the scope</strong>: "only the ones last seen more than 90 days ago" is clearer than "the ones nobody uses", and it prevents accidental deletions.</li>
+        <li><strong>State the output format</strong>: markdown table, mermaid, CSV — say so up front, and whatever the agent writes is ready to paste anywhere.</li>
       </ul>
-      <div class="callout"><strong>觀念：</strong>提示詞的價值不是「完美措辭」，是「讓 agent 少做假設」。每加一個具體條件，就少一次來回修改。</div>
+      <div class="callout"><strong>Concept:</strong> the value of a prompt is not perfect wording, it is leaving the agent fewer assumptions to make. Every concrete condition you add removes one round of back-and-forth.</div>
     </section>
 
-    <section id="faq" data-nav="常見問題">
-      <h2 data-icon="faq">常見問題</h2>
+    <section id="faq" data-nav="FAQ">
+      <h2 data-icon="faq">FAQ</h2>
       <details class="faq">
-        <summary>沒有 Tailscale API token 也能用嗎？</summary>
-        <div class="body">很多提示詞可以——凡是走 <code>tailscale</code> CLI（<code>status</code>、<code>ping</code>、<code>up</code>、<code>serve</code>、<code>netcheck</code>）的，agent 只需要能執行 shell 指令就行。要動 policy／keys／device authorization 才需要 API token。</div>
+        <summary>Can I use these without a Tailscale API token?</summary>
+        <div class="body">Many of them, yes. For anything that goes through the <code>tailscale</code> CLI (<code>status</code>, <code>ping</code>, <code>up</code>, <code>serve</code>, <code>netcheck</code>), the agent only needs to be able to run shell commands. You need an API token only to change the policy, keys or device authorization.</div>
       </details>
       <details class="faq">
-        <summary>這些 prompts 用在 Headscale 也可以嗎？</summary>
-        <div class="body">CLI 相關的完全通用（Tailscale client 連 Headscale 也是同一支）。REST API 的部分：Headscale 有自己的 API（<code>headscale api ...</code> CLI 或 gRPC），提示詞的<strong>意圖</strong>能重用，端點與參數要換成 Headscale 版本。有一條專門的 policy 轉譯提示詞。</div>
+        <summary>Do these prompts work with Headscale too?</summary>
+        <div class="body">The CLI ones work unchanged (the Tailscale client that talks to Headscale is the same binary). For the REST API part: Headscale has its own API (the <code>headscale api ...</code> CLI or gRPC), so the <strong>intent</strong> of a prompt carries over, but you have to swap the endpoints and parameters for the Headscale ones. One prompt is dedicated to translating the policy.</div>
       </details>
       <details class="faq">
-        <summary>Agent 執行時要不要開什麼權限？</summary>
-        <div class="body">看你的 agent。Claude Code／Cursor 需要允許 <code>Bash</code> 或 <code>Terminal</code> 工具；MCP 版本用戶只需要授權 tailscale-mcp server 存取。有 policy 變更的建議都在受控環境（測試 tailnet）跑第一遍。</div>
+        <summary>Does the agent need any permissions to run these?</summary>
+        <div class="body">It depends on your agent. Claude Code and Cursor need the <code>Bash</code> or <code>Terminal</code> tool allowed; with MCP you only have to authorize access for the tailscale-mcp server. Run anything that changes the policy in a controlled environment (a test tailnet) the first time.</div>
       </details>
       <details class="faq">
-        <summary>會不會有 prompt 讓 agent 亂改我 policy？</summary>
-        <div class="body">本冊每一條會改動的都有「先給 diff、我確認再 PUT」句子。如果 agent 直接跳過確認上 policy，那是 agent 沒讀清楚指令，你可以在提示詞後加一句「<strong>禁止未經確認就 PUT</strong>」。正式環境建議 policy 走 GitHub PR 流程。</div>
+        <summary>Could a prompt make the agent change my policy carelessly?</summary>
+        <div class="body">Every prompt here that changes something carries the "show me the diff, PUT only after I confirm" line. If an agent skips the confirmation and pushes the policy anyway, it did not read the instruction closely enough; add one more line to the prompt, "<strong>never PUT without confirmation</strong>". In production, put policy changes through a GitHub PR.</div>
       </details>
       <details class="faq">
-        <summary>我要接哪個 MCP server？</summary>
-        <div class="body">2026-08 目前社群主流有兩個方向：(1) <code>tailscale-mcp</code>（社群包裝 REST API）、(2) 通用 <code>bash</code>／<code>shell</code> MCP + 本機 <code>tailscale</code> CLI。前者裝置操作更安全（有型別檢查），後者最靈活。若走 Headscale，直接用 <code>headscale</code> CLI 或它的 gRPC MCP 適配。</div>
+        <summary>Which MCP server should I connect?</summary>
+        <div class="body">As of 2026-08 the community goes in two directions: (1) <code>tailscale-mcp</code>, a community wrapper around the REST API; (2) a generic <code>bash</code> or <code>shell</code> MCP plus the local <code>tailscale</code> CLI. The first is safer for device operations because it is type-checked; the second is the most flexible. On Headscale, use the <code>headscale</code> CLI directly or its gRPC MCP adapter.</div>
       </details>
     </section>
 
-    <section id="download" data-nav="下載">
-      <h2 data-icon="download">把這本帶走</h2>
-      <p>整本是自包含單檔 HTML，圖示全部內嵌，下載後離線可開、可直接轉寄給同事。</p>
+    <section id="download" data-nav="Download">
+      <h2 data-icon="download">Take this handbook with you</h2>
+      <p>The whole handbook is a single self-contained HTML file with every icon inlined. Download it, open it offline, and forward it to a colleague as it is.</p>
       <p>
-        <a class="btn-pill" href="prompts.html" download="tailscale-提示詞庫.html">下載本冊 HTML</a>
-        <a class="btn-ghost" href="index.html">回資源總覽</a>
+        <a class="btn-pill" href="prompts.html" download="tailscale-prompt-library.html">Download this handbook (HTML)</a>
+        <a class="btn-ghost" href="index.html">Back to the Resource Hub</a>
       </p>
     </section>
 
     <footer class="site-footer">
-      <p>《Home Assistant Tailscale API/CLI/MCP 提示詞庫》由 <strong>WoowTech 渥屋科技</strong> 製作，以 <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> 授權釋出。</p>
-      <p class="footer-meta">The Smart Space Solution · 智慧空間解決方案 · Tailscale™ 為 Tailscale Inc. 商標；Headscale 為社群開源專案。 · <a href="index.html">HA Tailscale 資源總覽</a></p>
+      <p>The Home Assistant Tailscale API/CLI/MCP Prompt Library is produced by <strong>WoowTech</strong> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>.</p>
+      <p class="footer-meta">The Smart Space Solution · Tailscale™ is a trademark of Tailscale Inc.; Headscale is a community open-source project. · <a href="index.html">HA Tailscale Resource Hub</a></p>
     </footer>
   </main>
 </div>
@@ -802,8 +802,8 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
     btn.addEventListener('click', function () {
       var text = card.querySelector('.ptext').innerText;
       var done = function () {
-        btn.textContent = '已複製'; btn.classList.add('ok');
-        setTimeout(function () { btn.textContent = '複製'; btn.classList.remove('ok'); }, 1600);
+        btn.textContent = 'Copied'; btn.classList.add('ok');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1600);
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });

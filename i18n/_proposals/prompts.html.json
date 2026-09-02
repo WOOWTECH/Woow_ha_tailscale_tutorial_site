@@ -1,0 +1,10 @@
+{
+  "file": "prompts.html",
+  "entries": [
+    {
+      "unit": "#cat-debug",
+      "zh": "<code>[時刻] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>",
+      "en": "<code>[time] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>"
+    }
+  ]
+}

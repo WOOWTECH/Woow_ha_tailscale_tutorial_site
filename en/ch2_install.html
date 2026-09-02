@@ -2,22 +2,22 @@
 <html lang="en"><head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter 2 · 安裝 App · Home Assistant Tailscale 遠端連線指南</title>
-  <meta name="description" content="Home Assistant Tailscale App 安裝教學：Apps 頁面、安裝、啟動、Web UI 與第一輪安全檢查。" />
-  <meta name="author" content="woowtech" />
+  <title>Chapter 2 · Install the app · Home Assistant Tailscale Remote Access Guide</title>
+  <meta name="description" content="Home Assistant Tailscale app install guide: the Apps page, install, start, the Web UI and the first round of security checks." />
+  <meta name="author" content="WoowTech" />
   <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/en/ch2_install.html" />
   <meta name="robots" content="noindex, follow" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Home Assistant Tailscale 遠端連線指南" />
+  <meta property="og:site_name" content="Home Assistant Tailscale Remote Access Guide" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:locale:alternate" content="zh_TW" />
-  <meta property="og:title" content="Chapter 2 · 安裝 App · Home Assistant Tailscale 遠端連線指南" />
-  <meta property="og:description" content="Home Assistant Tailscale App 安裝教學：Apps 頁面、安裝、啟動、Web UI 與第一輪安全檢查。" />
+  <meta property="og:title" content="Chapter 2 · Install the app · Home Assistant Tailscale Remote Access Guide" />
+  <meta property="og:description" content="Home Assistant Tailscale app install guide: the Apps page, install, start, the Web UI and the first round of security checks." />
   <meta property="og:url" content="https://ha-tailscale-guide.woowtech.io/en/ch2_install.html" />
   <meta property="og:image" content="https://ha-tailscale-guide.woowtech.io/assets/og/ha-tailscale-guide.en.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Chapter 2 · 安裝 App · Home Assistant Tailscale 遠端連線指南" />
-  <meta name="twitter:description" content="Home Assistant Tailscale App 安裝教學：Apps 頁面、安裝、啟動、Web UI 與第一輪安全檢查。" />
+  <meta name="twitter:title" content="Chapter 2 · Install the app · Home Assistant Tailscale Remote Access Guide" />
+  <meta name="twitter:description" content="Home Assistant Tailscale app install guide: the Apps page, install, start, the Web UI and the first round of security checks." />
   <meta name="twitter:image" content="https://ha-tailscale-guide.woowtech.io/assets/og/ha-tailscale-guide.en.png" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en" />
@@ -28,28 +28,28 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/i18n.css" />
 </head><body><div class="layout"><aside class="sidebar">
-    <a class="brand" href="tutorial.html">HA Tailscale 指南</a>
-    <div class="brand-sub">安全回家，不開埠</div>
+    <a class="brand" href="tutorial.html">HA Tailscale Guide</a>
+    <div class="brand-sub">Safe way home, no open ports</div>
     <nav class="lang-switch" aria-label="Language"><a href="../ch2_install.html" lang="zh-Hant" hreflang="zh-Hant">中文</a><a class="active" href="ch2_install.html" lang="en" aria-current="page">EN</a></nav>
-    <a class="hub-link" href="index.html">◂ 資源總覽</a>
+    <a class="hub-link" href="index.html">◂ Resource Hub</a>
     <h2>Chapters</h2>
     <ol>
-      <li class="part-label">基礎：認識安全遠端連線</li>
-      <li data-i18n="pending"><a href="ch1_overview.html">開始前的盤點與安全邊界</a></li>
-      <li data-i18n="pending"><a href="ch2_install.html" class="active">從 Apps 安裝 Tailscale</a></li>
-      <li data-i18n="pending"><a href="ch3_join_tailnet.html">登入並加入你的 tailnet</a></li>
-      <li data-i18n="pending"><a href="ch4_status_logs.html">看懂 App 狀態與日誌</a></li>
-      <li class="part-label">日常：私有遠端存取</li>
-      <li data-i18n="pending"><a href="ch5_remote_ha.html">從 tailnet 安全開啟 Home Assistant</a></li>
-      <li data-i18n="pending"><a href="ch6_machines.html">Machines、名稱與裝置生命週期</a></li>
-      <li data-i18n="pending"><a href="ch7_access_controls.html">最小權限：誰可以連到誰</a></li>
-      <li data-i18n="pending"><a href="ch8_serve.html">選擇 Serve：tailnet 內的 HTTPS 入口</a></li>
-      <li class="part-label">進階：Subnet router 基礎</li>
-      <li data-i18n="pending"><a href="ch9_subnet_basics.html">Subnet router 基礎：讓 tailnet 看見家中 LAN</a></li>
-      <li data-i18n="pending"><a href="ch10_approve_routes.html">核准 subnet route 並做端到端驗證</a></li>
-      <li class="part-label">維護：穩定使用與排錯</li>
-      <li data-i18n="pending"><a href="ch11_daily_use.html">手機與筆電的日常使用守則</a></li>
-      <li data-i18n="pending"><a href="ch12_troubleshooting.html">排錯、更新與交接清單</a></li>
+      <li class="part-label">Basics: understanding secure remote access</li>
+      <li data-i18n="pending"><a href="ch1_overview.html">Inventory and security boundaries before you start</a></li>
+      <li data-i18n="pending"><a href="ch2_install.html" class="active">Install Tailscale from Apps</a></li>
+      <li data-i18n="pending"><a href="ch3_join_tailnet.html">Log in and join your tailnet</a></li>
+      <li data-i18n="pending"><a href="ch4_status_logs.html">Read the app's status and logs</a></li>
+      <li class="part-label">Daily use: private remote access</li>
+      <li data-i18n="pending"><a href="ch5_remote_ha.html">Open Home Assistant safely from the tailnet</a></li>
+      <li data-i18n="pending"><a href="ch6_machines.html">Machines, names and the device lifecycle</a></li>
+      <li data-i18n="pending"><a href="ch7_access_controls.html">Least privilege: who can reach what</a></li>
+      <li data-i18n="pending"><a href="ch8_serve.html">Choose Serve: an HTTPS entry point inside the tailnet</a></li>
+      <li class="part-label">Advanced: subnet router basics</li>
+      <li data-i18n="pending"><a href="ch9_subnet_basics.html">Subnet router basics: let the tailnet see your home LAN</a></li>
+      <li data-i18n="pending"><a href="ch10_approve_routes.html">Approve the subnet route and test end to end</a></li>
+      <li class="part-label">Maintenance: stable use and troubleshooting</li>
+      <li data-i18n="pending"><a href="ch11_daily_use.html">Daily-use rules for phones and laptops</a></li>
+      <li data-i18n="pending"><a href="ch12_troubleshooting.html">Troubleshooting, updates and the handover checklist</a></li>
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
@@ -74,7 +74,7 @@
 <div class="chapter-header"><div class="kicker">Chapter 2</div><h1>Install the app</h1><p class="lead">Find Tailscale on the Home Assistant Apps page, install it and start it; do not guess at settings, and do not rush to make the service public. This chapter walks you through one task at a verifiable, reversible pace: keep access private first, and never expose Home Assistant directly to the internet.</p></div>
 <section id="why" data-nav="Why this matters"><h2 data-icon="why">Why this matters</h2><p>First, confirm that your install type applies. This guide is for Supervisor-managed installs that show Apps in HA (older interfaces may call them Add-ons). If you run Home Assistant Container or Core, there is no Apps page, and the click path in this chapter does not apply.</p><div class="callout"><strong>Chapter scope:</strong> after installing, press Start first, then look at the app's Info, Configuration and Log; do not paste whole blocks of YAML options from web tutorials into it. The official app docs list the available options and the default behavior.</div></section>
 <section id="concept" data-nav="Core concepts"><h2 data-icon="concept">Core concepts</h2><p>A <strong>tailnet</strong> is your private Tailscale network; a <strong>machine</strong> is one device that has joined it; and the <strong>Home Assistant app</strong> is the Tailscale service managed by Supervisor, which you open and configure from the Apps page in HA. Tell these three layers apart first, so that later you do not click in the wrong place.</p><table class="data-table"><thead><tr><th>Layer</th><th>What it handles</th><th>How this chapter verifies it</th></tr></thead><tbody><tr><td>Tailscale admin console</td><td>Accounts, Machines, routes and policy</td><td>HA appears in Machines</td></tr><tr><td>HA Tailscale app</td><td>Runs Tailscale on the HA host</td><td>Status healthy, no blocking errors in the log</td></tr><tr><td>Home Assistant</td><td>Login, dashboard and admin rights</td><td>Log in normally with a personal account</td></tr></tbody></table></section>
-<section id="steps" data-nav="Hands-on"><h2 data-icon="steps">Hands-on: complete this chapter safely</h2><ol class="steps"><li><h3>Record the current state first</h3><p>In the Home Assistant sidebar, go to <strong>Settings → Apps</strong> and find Tailscale; if the screen uses the old name, it may show Add-ons. Note whether it is running, and leave the advanced options you are not using alone for now.</p></li><li><h3>Open the entry point you need</h3><p>Depending on this chapter's goal, look at the app's Info, Configuration, Log or Web UI. Log in and authorize the device from the Web UI only on a trusted personal device.</p></li><li><h3>Cross-check in the admin console</h3><p>Open the Machines page in the Tailscale admin console and confirm the machine that corresponds to Home Assistant, its last-seen status and its feature badges; do not copy the names or IPs in the screenshots as your own values.</p></li><li><h3>Test from another device</h3><p>Take a phone or laptop logged in to the same tailnet and run one access test for this chapter's goal. Once it succeeds, note the test time and the device to make troubleshooting easier later.</p></li></ol><div class="callout tip"><strong>Screenshot privacy:</strong> after installation, the device name, tailnet domain and IP can all be sensitive; the app Web UI screenshots in the next chapter have these fields redacted before showing you where to check.</div></section>
+<section id="steps" data-nav="Hands-on"><h2 data-icon="steps">Hands-on: complete this chapter safely</h2><ol class="steps"><li><h3>Record the current state first</h3><p>In the Home Assistant left-hand menu, go to <strong>Settings → Apps</strong> and find Tailscale; if your screen uses the old name, it may say Add-ons. Note whether it is running, and for now do not change any advanced options you are not using.</p></li><li><h3>Open the entry point you need</h3><p>Depending on this chapter's goal, look at the app's Info, Configuration, Log or Web UI. Log in and authorize the device from the Web UI only on a personal device you trust.</p></li><li><h3>Cross-check in the admin console</h3><p>Open the Machines page in the Tailscale admin console and confirm the machine that corresponds to Home Assistant, its last-seen status and its feature badges; do not copy the names or IPs in the screenshots as your own values.</p></li><li><h3>Test from another device</h3><p>Take a phone or laptop logged in to the same tailnet and run one access test for this chapter's goal. Once it succeeds, note the time and the device you tested with, so troubleshooting is easier later.</p></li></ol><div class="callout tip"><strong>Screenshot privacy:</strong> after installation, the device name, tailnet domain and IP can all be sensitive; the app Web UI screenshots in the next chapter have these fields redacted before showing you where to check.</div></section>
 <section id="install_app" data-nav="Install the app"><h2 data-icon="addons">Walkthrough: install and do the first start only</h2><ol class="steps"><li><h3>Confirm you have Apps</h3><p>Go to <strong>Settings → Apps</strong>, open the store and search for <strong>Tailscale</strong>. If there is no Apps entry, stop: this install is not a Supervisor-managed environment where the app can be installed as this chapter describes.</p></li><li><h3>Install the official app</h3><p>Open the Tailscale entry, read the current version and permissions, then choose Install; when it finishes, press Start. Do not enable options you are not using before you have logged in to the tailnet.</p></li><li><h3>Check the three tabs</h3><p>Go back to the app's Info, Configuration and Log and confirm that it starts and does not fail right away. Login and machine verification are left for <a href="ch3_join_tailnet.html">Chapter 3</a>.</p></li><li><h3>Create a restore point</h3><p>Create a Home Assistant backup first, or at least write down the original settings, so you can always get back to a known state before updating the app or changing network settings.</p></li></ol></section>
 <section id="choices" data-nav="Choosing options"><h2 data-icon="compare">How to choose options without adding risk</h2><p>Start with the smallest workable setup, then expand step by step. If all you want is to see your dashboard while away from home, private access over the tailnet is usually easier to control than a public entry point; if you need a LAN subnet, list one subnet with a clear purpose first, and do not advertise every network at once.</p><table class="data-table"><thead><tr><th>Need</th><th>Recommended start</th><th>Not yet</th></tr></thead><tbody><tr><td>View HA remotely</td><td>Private access from a device logged in to the tailnet</td><td>Open ports and unnecessary public sharing</td></tr><tr><td>Manage devices</td><td>The Machines list and personal accounts</td><td>A shared admin login</td></tr><tr><td>Reach your home LAN</td><td>A single approved subnet route</td><td>Advertising multiple subnets without taking inventory</td></tr></tbody></table></section>
 <section id="security" data-nav="Security check"><h2 data-icon="security">Security check before you finish</h2><p>Check that the account logged in to Tailscale is the right one, that Home Assistant is still managed with separate personal accounts, and that the Machines list has no unknown or retired devices. Permissions follow least privilege: only the people who need to reach HA get a path to it, and only the people who need to manage the tailnet get admin console access.</p><div class="callout warn"><strong>Warning:</strong> do not post login URLs, auth keys, your tailnet domain, full IP addresses, device serial numbers or raw logs in issues, group chats or screenshots.</div></section>
@@ -89,17 +89,17 @@
 </section><div class="pager">
       <a class="prev" href="ch1_overview.html">
         <span class="label">← Previous</span>
-        <span class="title">01 · 開始前的盤點與安全邊界</span>
+        <span class="title">01 · Inventory and security boundaries before you start</span>
       </a>
       <a class="next" href="ch3_join_tailnet.html">
         <span class="label">Next →</span>
-        <span class="title">03 · 登入並加入你的 tailnet</span>
+        <span class="title">03 · Log in and join your tailnet</span>
       </a>
     </div>
 
     <footer class="site-footer">
-      <p>Home Assistant Tailscale 遠端連線指南 is produced by <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">woowtech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
-      <p class="footer-meta">截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。 · <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">Source &amp; errata</a></p>
+      <p>Home Assistant Tailscale Remote Access Guide is produced by <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">WoowTech</a> and released under <a rel="license noopener" href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a> — share and adapt freely, with attribution.</p>
+      <p class="footer-meta">Screenshots are from the official Home Assistant interface. Home Assistant is a trademark of the Open Home Foundation; this site is not affiliated with it. · <a href="https://github.com/WOOWTECH/Woow_ha_tailscale_tutorial_site" rel="noopener">Source &amp; errata</a></p>
     </footer></main></div>
 <script id="ui-strings" type="application/json">{"tocToggle":"Contents","tocExpand":"Expand chapter navigation","tocCollapse":"Collapse chapter navigation"}</script>
 <script src="../assets/js/toc.js"></script></body></html>
