@@ -35,21 +35,21 @@
     <h2>Chapters</h2>
     <ol>
       <li class="part-label">Basics: understanding secure remote access</li>
-      <li data-i18n="pending"><a href="ch1_overview.html">Inventory and security boundaries before you start</a></li>
-      <li data-i18n="pending"><a href="ch2_install.html">Install Tailscale from Apps</a></li>
-      <li data-i18n="pending"><a href="ch3_join_tailnet.html">Log in and join your tailnet</a></li>
-      <li data-i18n="pending"><a href="ch4_status_logs.html">Read the app's status and logs</a></li>
+      <li><a href="ch1_overview.html">Inventory and security boundaries before you start</a></li>
+      <li><a href="ch2_install.html">Install Tailscale from Apps</a></li>
+      <li><a href="ch3_join_tailnet.html">Log in and join your tailnet</a></li>
+      <li><a href="ch4_status_logs.html">Read the app's status and logs</a></li>
       <li class="part-label">Daily use: private remote access</li>
-      <li data-i18n="pending"><a href="ch5_remote_ha.html">Open Home Assistant safely from the tailnet</a></li>
-      <li data-i18n="pending"><a href="ch6_machines.html">Machines, names and the device lifecycle</a></li>
-      <li data-i18n="pending"><a href="ch7_access_controls.html" class="active">Least privilege: who can reach what</a></li>
-      <li data-i18n="pending"><a href="ch8_serve.html">Choose Serve: an HTTPS entry point inside the tailnet</a></li>
+      <li><a href="ch5_remote_ha.html">Open Home Assistant safely from the tailnet</a></li>
+      <li><a href="ch6_machines.html">Machines, names and the device lifecycle</a></li>
+      <li><a href="ch7_access_controls.html" class="active">Least privilege: who can reach what</a></li>
+      <li><a href="ch8_serve.html">Choose Serve: an HTTPS entry point inside the tailnet</a></li>
       <li class="part-label">Advanced: subnet router basics</li>
-      <li data-i18n="pending"><a href="ch9_subnet_basics.html">Subnet router basics: let the tailnet see your home LAN</a></li>
-      <li data-i18n="pending"><a href="ch10_approve_routes.html">Approve the subnet route and test end to end</a></li>
+      <li><a href="ch9_subnet_basics.html">Subnet router basics: let the tailnet see your home LAN</a></li>
+      <li><a href="ch10_approve_routes.html">Approve the subnet route and test end to end</a></li>
       <li class="part-label">Maintenance: stable use and troubleshooting</li>
-      <li data-i18n="pending"><a href="ch11_daily_use.html">Daily-use rules for phones and laptops</a></li>
-      <li data-i18n="pending"><a href="ch12_troubleshooting.html">Troubleshooting, updates and the handover checklist</a></li>
+      <li><a href="ch11_daily_use.html">Daily-use rules for phones and laptops</a></li>
+      <li><a href="ch12_troubleshooting.html">Troubleshooting, updates and the handover checklist</a></li>
     </ol>
     <div class="toc-in-chapter">
       <h2>This chapter</h2>
@@ -70,7 +70,6 @@
 
     </div>
   </aside><main class="content">
-<div class="callout i18n-pending"><strong>This chapter has not been translated yet.</strong> You are reading the original Chinese text. <a href="../ch7_access_controls.html" hreflang="zh-Hant">Open the Chinese version</a></div>
 <div class="chapter-header"><div class="kicker">Chapter 7</div><h1>Least privilege</h1><p class="lead">Tailscale is not a reason to assume "install it and everything can reach everything". Check the policy in the admin console first, then write the access scope to be exactly what is needed. This chapter walks you through one task at a verifiable, reversible pace: keep access private first, and never expose Home Assistant directly to the internet.</p></div>
 <section id="why" data-nav="Why this matters"><h2 data-icon="why">Why this matters</h2><p>Least privilege means this. Give the network access they need only to the people and devices that need to use HA; admin rights in Home Assistant are still controlled by HA user accounts. The Tailscale docs recommend grants as the modern access-control syntax, and ACL is still supported.</p><div class="callout"><strong>Chapter scope:</strong> before you change the policy, review it in the admin console first. Do not make "allow-all first, tidy up later" the default; even at home, you should know which accounts can reach HA.</div></section>
 <section id="concept" data-nav="Core concepts"><h2 data-icon="concept">Core concepts</h2><p>A <strong>tailnet</strong> is your private Tailscale network; a <strong>machine</strong> is one device that has joined it; and the <strong>Home Assistant app</strong> is the Tailscale service managed by Supervisor, which you open and configure from the Apps page in HA. Tell these three layers apart first, so that later you do not click in the wrong place.</p><table class="data-table"><thead><tr><th>Layer</th><th>What it handles</th><th>How this chapter verifies it</th></tr></thead><tbody><tr><td>Tailscale admin console</td><td>Accounts, Machines, routes and policy</td><td>HA appears in Machines</td></tr><tr><td>HA Tailscale app</td><td>Runs Tailscale on the HA host</td><td>Status healthy, no blocking errors in the log</td></tr><tr><td>Home Assistant</td><td>Login, dashboard and admin rights</td><td>Log in normally with a personal account</td></tr></tbody></table></section>

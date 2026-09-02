@@ -1,32 +1,22 @@
 {
-  "_readme": "code 區塊的例外清單：只有列在這裡的 <pre>/<code>/<kbd> 才允許與 zh 不同（通常是程式碼裡的中文註解或中文佔位值）。zh 那邊改了就會對不上而紅燈。由 scripts/apply_code_translations.js 維護。",
-  "allow": [
+  "file": "skills.html",
+  "entries": [
     {
-      "file": "prompts.html",
-      "unit": "#cat-debug",
-      "zh": "<code>[時刻] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>",
-      "en": "<code>[time] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>"
-    },
-    {
-      "file": "skills.html",
       "unit": "#install",
       "zh": "<pre class=\"code-block\"><code>claude plugin install &lt;marketplace&gt;/&lt;plugin&gt;\n# 例：\nclaude plugin install obra/superpowers\nclaude plugin install mattpocock/skills</code></pre>",
       "en": "<pre class=\"code-block\"><code>claude plugin install &lt;marketplace&gt;/&lt;plugin&gt;\n# Example:\nclaude plugin install obra/superpowers\nclaude plugin install mattpocock/skills</code></pre>"
     },
     {
-      "file": "skills.html",
       "unit": "#collections",
       "zh": "<pre class=\"code-block\"><code># 當清單用，不建議整包安裝\nhttps://github.com/ComposioHQ/awesome-claude-skills</code></pre>",
       "en": "<pre class=\"code-block\"><code># Use as a list; do not install the whole bundle\nhttps://github.com/ComposioHQ/awesome-claude-skills</code></pre>"
     },
     {
-      "file": "skills.html",
       "unit": "#collections",
       "zh": "<pre class=\"code-block\"><code># 純索引，照連結裝各原始 repo\nhttps://github.com/VoltAgent/awesome-agent-skills</code></pre>",
       "en": "<pre class=\"code-block\"><code># Index only; install each source repo from its link\nhttps://github.com/VoltAgent/awesome-agent-skills</code></pre>"
     },
     {
-      "file": "skills.html",
       "unit": "#spec",
       "zh": "<pre class=\"code-block\"><code>tailscale-cli/\n└── SKILL.md          ← 唯一必要檔案\n\n# SKILL.md 內容\n---\nname: tailscale-cli\ndescription: 使用者提到 tailnet、tailscale status、subnet router、DERP、\n  magic DNS、tailscale serve、tailscale ssh、tailscale ping、tailscale netcheck\n  時觸發。用本機 tailscale CLI 完成查詢與設定；改動 tailnet policy 或 keys\n  請改用 tailscale-api skill。\nallowed-tools: [\"Bash\"]\n---\n\n# tailscale CLI 使用手冊\n\n## 常用命令\n- `tailscale status --json` — 列出目前 tailnet 節點、連線狀態\n- `tailscale ping &lt;host&gt;` — 測 P2P 連線（direct vs DERP）\n- `tailscale up --advertise-routes=192.168.1.0/24 --reset` — 宣告 subnet router\n- `tailscale serve https://ha-home / http://localhost:8123` — HA HTTPS 反代\n\n## 安全守則\n- `tailscale up --reset` 會覆蓋現有 flags，先跑 `tailscale up --json` 存目前設定\n- 不要在未確認前執行 `tailscale logout`（會把裝置從 tailnet 摘掉）\n</code></pre>",
       "en": "<pre class=\"code-block\"><code>tailscale-cli/\n└── SKILL.md          ← the only required file\n\n# SKILL.md contents\n---\nname: tailscale-cli\ndescription: Triggers when the user mentions tailnet, tailscale status,\n  subnet router, DERP, magic DNS, tailscale serve, tailscale ssh, tailscale ping\n  or tailscale netcheck. Uses the local tailscale CLI for queries and settings;\n  for changes to the tailnet policy or keys, use the tailscale-api skill instead.\nallowed-tools: [\"Bash\"]\n---\n\n# tailscale CLI handbook\n\n## Common commands\n- `tailscale status --json` — list current tailnet nodes and connection state\n- `tailscale ping &lt;host&gt;` — test the P2P connection (direct vs DERP)\n- `tailscale up --advertise-routes=192.168.1.0/24 --reset` — advertise a subnet router\n- `tailscale serve https://ha-home / http://localhost:8123` — HTTPS reverse proxy for HA\n\n## Safety rules\n- `tailscale up --reset` overwrites the existing flags; run `tailscale up --json` first to save the current settings\n- Do not run `tailscale logout` without confirming first (it removes the device from the tailnet)\n</code></pre>"

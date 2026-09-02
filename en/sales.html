@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
   <style>
-/* HA Tailscale 銷售手冊 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+/* HA Tailscale Sales Handbook — Woow_ha_tutorial_site layout x woowtech Brand Prompt Library v2 */
 :root {
   /* Brand palette — blue is the ONLY spot color */
   --ww-blue: #6183FC;
@@ -124,7 +124,7 @@ a:hover { color: var(--ww-blue-700); text-decoration: underline; }
 }
 .chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
 
-/* KPI floating frame（品牌規範：floating frame 必帶 shadow-float） */
+/* KPI floating frame (brand rule: a floating frame always carries shadow-float) */
 .kpi-frame {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
   background: var(--surface); border: 1px solid var(--hairline);
@@ -170,7 +170,7 @@ section h3 {
 }
 section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 
-/* 功能卡（沿用目錄頁 chapter-card 視覺） */
+/* Feature cards (reuse the catalog page chapter-card look) */
 .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .feature-card {
   padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
@@ -185,7 +185,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .feature-card h3 { margin: 0 0 8px; font-size: 18px; }
 .feature-card > p { margin: 0 0 14px; color: var(--ink-700); font-size: 14.5px; }
 
-/* 對話範例 chips（12px 圓角 = 品牌 chip 規則） */
+/* chips12px  =  chip */
 .chips { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; max-width: var(--max-content); }
 .chip {
   background: var(--surface-alt); border: 1px solid var(--hairline);
@@ -207,7 +207,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .chip-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; max-width: var(--max-content); }
 .chip-legend .chip { flex: 0 0 auto; font-size: 13px; padding: 7px 12px; }
 
-/* Steps（一天的生活也用它） */
+/* Steps */
 .steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
 .steps > li {
   counter-increment: step; position: relative;
@@ -254,7 +254,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
 .callout strong { color: var(--ink-900); }
 
-/* 資料表格 */
+/*  */
 .data-table {
   width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
   font-size: 14px; background: var(--surface);
@@ -320,7 +320,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 .site-footer p { margin: 0 0 6px; }
 .site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
 
-/* 手機版側欄收合 */
+/*  */
 .nav-toggle {
   display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
   margin: 4px 0 0; padding: 12px 16px;
@@ -395,7 +395,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 
     <section id="why" data-nav="Why Tailscale">
       <h2 data-icon="why">Why your home needs Tailscale</h2>
-      <p>If you have ever opened Home Assistant at home from a phone while you were out, you have probably run into three things: <strong>a monthly Nabu Casa bill</strong>, <strong>router port forwarding that gets scanned the moment you open it</strong>, and <strong>a DDNS plus reverse proxy setup you no longer dare to touch once it works</strong>. Every one of them leaves your home's entry point sitting on the public internet.</p>
+      <p>If you have ever opened Home Assistant at home from a phone while you were out, you have probably run into three things: <strong>a monthly Nabu Casa bill</strong>, <strong>router port forwarding that gets scanned the moment you open it</strong>, and <strong>a DDNS plus reverse proxy setup you no longer dare to touch once it works</strong>. Every one of them has a whiff of leaving your home's entry point "out on the public internet".</p>
       <p>Tailscale takes another route: install a lightweight client on your phone, your laptop and the Home Assistant host, and they form a private network that is yours alone (a tailnet). <strong>You never open a single router port</strong>, packets are encrypted end to end (WireGuard), and every device finds the others through a short URL that is easy to remember (MagicDNS).</p>
       <div class="callout"><strong>Concept:</strong> The Tailscale free plan is already enough for one family — but once you want ACL-based access control, a subnet router that brings in the whole LAN, Serve to give HA an HTTPS short URL, and several sites linked together, you find that the tool is one thing and the work of configuring it is another. That is why you may want someone to deliver it for you.</div>
     </section>
@@ -420,7 +420,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         </div>
 
       </div>
-      <div class="callout tip"><strong>Tip:</strong> You do not have to pick A or B correctly the first time — run A for three months and move to B later if you want (the tailnet policy carries over, and each device has to join again). When we deliver, we back up the policy as a document.</div>
+      <div class="callout tip"><strong>Tip:</strong> You do not have to pick A or B correctly the first time — run A for three months and move to B later if you want (the tailnet policy can be converted across, and each device has to join again). When we deliver, we back up the policy as a document.</div>
     </section>
 
     <section id="mode-a" data-nav="A: add-on setup">
@@ -431,7 +431,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <div class="chips">
         <div class="chip">We install the Tailscale add-on, start it and join the tailnet; the HA host gets a proper device name (for example <code>ha-home</code>).</div>
         <div class="chip">MagicDNS on — your phone opens <code>https://ha-home</code> and you are in, with no IP address to memorize.</div>
-        <div class="chip">Serve configured — HA gets a short URL with <strong>a valid HTTPS certificate</strong> (for example <code>https://ha-home.tail-scale.ts.net</code>), so the browser no longer flags it as not secure.</div>
+        <div class="chip">Serve configured — HA gets a short URL with <strong>a valid HTTPS certificate</strong> (for example <code>https://ha-home.tail-scale.ts.net</code>), so the browser no longer flags it "Not secure".</div>
         <div class="chip">Subnet router advertised and approved — a phone on the tailnet reaches the cameras, NAS and printer on <code>192.168.1.x</code> directly.</div>
         <div class="chip">The ACL policy hujson written out — parents can only open HA, the kids cannot touch the NAS, a contract engineer can only reach the Zigbee gateway, one rule at a time.</div>
         <div class="chip">Key expiry, device approval and tag policy — an expired login drops off by itself, and a new device only joins once you approve it.</div>
@@ -439,7 +439,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       </div>
 
       <h3>What you pay for</h3>
-      <p>The Tailscale free plan (Personal plan) is enough for most households: 3 users, 100 devices, unlimited traffic. <strong>There is no monthly fee on top</strong>.</p>
+      <p>The Tailscale free plan (Personal plan) is enough for the vast majority of households: 3 users, 100 devices, unlimited traffic. <strong>There is no monthly fee on top</strong>.</p>
 
       <div class="callout"><strong>Concept:</strong> What WoowTech sells is the service of getting Tailscale right for you, not Tailscale itself. The control plane still belongs to Tailscale the company; for their privacy policy and terms of service, go by the official documents.</div>
     </section>
@@ -453,7 +453,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <div class="chip">A private tenant (for example <code>your-name.hs.woowtech.io</code>). We join Home Assistant for you and prepare the preauth keys for the phones and laptops.</div>
         <div class="chip">The same ACL policy, subnet router, MagicDNS and Serve work — what you get is all but identical to Option A, except that the control plane sits on our private server.</div>
         <div class="chip"><strong>No cap on the device count</strong> — home, studio, a relative's house and every family phone linked up at once, without the official Tailscale ceiling of 3 users.</div>
-        <div class="chip">The DERP relay runs on WoowTech's own nodes (low latency in your region), and it can be configured to fall back to the public Tailscale DERP.</div>
+        <div class="chip">The DERP relay runs on WoowTech's own nodes (low latency in the Asia-Pacific region), and it can be configured to fall back to the public Tailscale DERP.</div>
         <div class="chip">Cross-site subnet router topology: <strong>the tailnet at home can see the studio LAN</strong> and the other way round, with a policy fine-grained enough to say that the studio NAS is reachable only from the laptop in the study at home.</div>
         <div class="chip">Handover documents: a Headscale CLI quick reference, the tenant export and backup steps, and the disaster recovery SLA.</div>
       </div>
@@ -469,9 +469,9 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <p>Three real households, so you can find the one that matches yours.</p>
 
       <h3>1. A single-family house, one site</h3>
-      <p>Retired parents, a Home Assistant Green on the TV cabinet, two phones and one laptop. They want to turn on the air conditioning and check the door camera while they are out, without paying the Nabu Casa monthly fee and without daring to open a port.</p>
+      <p>Parents who have retired and moved back to their hometown, a Home Assistant Green on the TV cabinet, two phones and one laptop. They want to turn on the air conditioning and check the door camera while they are out, without paying the Nabu Casa monthly fee and without daring to open a port.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option A</strong>: one delivery fee, and after that the official Tailscale free plan for as long as they like.</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option A</strong>: one delivery fee, and after that the official Tailscale free plan up to its full allowance.</div>
       </div>
 
       <h3>2. A SOHO business owner in two places: home + studio</h3>
@@ -491,7 +491,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h2 data-icon="security">Security and privacy</h2>
       <p>Tailscale's security design rests on two things: <strong>WireGuard end-to-end encryption</strong> (which not even we can decrypt) and <strong>an ACL that is closed by default under least privilege</strong> (unless you say a connection is allowed, devices cannot see each other). Our managed-delivery process actually puts both in place.</p>
       <ul>
-        <li><strong>No open ports</strong>: nothing on the router changes. Seen from the internet, your IP address has nothing open at all.</li>
+        <li><strong>No open ports</strong>: we do not touch a single port on the router. Seen from the internet, your IP address has nothing open at all.</li>
         <li><strong>Least privilege by default</strong>: the policy as delivered already says parents can only open HA and a contract engineer only touches the part they are responsible for. We do not take the shortcut of allowing everything.</li>
         <li><strong>Key expiry on</strong>: a phone or laptop that has not logged in for 90 days drops off by itself, so when you change phones you need not worry about the old device still being on the list.</li>
         <li><strong>Device approval on</strong>: a new device only gets in once you approve it in the admin console. That stops a stranger who has an auth key from joining the tailnet.</li>
@@ -514,9 +514,9 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <tbody>
           <tr>
             <th>Cost structure</th>
-            <td>A monthly fee, for as long as you use it</td>
+            <td>A monthly fee, for as long as you want remote access</td>
             <td>Free, but you buy an SSL certificate and do the research</td>
-            <td class="pi-col">A: a one-off setup fee; B: a subscription that includes operations</td>
+            <td class="pi-col">A: a one-off managed-setup fee; B: a monthly fee that includes operations</td>
           </tr>
           <tr>
             <th>Exposed to the internet</th>
@@ -533,7 +533,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
           <tr>
             <th>Reach your NAS/cameras</th>
             <td>Only relayed through HA</td>
-            <td>A port opened for every device (very risky)</td>
+            <td>A port opened for every device (extremely dangerous)</td>
             <td class="pi-col">A subnet router brings in the whole LAN at once</td>
           </tr>
           <tr>
@@ -554,7 +554,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 
     <section id="pricing" data-nav="Pricing and delivery">
       <h2 data-icon="handshake">Pricing and delivery process</h2>
-      <p>The price depends on the number of sites, the number of devices, how complex the ACL is, and whether on-site installation is included. What follows is the order a managed delivery runs in; for the actual figures, ask WoowTech or your reseller.</p>
+      <p>The price depends on the number of sites, the number of devices, how complex the ACL is, and whether on-site installation is included. What follows gives you a sense of the order a managed delivery runs in; for the actual figures, ask WoowTech or your reseller.</p>
       <ol class="steps">
         <li>
           <h3>Discovery call (30 minutes, free)</h3>
@@ -588,7 +588,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       </details>
       <details class="faq">
         <summary>Will family members who are not technical struggle to install it?</summary>
-        <div class="body">On iOS, Android, Windows and macOS, the Tailscale app is at the install-it-and-scan-a-QR-code level. Our delivery scope includes walking family members through the install on site and confirming that they can connect. Later, when an older relative changes phones, message us on &lt;contact channel&gt; and we will issue a fresh QR code remotely.</div>
+        <div class="body">On iOS, Android, Windows and macOS, the Tailscale app is at the install-it-and-scan-a-QR-code level. Our delivery scope includes walking family members through the install on site and confirming that they can connect. Later, when an older relative changes phones, message us on Telegram or Slack and we will issue a fresh QR code remotely.</div>
       </details>
       <details class="faq">
         <summary>After choosing B (Headscale), can I go back to A (official Tailscale)?</summary>

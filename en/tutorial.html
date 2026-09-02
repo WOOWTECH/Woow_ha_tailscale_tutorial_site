@@ -38,28 +38,28 @@
       <span class="kicker-script">make it yours</span>
       <div class="kicker">Home Assistant Tailscale Onboarding Guide</div>
       <h1>Safe way home, no open ports</h1>
-      <p>From taking inventory of your tailnet, installing the app and joining the tailnet, all the way to private remote access, least privilege, Serve, subnet router basics, troubleshooting and maintenance. 12 chapters, 10 minutes each. The Sales Handbook, Prompt Library and Skill Handbook are in the <a href="index.html">Resource Hub</a>.</p>
+      <p>From taking inventory of your tailnet, installing the app, and joining the tailnet, all the way to private remote access, least privilege, Serve, subnet router basics, troubleshooting and maintenance. 12 chapters, 10 minutes each. The Sales Handbook, Prompt Library and Skill Handbook are in the <a href="index.html">Resource Hub</a>.</p>
     </div>
 
     <section class="chapter-index">
       <h2 class="index-title">Basics: understanding secure remote access</h2>
       <div class="chapter-grid">
-        <a class="chapter-card" href="ch1_overview.html" data-i18n="pending">
+        <a class="chapter-card" href="ch1_overview.html">
           <span class="num">01</span>
           <h3>Before you start</h3>
           <p>Start by deciding who may reach your Home Assistant, which devices join the tailnet, and what this guide deliberately leaves out.</p>
         </a>
-        <a class="chapter-card" href="ch2_install.html" data-i18n="pending">
+        <a class="chapter-card" href="ch2_install.html">
           <span class="num">02</span>
           <h3>Install the app</h3>
           <p>Find Tailscale on the Home Assistant Apps page, install it and start it; do not guess at settings, and do not rush to make the service public.</p>
         </a>
-        <a class="chapter-card" href="ch3_join_tailnet.html" data-i18n="pending">
+        <a class="chapter-card" href="ch3_join_tailnet.html">
           <span class="num">03</span>
           <h3>Join the tailnet</h3>
           <p>Use the Tailscale app's Web UI to make this Home Assistant a member of your tailnet, then confirm that it appears in the admin console.</p>
         </a>
-        <a class="chapter-card" href="ch4_status_logs.html" data-i18n="pending">
+        <a class="chapter-card" href="ch4_status_logs.html">
           <span class="num">04</span>
           <h3>Status and logs</h3>
           <p>Before you change any network option, learn to read the app's status and logs; that is the shortest path when troubleshooting.</p>
@@ -70,22 +70,22 @@
     <section class="chapter-index" style="margin-top:56px;">
       <h2 class="index-title">Daily use: private remote access</h2>
       <div class="chapter-grid">
-        <a class="chapter-card" href="ch5_remote_ha.html" data-i18n="pending">
+        <a class="chapter-card" href="ch5_remote_ha.html">
           <span class="num">05</span>
           <h3>Open HA remotely</h3>
           <p>Let only phones and computers that have joined the tailnet open HA, and set up a verifiable, private remote-access workflow first.</p>
         </a>
-        <a class="chapter-card" href="ch6_machines.html" data-i18n="pending">
+        <a class="chapter-card" href="ch6_machines.html">
           <span class="num">06</span>
           <h3>Manage devices</h3>
           <p>Treat Home Assistant, your phone and your laptop as Machines you manage: name them, audit them, deauthorize the devices you no longer use, and check key expiry.</p>
         </a>
-        <a class="chapter-card" href="ch7_access_controls.html" data-i18n="pending">
+        <a class="chapter-card" href="ch7_access_controls.html">
           <span class="num">07</span>
           <h3>Least privilege</h3>
           <p>Tailscale is not a reason to assume &quot;install it and everything can reach everything&quot;. Check the policy in the admin console first, then write the access scope to be exactly what is needed.</p>
         </a>
-        <a class="chapter-card" href="ch8_serve.html" data-i18n="pending">
+        <a class="chapter-card" href="ch8_serve.html">
           <span class="num">08</span>
           <h3>Serve</h3>
           <p>When you need a clean HTTPS entry point, first understand the security difference between Serve and Funnel; this guide covers tailnet-only Serve and nothing else.</p>
@@ -96,12 +96,12 @@
     <section class="chapter-index" style="margin-top:56px;">
       <h2 class="index-title">Advanced: subnet router basics</h2>
       <div class="chapter-grid">
-        <a class="chapter-card" href="ch9_subnet_basics.html" data-i18n="pending">
+        <a class="chapter-card" href="ch9_subnet_basics.html">
           <span class="num">09</span>
           <h3>Subnet router</h3>
           <p>Let this HA host advertise one subnet of your home LAN only when you are sure you need it; this chapter covers only basic one-way access to a single subnet.</p>
         </a>
-        <a class="chapter-card" href="ch10_approve_routes.html" data-i18n="pending">
+        <a class="chapter-card" href="ch10_approve_routes.html">
           <span class="num">10</span>
           <h3>Approve routes</h3>
           <p>An advertised route is not a usable route yet: approve it in Machines, then verify from another tailnet device.</p>
@@ -112,12 +112,12 @@
     <section class="chapter-index" style="margin-top:56px;">
       <h2 class="index-title">Maintenance: stable use and troubleshooting</h2>
       <div class="chapter-grid">
-        <a class="chapter-card" href="ch11_daily_use.html" data-i18n="pending">
+        <a class="chapter-card" href="ch11_daily_use.html">
           <span class="num">11</span>
           <h3>Daily use</h3>
           <p>Turn remote use into a repeatable habit: confirm Tailscale first, then open HA, and know where to check when the connection drops.</p>
         </a>
-        <a class="chapter-card" href="ch12_troubleshooting.html" data-i18n="pending">
+        <a class="chapter-card" href="ch12_troubleshooting.html">
           <span class="num">12</span>
           <h3>Troubleshooting and maintenance</h3>
           <p>Work through one outside-in checklist to handle connection failures, routes you cannot see, expired logins and problems that appear after a settings change.</p>

@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Yellowtail&display=swap" />
   <style>
-/* HA Tailscale 提示詞庫 — Woow_ha_tutorial_site 版型 × woowtech Brand Prompt Library v2 */
+/* HA Tailscale Prompt Library — Woow_ha_tutorial_site layout x woowtech Brand Prompt Library v2 */
 :root {
   /* Brand palette — blue is the ONLY spot color */
   --ww-blue: #6183FC;
@@ -124,7 +124,7 @@ a:hover { color: var(--ww-blue-700); text-decoration: underline; }
 }
 .chapter-header .lead { font-size: 17px; color: var(--ink-700); margin: 0; max-width: var(--max-content); }
 
-/* KPI floating frame（品牌規範：floating frame 必帶 shadow-float） */
+/* KPI floating frame (brand rule: a floating frame always carries shadow-float) */
 .kpi-frame {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
   background: var(--surface); border: 1px solid var(--hairline);
@@ -170,7 +170,7 @@ section h3 {
 }
 section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 
-/* 功能卡（沿用目錄頁 chapter-card 視覺） */
+/* Feature cards (reuse the catalog page chapter-card look) */
 .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .feature-card {
   padding: 26px 24px; border: 1px solid var(--hairline); border-radius: var(--radius);
@@ -185,7 +185,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .feature-card h3 { margin: 0 0 8px; font-size: 18px; }
 .feature-card > p { margin: 0 0 14px; color: var(--ink-700); font-size: 14.5px; }
 
-/* 對話範例 chips（12px 圓角 = 品牌 chip 規則） */
+/* chips12px  =  chip */
 .chips { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; max-width: var(--max-content); }
 .chip {
   background: var(--surface-alt); border: 1px solid var(--hairline);
@@ -207,7 +207,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .chip-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 4px; max-width: var(--max-content); }
 .chip-legend .chip { flex: 0 0 auto; font-size: 13px; padding: 7px 12px; }
 
-/* Steps（一天的生活也用它） */
+/* Steps */
 .steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
 .steps > li {
   counter-increment: step; position: relative;
@@ -254,7 +254,7 @@ section p, section li { color: var(--ink-700); max-width: var(--max-content); }
 .callout.warn::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23B94D22' d='M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z'/%3E%3C/svg%3E"); }
 .callout strong { color: var(--ink-900); }
 
-/* 資料表格 */
+/*  */
 .data-table {
   width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0;
   font-size: 14px; background: var(--surface);
@@ -320,7 +320,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
 .site-footer p { margin: 0 0 6px; }
 .site-footer .footer-meta { color: var(--ink-500); font-size: 12.5px; }
 
-/* 手機版側欄收合 */
+/*  */
 .nav-toggle {
   display: none; width: 100%; align-items: center; justify-content: space-between; gap: 8px;
   margin: 4px 0 0; padding: 12px 16px;
@@ -354,7 +354,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
   .sidebar.is-collapsed .toc-in-chapter { display: none; }
   .sidebar.is-collapsed > h2 { display: none; }
 }
-/* —— 本頁擴充圖示 —— */
+/*  */
 section h2[data-icon="steps"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M7,13V11H21V13H7M7,19V17H21V19H7M7,7V5H21V7H7M3,8V5H2V4H4V8H3M2,17V16H5V20H2V19H4V18.5H3V17.5H4V17H2M4.25,10A0.75,0.75 0 0,1 5,10.75C5,10.95 4.92,11.14 4.79,11.27L3.12,13H5V14H2V13.08L4,11H2V10H4.25Z'/%3E%3C/svg%3E"); }
 section h2[data-icon="acl"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z'/%3E%3C/svg%3E"); }
 section h2[data-icon="subnet"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M15,20A1,1 0 0,0 14,19H13V17H17A2,2 0 0,0 19,15V5A2,2 0 0,0 17,3H7A2,2 0 0,0 5,5V15A2,2 0 0,0 7,17H11V19H10A1,1 0 0,0 9,20H2V22H9A1,1 0 0,0 10,23H14A1,1 0 0,0 15,22H22V20H15Z'/%3E%3C/svg%3E"); }
@@ -366,7 +366,7 @@ section h2[data-icon="topo"]::before { background-image: url("data:image/svg+xml
 section h2[data-icon="debug"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M14,12H10V10H14M14,16H10V14H14M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.03,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.03,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.97,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.97,10.33 17.91,10H20V8Z'/%3E%3C/svg%3E"); }
 section h2[data-icon="download"]::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233A57C4' d='M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z'/%3E%3C/svg%3E"); }
 
-/* —— 程式碼區塊 —— */
+/*  */
 pre.code-block {
   background: var(--surface-alt); color: var(--ink-900);
   padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--hairline);
@@ -380,7 +380,7 @@ code {
 }
 pre.code-block code { background: none; padding: 0; color: inherit; }
 
-/* —— 提示詞卡 —— */
+/*  */
 .prompt-card {
   position: relative; background: var(--surface);
   border: 1px solid var(--hairline); border-radius: var(--radius-sm);
@@ -400,7 +400,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 .prompt-card .copy.ok { background: rgba(140, 211, 127, 0.2); color: #3d7a34; border-color: rgba(140, 211, 127, 0.5); }
 @media (max-width: 720px) { .prompt-card { padding-right: 18px; padding-top: 46px; } }
 
-/* —— ghost 按鈕 —— */
+/* ghost */
 .btn-ghost {
   display: inline-block; font-family: var(--font-display); font-weight: 600; font-size: 15px;
   background: var(--surface); color: var(--ink-900);
@@ -469,7 +469,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
           <p><code>&lt;tailnet&gt;</code>, <code>&lt;user@example.com&gt;</code>, <code>192.168.1.0/24</code> and <code>ha-home</code> are placeholders — change them to match your setup. Always keep the "give me a summary before you change anything" line where a prompt has one.</p>
         </li>
         <li>
-          <h3>Dry-run anything risky</h3>
+          <h3>Look at a dry run before anything risky</h3>
           <p>For work that changes the policy or revokes an auth key, read the diff or summary the agent gives you on the first run, and confirm before you let it proceed.</p>
         </li>
       </ol>
@@ -481,7 +481,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>The Tailscale policy is a hujson file, and the hard part is getting it right without opening it too wide. Having an agent draft it and reviewing it yourself is much faster than writing it from scratch.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Use the Tailscale API to fetch the current ACL policy for my tailnet "&lt;tailnet-name&gt;", pretty-print the hujson for me, and explain in plain language what each grants, acls, tagOwners and nodeAttrs entry does. <strong>Read-only, do not change anything</strong>. Answer in English.</p>
+        <p class="ptext">Use the Tailscale API to fetch the current ACL policy for my tailnet "&lt;tailnet-name&gt;", pretty-print the hujson for me, and explain in plain language what each grants, acls, tagOwners and nodeAttrs entry does. <strong>Read-only, do not change</strong>. Answer in English.</p>
         <p class="pnote">API endpoint: <code>GET /api/v2/tailnet/{tailnet}/acl</code>. Treat this as step one of read before you write.</p>
       </div>
 
@@ -495,19 +495,19 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Write me a least-privilege policy skeleton for home use: 3 tags (<code>tag:ha</code>, <code>tag:family</code>, <code>tag:guest</code>). Point every tagOwners entry at <code>&lt;me@example.com&gt;</code>. Rules: family may reach port 8123 on ha, guest may reach only the <code>*:80/443</code> I have opened, everything else is denied. Add an English comment on each section. Answer in English.</p>
+        <p class="ptext">Write me a least-privilege policy skeleton for home use: 3 tags (<code>tag:ha</code>, <code>tag:family</code>, <code>tag:guest</code>). Point every tagOwners entry at <code>&lt;me@example.com&gt;</code>. Rules: family may reach port 8123 on ha, guest may reach only the <code>*:80/443</code> I have opened to the outside, everything else is denied. Add an English comment on each section. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">I need to give a contractor, "&lt;contractor@example.com&gt;", one week of temporary access: port 22 on <code>tag:zigbee-gateway</code> and nothing else, expiring automatically after 8 days. Set it up with <code>autoApprovers</code> plus <code>autoDelete</code>/<code>expiry</code>. Show me the diff before you change anything. Answer in English.</p>
+        <p class="ptext">I need to give a contractor, "&lt;contractor@example.com&gt;", one week of temporary access: port 22 on <code>tag:zigbee-gateway</code> and nothing else, expiring automatically after 8 days. Set it up with <code>autoApprovers</code> plus <code>autoDelete</code>/<code>expiry</code>. Show me the diff before changing anything. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Dry-run what this policy does to my existing devices: run <code>POST /api/v2/tailnet/{tailnet}/acl/preview</code> with the policy body and the real list of tailnet nodes, then tell me which paths that used to work would be cut off and which ones would newly open. Answer in English.</p>
+        <p class="ptext">Do a dry run of what this policy does to my existing devices: run <code>POST /api/v2/tailnet/{tailnet}/acl/preview</code> with the policy body and the real list of tailnet nodes, then tell me which paths that used to work would be cut off and which ones would newly open. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Cross-check this policy once: find (a) tags no rule uses, (b) <code>*:*</code> grants that are too wide, and (c) tags with no tagOwners. Give me a list of improvements, and do not change the policy. Answer in English.</p>
+        <p class="ptext">Cross-check this policy once: find (a) tags no rule uses, (b) <code>*:*</code> rules that allow too much, and (c) tags with no tagOwners. Give me a list of improvements, and do not change the policy. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -522,7 +522,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <p>A subnet router lets the tailnet see one segment of your LAN. It is one of the most useful things Tailscale does, and one of the easiest to get wrong.</p>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Turn Tailscale on this Home Assistant host into a subnet router and advertise <code>192.168.1.0/24</code> into the tailnet. Steps: (1) re-advertise with <code>tailscale up --advertise-routes=192.168.1.0/24 --reset</code>; (2) check the state with <code>tailscale status --json</code>; (3) remind me to approve it in the admin console. Answer in English.</p>
+        <p class="ptext">On this Home Assistant host, make Tailscale a subnet router and advertise <code>192.168.1.0/24</code> into the tailnet. Steps: (1) re-advertise with <code>tailscale up --advertise-routes=192.168.1.0/24 --reset</code>; (2) check the state with <code>tailscale status --json</code>; (3) remind me to approve it in the admin console. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -591,7 +591,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">I want <code>ha-home.tailXXXX.ts.net</code> inside the tailnet to be covered by HA's <code>trusted_proxies</code>: generate the addition my Home Assistant <code>configuration.yaml</code> needs — the <code>http:</code> section — and explain why it is needed. <strong>Give me the YAML only; do not actually change the HA configuration.</strong> Answer in English.</p>
+        <p class="ptext">I am reverse-proxying <code>ha-home.tailXXXX.ts.net</code> inside the tailnet to HA, so it has to be trusted in HA's <code>trusted_proxies</code>: generate the addition my Home Assistant <code>configuration.yaml</code> needs — the <code>http:</code> section — and explain why it is needed. <strong>Give me the YAML only; do not actually change the HA configuration.</strong> Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -613,7 +613,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Give a contractor, "&lt;contractor@example.com&gt;", Tailscale SSH access that is <strong>valid for 7 days only</strong>, into <code>tag:sandbox</code> and nothing else, with the check mode set to <code>check</code> (a second confirmation before login). Do it in the policy's <code>ssh</code> block, with an <code>expiry</code>. Show me the diff before the change. Answer in English.</p>
+        <p class="ptext">Give a contractor, "&lt;contractor@example.com&gt;", Tailscale SSH access that is <strong>valid for 7 days only</strong>, into <code>tag:sandbox</code> and nothing else, with the check mode set to <code>check</code> (a second confirmation before login). Do it in the policy's <code>ssh</code> block, with an <code>expiry</code>. Show me the diff before changing anything. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -635,7 +635,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Find the devices in the tailnet with <code>keyExpiryDisabled: true</code> (key expiry off, so they never expire) — usually a sign that someone took a shortcut. List them, and say which ones should have expiry turned back on and which are subnet routers that are meant to have it off. <strong>List only, do not change anything</strong>. Answer in English.</p>
+        <p class="ptext">Find the devices in the tailnet with <code>keyExpiryDisabled: true</code> (they never expire) — usually a sign that someone took a shortcut. List them, and say which ones should have expiry turned back on and which are subnet routers that are meant to have it off. <strong>List only, do not change</strong>. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -661,7 +661,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Test the P2P connection to every other online device with <code>tailscale ping</code>: loop over <code>tailscale ping --c 1 &lt;hostname&gt;</code> and collect direct-or-DERP and latency into a table. For the DERP ones, tell me whether turning on UPnP or NAT-PMP could get NAT traversal to make them direct. Answer in English.</p>
+        <p class="ptext">Test the P2P connection to every other online device with <code>tailscale ping</code>: loop over <code>tailscale ping --c 1 &lt;hostname&gt;</code> and collect direct-or-DERP and latency into a table. For the DERP ones, recommend turning on UPnP or NAT-PMP to see whether NAT traversal can make them direct. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -669,7 +669,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Find the devices in the tailnet with <strong>no tags at all</strong> — usually the ones someone added on the fly with a personal email and nobody manages. Show me the list, and suggest a suitable tag for each one (guess from the hostname). <strong>Suggest only, do not change anything</strong>. Answer in English.</p>
+        <p class="ptext">Find the devices in the tailnet with <strong>no tags at all</strong> — usually the ones someone added on the fly with a personal email and nobody manages. Show me the list, and suggest a suitable tag for each one (guess from the hostname). <strong>Suggest only, do not change</strong>. Answer in English.</p>
       </div>
 
     </section>
@@ -695,7 +695,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
-        <p class="ptext">Fetch the tailnet's <strong>audit log</strong> for the last 24 hours (<code>GET /api/v2/tailnet/{tailnet}/logging/configuration/read</code>), list every policy change, key creation and device approval, in the format <code>[時刻] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>, and flag the ones that look unusual. Answer in English.</p>
+        <p class="ptext">Fetch the tailnet's <strong>audit log</strong> for the last 24 hours (<code>GET /api/v2/tailnet/{tailnet}/logging/configuration/read</code>), list every policy change, key creation and device approval, in the format <code>[time] &lt;actor&gt; &lt;action&gt; &lt;object&gt;</code>, and flag the ones that look unusual. Answer in English.</p>
       </div>
 
       <div class="prompt-card"><button class="copy" type="button">Copy</button>
@@ -709,7 +709,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
       <ul>
         <li><strong>Read before you write</strong>: for anything that touches the policy, open with "fetch the current policy first". It stops the agent overwriting by mistake.</li>
         <li><strong>Name the API endpoint</strong>: writing "<code>GET /api/v2/tailnet/{tailnet}/acl</code>" is ten times more precise than "look up the ACL".</li>
-        <li><strong>Use a symbol for the tailnet</strong>: Tailscale accepts <code>-</code> in place of the tailnet name (it means the tailnet the current OAuth client belongs to), so write <code>{tailnet}</code> and let the agent fill it in.</li>
+        <li><strong>Use a symbol for the tailnet</strong>: Tailscale officially accepts <code>-</code> in place of the tailnet name (it means the tailnet the current OAuth client belongs to); write <code>{tailnet}</code> and let the agent fill it in.</li>
         <li><strong>Ask for a dry run or a diff</strong>: adding "give me a diff or a summary first, and apply it only after I confirm" is the cheapest insurance there is.</li>
         <li><strong>Keep the colon in a tag</strong>: a Tailscale tag is always <code>tag:xxx</code>; drop the colon and the agent generates the wrong format.</li>
         <li><strong>Narrow the scope</strong>: "only the ones last seen more than 90 days ago" is clearer than "the ones nobody uses", and it prevents accidental deletions.</li>
@@ -744,7 +744,7 @@ pre.code-block code { background: none; padding: 0; color: inherit; }
 
     <section id="download" data-nav="Download">
       <h2 data-icon="download">Take this handbook with you</h2>
-      <p>The whole handbook is a single self-contained HTML file with every icon inlined. Download it, open it offline, and forward it to a colleague as it is.</p>
+      <p>The whole handbook is a self-contained single HTML file with every icon inlined. Download it, open it offline, and forward it to a colleague as it is.</p>
       <p>
         <a class="btn-pill" href="prompts.html" download="tailscale-prompt-library.html">Download this handbook (HTML)</a>
         <a class="btn-ghost" href="index.html">Back to the Resource Hub</a>
