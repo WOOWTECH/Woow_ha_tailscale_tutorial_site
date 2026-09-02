@@ -9,7 +9,7 @@
     "locale": "en_US",
     "description": "12 章繁體中文 Home Assistant Tailscale App 教學：從安裝、加入 tailnet、私有遠端存取、最小權限，到 subnet router 基礎與排錯維護。",
     "footerMeta": "截圖取自 Home Assistant 官方介面。Home Assistant 為 Open Home Foundation 的商標，本站與其無隸屬關係。",
-    "ogImage": "assets/screenshots/ch3/01_tailscale_web_ui.en.png",
+    "ogImage": "assets/og/ha-tailscale-guide.en.png",
     "license": {
       "name": "CC BY 4.0",
       "url": "https://creativecommons.org/licenses/by/4.0/deed.en",
