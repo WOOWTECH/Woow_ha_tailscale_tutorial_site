@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Home Assistant Tailscale Private Remote Access · Sales Handbook · WoowTech</title>
-  <meta name="description" content="Two options for secure remote access to Home Assistant: the HAOS Tailscale add-on, with WoowTech setting up ACL/subnet router/Serve/MagicDNS for you; or subscribe to the WoowTech Headscale cloud PaaS — no Tailscale free-plan limits, a private coordination server, multi-site LAN connectivity. For homes and SOHO businesses." />
+  <meta name="description" content="Two options for secure remote access to Home Assistant: Option A (self-hosted), using the HAOS Tailscale add-on on your own system; or Option B (managed by WoowTech), using the WoowTech Headscale cloud PaaS. For homes and SOHO businesses." />
   <meta name="author" content="WoowTech" />
   <meta name="theme-color" content="#6183FC" />
   <link rel="canonical" href="https://ha-tailscale-guide.woowtech.io/en/sales.html" />
@@ -369,8 +369,8 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h2>This handbook</h2>
       <a href="#why">Why Tailscale</a>
       <a href="#what">Two options</a>
-      <a href="#mode-a">A: add-on setup</a>
-      <a href="#mode-b">B: Headscale PaaS</a>
+      <a href="#mode-a">Option A (self-hosted)</a>
+      <a href="#mode-b">Option B (managed by WoowTech)</a>
       <a href="#scenarios">Typical scenarios</a>
       <a href="#security">Security and privacy</a>
       <a href="#compare">Compare options</a>
@@ -385,10 +385,10 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <span class="kicker-script">safe way home</span>
       <div class="kicker">WoowTech · Sales Handbook</div>
       <h1>Safe way home, no open ports: two Tailscale delivery options</h1>
-      <p class="lead">Remote access to Home Assistant, several sites linked together, your home cameras and NAS wherever you go — all built on the Tailscale private network, with no port to open on the router and no entry point into your home exposed to the internet. WoowTech offers two managed-delivery options; pick the one you want.</p>
+      <p class="lead">Remote access to Home Assistant, several sites linked together, your home cameras and NAS wherever you go — all built on the Tailscale private network, with no port to open on the router and no entry point into your home exposed to the internet. Choose Option A (self-hosted) or Option B (managed by WoowTech).</p>
       <div class="kpi-frame">
         <div class="kpi"><div class="num">0</div><div class="cap">router ports to open</div></div>
-        <div class="kpi"><div class="num">2</div><div class="cap">managed-delivery options</div></div>
+        <div class="kpi"><div class="num">2</div><div class="cap">deployment options</div></div>
         <div class="kpi"><div class="num">100%</div><div class="cap">private network, end-to-end encrypted</div></div>
       </div>
     </div>
@@ -401,31 +401,31 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
     </section>
 
     <section id="what" data-nav="Two options">
-      <h2 data-icon="what">Two managed-delivery options at a glance</h2>
-      <p>Both options are WoowTech getting Tailscale right for you. The difference is where the <strong>control plane (who manages your device list)</strong> lives:</p>
+      <h2 data-icon="what">Self-hosted or managed: two options at a glance</h2>
+      <p>Option A (self-hosted) runs on your HAOS system and is handed over for you to operate. Option B (managed by WoowTech) includes its <strong>control plane (which manages your device list)</strong>:</p>
       <div class="feature-grid">
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M6.5,20Q4.22,20 2.61,18.43 1,16.85 1,14.58 1,12.63 2.17,11.1 3.35,9.57 5.25,9.15 5.88,6.85 7.75,5.43 9.63,4 12,4 14.93,4 16.96,6.04 19,8.07 19,11 20.73,11.2 21.86,12.5 23,13.78 23,15.5 23,17.38 21.69,18.69 20.38,20 18.5,20H13Q12.18,20 11.59,19.41 11,18.83 11,18V12.85L9.4,14.4L8,13L12,9L16,13L14.6,14.4L13,12.85V18H18.5Q19.55,18 20.27,17.27 21,16.55 21,15.5 21,14.45 20.27,13.73 19.55,13 18.5,13H17V11Q17,8.93 15.54,7.46 14.08,6 12,6 9.93,6 8.46,7.46 7,8.93 7,11H6.5Q5.05,11 4.03,12.03 3,13.05 3,14.5 3,15.95 4.03,16.97 5.05,18 6.5,18H9V20M12,13Z"/></svg></span>
-          <h3>A. HAOS add-on, set up by WoowTech</h3>
+          <h3>Option A (self-hosted)</h3>
           <p>You buy a host that runs Home Assistant OS (a Home Assistant Yellow or Green, or one you build yourself). We come to your home or log in remotely, install the built-in Tailscale add-on, set up ACL / subnet router / Serve / MagicDNS correctly, and hand you the keys at the end. The control plane is <strong>the official Tailscale.com</strong>.</p>
           <p><strong>Good for:</strong> a single household, one site, and anyone who wants the official Tailscale SaaS without touching policy hujson themselves.</p>
         </div>
 
         <div class="feature-card">
           <span class="tile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="#6183FC" d="M12,3L2,12H5V20H10V14H14V20H19V12H22M12,7.7L14.9,10.4V11.9H12.9V16.5H11.1V11.9H9.1V10.4L12,7.7Z"/></svg></span>
-          <h3>B. A Headscale cloud PaaS account</h3>
+          <h3>Option B (managed by WoowTech)</h3>
           <p>No official Tailscale.com. You open a tenant on the private Headscale coordination server WoowTech runs (on <code>*.woowtech.io</code>), and your devices still connect with the open-source Tailscale client. <strong>The device count is not capped by the Tailscale free 3-user / 100-device limit</strong>, which makes multiple sites and multiple routes easier to arrange.</p>
           <p><strong>Good for:</strong> a SOHO business, anyone who wants to stay in control, several sites (home + studio + a relative's house), more than 3 family members or 100 devices, and anyone who would prefer not to hand the device list to a US vendor.</p>
         </div>
 
       </div>
-      <div class="callout tip"><strong>Tip:</strong> You do not have to pick A or B correctly the first time — run A for three months and move to B later if you want (the tailnet policy can be converted across, and each device has to join again). When we deliver, we back up the policy as a document.</div>
+      <div class="callout tip"><strong>Tip:</strong> You do not have to choose between Option A (self-hosted) and Option B (managed by WoowTech) permanently — run Option A (self-hosted) for three months and move to Option B (managed by WoowTech) later if you want (the tailnet policy can be converted across, and each device has to join again). When we deliver, we back up the policy as a document.</div>
     </section>
 
-    <section id="mode-a" data-nav="A: add-on setup">
-      <h2 data-icon="ai">Option A · HAOS Tailscale add-on, set up by WoowTech</h2>
-      <p>Official Tailscale, with us doing the fiddly parts and handing you the keys. Every item below is something we set up for you; you do not have to learn it.</p>
+    <section id="mode-a" data-nav="Option A (self-hosted)">
+      <h2 data-icon="ai">Option A (self-hosted)</h2>
+      <p>You host the HAOS Tailscale add-on on your own system. WoowTech handles the initial setup and hands it over for you to operate with the official Tailscale service. Every item below is included in that setup.</p>
 
       <h3>What you get</h3>
       <div class="chips">
@@ -444,16 +444,16 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <div class="callout"><strong>Concept:</strong> What WoowTech sells is the service of getting Tailscale right for you, not Tailscale itself. The control plane still belongs to Tailscale the company; for their privacy policy and terms of service, go by the official documents.</div>
     </section>
 
-    <section id="mode-b" data-nav="B: Headscale PaaS">
-      <h2 data-icon="brain">Option B · WoowTech Headscale cloud PaaS</h2>
+    <section id="mode-b" data-nav="Option B (managed by WoowTech)">
+      <h2 data-icon="brain">Option B (managed by WoowTech)</h2>
       <p>Headscale is the open-source version of the Tailscale control plane. We maintain a Headscale server for you on <code>*.woowtech.io</code>; you open an account on it and you have a private tailnet of your own — while the traffic and the data stay encrypted end to end over direct peer-to-peer connections, and never pass through a WoowTech data center.</p>
 
       <h3>What you get</h3>
       <div class="chips">
         <div class="chip">A private tenant (for example <code>your-name.hs.woowtech.io</code>). We join Home Assistant for you and prepare the preauth keys for the phones and laptops.</div>
-        <div class="chip">The same ACL policy, subnet router, MagicDNS and Serve work — what you get is all but identical to Option A, except that the control plane sits on our private server.</div>
+        <div class="chip">The same ACL policy, subnet router, MagicDNS and Serve work — what you get is all but identical to Option A (self-hosted), except that the control plane is managed by WoowTech.</div>
         <div class="chip"><strong>No cap on the device count</strong> — home, studio, a relative's house and every family phone linked up at once, without the official Tailscale ceiling of 3 users.</div>
-        <div class="chip">The DERP relay runs on WoowTech's own nodes (low latency in the Asia-Pacific region), and it can be configured to fall back to the public Tailscale DERP.</div>
+        <div class="chip">The DERP relay runs on WoowTech's own nodes (low latency in &lt;relay region — owner confirmation required&gt;), and it can be configured to fall back to the public Tailscale DERP.</div>
         <div class="chip">Cross-site subnet router topology: <strong>the tailnet at home can see the studio LAN</strong> and the other way round, with a policy fine-grained enough to say that the studio NAS is reachable only from the laptop in the study at home.</div>
         <div class="chip">Handover documents: a Headscale CLI quick reference, the tenant export and backup steps, and the disaster recovery SLA.</div>
       </div>
@@ -461,7 +461,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h3>What you pay for</h3>
       <p>A monthly or yearly subscription, covering Headscale tenant operations, the DERP relay, 24/7 monitoring and version upgrades. The actual figures depend on how many devices you have and which SLA level you pick; ask WoowTech or your reseller.</p>
 
-      <div class="callout tip"><strong>Why choose Headscale?</strong> Three common reasons: (1) the free Tailscale limit of 3 users is not enough for separate family and studio accounts; (2) you need a production-grade subnet router topology across several physical sites; (3) you would rather not keep your device list in a US vendor's database. If any one of the three applies, Option B is worth considering.</div>
+      <div class="callout tip"><strong>Why choose Headscale?</strong> Three common reasons: (1) the free Tailscale limit of 3 users is not enough for separate family and studio accounts; (2) you need a production-grade subnet router topology across several physical sites; (3) you would rather not keep your device list in a US vendor's database. If any one of the three applies, Option B (managed by WoowTech) is worth considering.</div>
     </section>
 
     <section id="scenarios" data-nav="Typical scenarios">
@@ -471,19 +471,19 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h3>1. A single-family house, one site</h3>
       <p>Parents who have retired and moved back to their hometown, a Home Assistant Green on the TV cabinet, two phones and one laptop. They want to turn on the air conditioning and check the door camera while they are out, without paying the Nabu Casa monthly fee and without daring to open a port.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option A</strong>: one delivery fee, and after that the official Tailscale free plan up to its full allowance.</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option A (self-hosted)</strong>: one delivery fee, and after that the official Tailscale free plan up to its full allowance.</div>
       </div>
 
       <h3>2. A SOHO business owner in two places: home + studio</h3>
       <p>Daytime at the studio, where there is a NAS holding client files, a printer, and the IoT cameras of the cafe downstairs. At home there is HA, the security cameras and the parents' iPad. They want to pull files off the studio NAS from home, watch the home cameras from the studio, and see both sites' HA on one dashboard.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option B</strong>: a subnet router at each of the two sites, and a policy that says only the owner may cross between sites. The free plan does not have room for this many devices.</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option B (managed by WoowTech)</strong>: a subnet router at each of the two sites, and a policy that says only the owner may cross between sites. The free plan does not have room for this many devices.</div>
       </div>
 
       <h3>3. Three generations under one roof + a home studio</h3>
       <p>Three Home Assistant installs — the parents' house, their own house and an older relative's house — plus a partner's craft studio (a NAS, a printer, no public IP). They want all three houses' HA on one dashboard, and to be able to see each other's cameras in an emergency.</p>
       <div class="chips">
-        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option B</strong>: 4 sites and 10+ family devices do not fit in the official free plan at all; a private Headscale has no such limit.</div>
+        <div class="chip say"><span class="who">Typical customer</span>Picks <strong>Option B (managed by WoowTech)</strong>: 4 sites and 10+ family devices do not fit in the official free plan at all; a private Headscale has no such limit.</div>
       </div>
     </section>
 
@@ -496,7 +496,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         <li><strong>Key expiry on</strong>: a phone or laptop that has not logged in for 90 days drops off by itself, so when you change phones you need not worry about the old device still being on the list.</li>
         <li><strong>Device approval on</strong>: a new device only gets in once you approve it in the admin console. That stops a stranger who has an auth key from joining the tailnet.</li>
         <li><strong>Serve, not Funnel</strong>: the HTTPS short URL for HA is <strong>tailnet-only</strong>, so HA never ends up on the public internet by accident.</li>
-        <li><strong>Option B extras</strong>: the control plane itself runs on WoowTech's private servers (two nodes, Singapore and Taiwan), the database is backed up daily and encrypted, and if you cancel we hand you a full export.</li>
+        <li><strong>Option B (managed by WoowTech) extras</strong>: the control plane itself runs on WoowTech's private servers (two nodes, Singapore and Taiwan), the database is backed up daily and encrypted, and if you cancel we hand you a full export.</li>
       </ul>
     </section>
 
@@ -516,7 +516,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
             <th>Cost structure</th>
             <td>A monthly fee, for as long as you want remote access</td>
             <td>Free, but you buy an SSL certificate and do the research</td>
-            <td class="pi-col">A: a one-off managed-setup fee; B: a monthly fee that includes operations</td>
+            <td class="pi-col">Option A (self-hosted): a one-off setup fee; Option B (managed by WoowTech): a monthly fee that includes operations</td>
           </tr>
           <tr>
             <th>Exposed to the internet</th>
@@ -528,7 +528,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
             <th>Multi-site connectivity</th>
             <td>Not possible</td>
             <td>Set up site by site, with a policy that is hard to manage</td>
-            <td class="pi-col">Native to Option B, with the policy managed in one place</td>
+            <td class="pi-col">Native to Option B (managed by WoowTech), with the policy managed in one place</td>
           </tr>
           <tr>
             <th>Reach your NAS/cameras</th>
@@ -558,7 +558,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <ol class="steps">
         <li>
           <h3>Discovery call (30 minutes, free)</h3>
-          <p>How many sites, how many people in the household, which NAS / cameras / printers you want to bring in, whether you want to share with friends. By the end of the call we decide on A or B.</p>
+          <p>How many sites, how many people in the household, which NAS / cameras / printers you want to bring in, whether you want to share with friends. By the end of the call we decide between Option A (self-hosted) and Option B (managed by WoowTech).</p>
         </li>
         <li>
           <h3>Quote and statement of work</h3>
@@ -566,7 +566,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
         </li>
         <li>
           <h3>Remote or on-site installation (half a day)</h3>
-          <p>Option A can usually be finished remotely; if Option B includes a multi-site subnet router, we schedule an on-site visit.</p>
+          <p>Option A (self-hosted) can usually be finished remotely; if Option B (managed by WoowTech) includes a multi-site subnet router, we schedule an on-site visit.</p>
         </li>
         <li>
           <h3>Acceptance and family training (1 hour)</h3>
@@ -577,7 +577,7 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
           <p>A topology map of your tailnet, the policy explained in plain language, the entry point to the Headscale or Tailscale admin console, and the disaster recovery steps.</p>
         </li>
       </ol>
-      <div class="callout"><strong>Pricing:</strong> Ask WoowTech or your reseller. Option A is a one-off managed-setup fee; Option B is a monthly or yearly fee (covering Headscale tenant operations, the DERP relay and version upgrades). Several sites, on-site work and training for a larger family are quoted separately.</div>
+      <div class="callout"><strong>Pricing:</strong> Ask WoowTech or your reseller. Option A (self-hosted) has a one-off setup fee; Option B (managed by WoowTech) has a monthly or yearly fee (covering Headscale tenant operations, the DERP relay and version upgrades). Several sites, on-site work and training for a larger family are quoted separately.</div>
     </section>
 
     <section id="faq" data-nav="FAQ">
@@ -588,10 +588,10 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       </details>
       <details class="faq">
         <summary>Will family members who are not technical struggle to install it?</summary>
-        <div class="body">On iOS, Android, Windows and macOS, the Tailscale app is at the install-it-and-scan-a-QR-code level. Our delivery scope includes walking family members through the install on site and confirming that they can connect. Later, when an older relative changes phones, message us on Telegram or Slack and we will issue a fresh QR code remotely.</div>
+        <div class="body">On iOS, Android, Windows and macOS, the Tailscale app is at the install-it-and-scan-a-QR-code level. Our delivery scope includes walking family members through the install on site and confirming that they can connect. Later, when an older relative changes phones, message us on &lt;contact channel — owner input required&gt; and we will issue a fresh QR code remotely.</div>
       </details>
       <details class="faq">
-        <summary>After choosing B (Headscale), can I go back to A (official Tailscale)?</summary>
+        <summary>After choosing Option B (managed by WoowTech), can I go back to Option A (self-hosted)?</summary>
         <div class="body">Yes. The Headscale policy is highly compatible with official Tailscale, and the migration is mainly a matter of each device joining again (scanning a new QR code). When we deliver, we back up the policy as a document, so you can move at any time.</div>
       </details>
       <details class="faq">
@@ -604,11 +604,11 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       </details>
       <details class="faq">
         <summary>What if Tailscale the company shuts down one day?</summary>
-        <div class="body">Two safeguards: (1) the Tailscale client is open-source software and the WireGuard protocol is an industry standard, so the client still works even if the company is gone; (2) Headscale is an open-source server compatible with the official one — which makes our Option B the natural fallback if you are worried about vendor lock-in with Option A.</div>
+        <div class="body">Two safeguards: (1) the Tailscale client is open-source software and the WireGuard protocol is an industry standard, so the client still works even if the company is gone; (2) Headscale is an open-source server compatible with the official one — which makes Option B (managed by WoowTech) the natural fallback if you are worried about vendor lock-in with Option A (self-hosted).</div>
       </details>
       <details class="faq">
         <summary>Should I prepare anything before booking the call?</summary>
-        <div class="body">It helps to be clear on three things first: (a) how many sites you have (how many houses and offices); (b) which non-HA devices you want to reach remotely (NAS / cameras / printer / self-hosted Docker); (c) how many people will use it (a rough number is fine). Those three decide A or B, and which price band you land in.</div>
+        <div class="body">It helps to be clear on three things first: (a) how many sites you have (how many houses and offices); (b) which non-HA devices you want to reach remotely (NAS / cameras / printer / self-hosted Docker); (c) how many people will use it (a rough number is fine). Those three help decide between Option A (self-hosted) and Option B (managed by WoowTech), and which price band you land in.</div>
       </details>
     </section>
 
@@ -616,9 +616,9 @@ details.faq .body { padding: 16px 20px; color: var(--ink-700); font-size: 14px; 
       <h2 data-icon="handshake">Next step</h2>
       <div class="cta-band">
         <span class="script">talk to us</span>
-        <h3>Still deciding between A and B? Start with a 30-minute call</h3>
+        <h3>Still deciding between Option A (self-hosted) and Option B (managed by WoowTech)? Start with a 30-minute call</h3>
         <p>Tell us how many sites you have, how many people in the household, and which devices you want to connect, and we will work out which route fits. It is free, and there is no hard sell.</p>
-        <a class="btn-pill" href="#">Contact WoowTech or your reseller</a>
+        <a class="btn-pill" href="#">Contact via &lt;contact channel — link pending owner input&gt;</a>
       </div>
     </section>
 
